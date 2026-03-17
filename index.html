@@ -93,16 +93,27 @@ header p{color:var(--text2);font-size:.88rem;margin-top:2px}
 .lc-5{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue)}
 
 /* BODYMAP */
-.bm-wrap{display:flex;gap:28px;align-items:flex-start}
-.bm-left{flex:0 0 260px;position:sticky;top:20px}
-.bm-left svg{width:100%;height:auto;display:block}
-.bm-left svg .bz{fill:var(--body-fill);stroke:var(--body-stroke);stroke-width:1.5;cursor:pointer;transition:fill .15s,stroke .15s;stroke-linejoin:round}
-.bm-left svg .bz:hover{fill:var(--body-hover)}
-.bm-left svg .bz.on{fill:var(--body-active);stroke:var(--body-active-stroke);stroke-width:2.5}
-.bm-left svg .bl{fill:var(--text3);font-family:var(--font);font-weight:600;pointer-events:none;user-select:none}
-.bm-right{flex:1;min-width:0}
-.bm-right h3{font-size:1.05rem;font-weight:600;margin-bottom:3px}
-.bm-right .sub{font-size:.82rem;color:var(--text2);margin-bottom:12px}
+.bm-outer{display:flex;gap:24px;align-items:flex-start}
+.bm-figures{flex:0 0 auto;position:sticky;top:16px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.bm-toggle{display:flex;background:var(--bg3);border-radius:var(--radius-sm);padding:3px;gap:2px;margin-bottom:4px;border:1px solid var(--card-border)}
+.bm-toggle button{padding:6px 16px;border:none;background:transparent;color:var(--text3);font-family:var(--font);font-size:.78rem;font-weight:600;border-radius:var(--radius-xs);cursor:pointer;transition:all .15s}
+.bm-toggle button.on{background:var(--bg2);color:var(--text);box-shadow:var(--shadow)}
+.bm-canvas{display:flex;gap:6px}
+.bm-fig{width:180px;position:relative}
+.bm-fig svg{width:100%;height:auto;display:block}
+.bm-fig .bz{fill:var(--body-fill);stroke:var(--body-stroke);stroke-width:1.2;cursor:pointer;transition:fill .18s,stroke .18s,filter .18s;stroke-linejoin:round;stroke-linecap:round}
+.bm-fig .bz:hover{fill:var(--body-hover);filter:brightness(1.04)}
+.bm-fig .bz.on{fill:var(--body-active);stroke:var(--body-active-stroke);stroke-width:2;filter:drop-shadow(0 0 6px rgba(67,56,202,.2))}
+.dark .bm-fig .bz.on{filter:drop-shadow(0 0 8px rgba(129,140,248,.25))}
+.bm-fig .bl{fill:var(--text3);font-family:var(--font);font-weight:600;pointer-events:none;user-select:none;letter-spacing:.01em}
+.bm-fig-label{text-align:center;font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.bm-pills{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:370px}
+.bm-pill{padding:5px 12px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-family:var(--font);font-size:.74rem;font-weight:500;border-radius:16px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow)}
+.bm-pill:hover{border-color:var(--accent);color:var(--accent)}
+.bm-pill.on{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.22)}
+.bm-results{flex:1;min-width:0}
+.bm-results h3{font-size:1.05rem;font-weight:600;margin-bottom:3px}
+.bm-results .sub{font-size:.82rem;color:var(--text2);margin-bottom:12px}
 .bm-item{padding:12px 14px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;box-shadow:var(--shadow);margin-bottom:8px}
 .bm-item:hover{border-color:var(--accent);transform:translateX(3px);box-shadow:var(--shadow-lg)}
 .bm-item strong{font-size:.9rem;display:block;margin-bottom:1px}
@@ -161,7 +172,7 @@ header p{color:var(--text2);font-size:.88rem;margin-top:2px}
 .rbtn{padding:9px 20px;background:var(--bg3);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.84rem;cursor:pointer;transition:all .15s}
 .rbtn:hover{border-color:var(--accent);background:var(--accent-bg)}
 .empty{text-align:center;padding:36px 16px;color:var(--text3);font-size:.88rem}
-@media(max-width:768px){.bm-wrap{flex-direction:column;align-items:center}.bm-left{flex:none;width:200px;position:static}.nw{grid-template-columns:1fr}}
+@media(max-width:768px){.bm-outer{flex-direction:column;align-items:stretch}.bm-figures{position:static;flex-direction:column}.bm-canvas{justify-content:center}.bm-fig{width:140px}.nw{grid-template-columns:1fr}}
 @media(max-width:640px){html{font-size:15px}.app{padding:10px}header{padding:16px 8px 12px}header h1{font-size:1.4rem}.nav-tab{padding:7px 11px;font-size:.78rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.header-right{display:none!important}.card,.lc,.cc{break-inside:avoid}}
@@ -193,7 +204,13 @@ header p{color:var(--text2);font-size:.88rem;margin-top:2px}
   </div>
 
   <div class="panel" id="panel-bodymap">
-    <div class="bm-wrap"><div class="bm-left" id="bmSvg"></div><div class="bm-right" id="bmContent"><div class="bm-hint">👆 Klicke auf eine Körperregion</div></div></div>
+    <div class="bm-outer">
+      <div class="bm-figures">
+        <div class="bm-canvas" id="bmCanvas"></div>
+        <div class="bm-pills" id="bmPills"></div>
+      </div>
+      <div class="bm-results" id="bmContent"><div class="bm-hint">👆 Klicke auf eine Körperregion — Vorder- oder Rückseite</div></div>
+    </div>
   </div>
 
   <div class="panel" id="panel-diagrams">
@@ -241,7 +258,7 @@ const D=[{id:1,name:"Abszess / lokale Infektion",c:"Chirurgisch",kw:["abszess","
 const CATS=[...new Set(D.map(x=>x.c))].sort();
 const LV=[{l:1,n:"Sofort",t:"0 Min",r:"-",d:"Unmittelbare Lebensgefahr. Sofortige Behandlung."},{l:2,n:"Sehr dringend",t:"≤ 10 Min",r:"10 Min",d:"Potenziell lebensbedrohlich. ACS, Schlaganfall, Anaphylaxie."},{l:3,n:"Dringend",t:"≤ 30 Min",r:"30 Min",d:"Starke Schmerzen, hohes Fieber + AZ↓, psychiatrische Krise."},{l:4,n:"Normal",t:"≤ 90 Min",r:"60 Min",d:"Mäßige Schmerzen, leichtes Fieber, kleine Wunde."},{l:5,n:"Nicht dringend",t:"≤ 120 Min",r:"120 Min",d:"Chronische Beschwerden, Bagatelleverletzung."}];
 const EM=['🔴','🟠','🟡','🟢','🔵'];
-const BR=[{k:'head',n:'Kopf / Neurologie',ids:[5,9,15,22,23,24,25,27,42,45]},{k:'chest',n:'Thorax / Herz / Lunge',ids:[3,18,34,51]},{k:'abdomen',n:'Abdomen / GI-Trakt',ids:[6,7,12,52]},{k:'pelvis',n:'Urogenital / Gynäko',ids:[19,29,31,32,38]},{k:'arm_l',n:'Linker Arm',ids:[13,33,41]},{k:'arm_r',n:'Rechter Arm',ids:[13,33,41]},{k:'leg_l',n:'Linkes Bein',ids:[13,30,33]},{k:'leg_r',n:'Rechtes Bein',ids:[13,30,33]},{k:'skin',n:'Haut / Allgemein',ids:[1,2,10,11,14,17,35,36,39,43,46,47,48,50]},{k:'psych',n:'Psych / Pädiatrie',ids:[4,7,8,20,28,37,40,44]}];
+const BR=[{k:'head',n:'Kopf / Neurologie',ids:[5,9,15,22,23,24,25,27,42,45]},{k:'chest',n:'Thorax / Herz / Lunge',ids:[3,18,34,51]},{k:'abdomen',n:'Abdomen / GI-Trakt',ids:[6,7,12,52]},{k:'pelvis',n:'Urogenital / Gynäko',ids:[19,29,31,32,38]},{k:'arm_l',n:'Linker Arm',ids:[13,33,41]},{k:'arm_r',n:'Rechter Arm',ids:[13,33,41]},{k:'leg_l',n:'Linkes Bein',ids:[13,30,33]},{k:'leg_r',n:'Rechtes Bein',ids:[13,30,33]},{k:'neck_back',n:'HWS / Nacken',ids:[22,26]},{k:'back_upper',n:'Oberer Rücken / BWS',ids:[26,30,34,51]},{k:'back_lower',n:'Unterer Rücken / LWS',ids:[26,30,38]},{k:'skin',n:'Haut / Allgemein',ids:[1,2,10,11,14,17,35,36,39,43,46,47,48,50]},{k:'psych',n:'Psych / Pädiatrie',ids:[4,7,8,20,28,37,40,44]}];
 const CS=[{t:"🔴 Sofort — Red Flags",i:["Atemstillstand","Kreislaufstillstand","Bewusstlosigkeit ohne Schutzreflexe","Massive arterielle Blutung","Anaphylaktischer Schock","Status epilepticus"]},{t:"🟠 Sehr dringend",i:["Schwere Atemnot / SpO₂ < 92%","Schwere Thoraxschmerzen (ACS)","Fokalneurologisches Defizit","GCS ≤ 12","Unkontrollierbare Blutung","Akutes Abdomen + Abwehrspannung"]},{t:"🟡 Dringend",i:["Fieber > 39°C + AZ↓","Starke Schmerzen NRS 7–10","Erbrechen + Dehydration","Akute Verwirrtheit","Nicht reponierbare Hernie"]},{t:"🟢 Normal",i:["Schmerzen NRS 4–6","Fieber ohne Begleitzeichen","Kleine Wunden","Erbrechen ohne Dehydration","Hautausschlag stabil"]},{t:"📊 Vitalzeichen",i:["AF: 12–20/min","SpO₂: > 95% (COPD > 92%)","HF: 60–100/min","RR syst: 100–140","Temp: 36,0–37,5°C","GCS: 15 = normal"]},{t:"⏱ FAST-Test",i:["Face — Gesicht hängt?","Arms — Arm sinkt?","Speech — Sprache verwaschen?","Time — Beginn wann?","→ Orange-Stufe","Lyse < 4,5 h"]},{t:"💊 Schmerzskala",i:["0 = schmerzfrei","1–3 = leicht","4–6 = mäßig","7–9 = stark","10 = maximal","Kinder: Gesichterskala"]},{t:"🧒 Pädiatrie",i:["Neugeborene + Fieber → Orange","Fontanelle vorgewölbt?","Trinkschwäche = Alarm","Petechien + Fieber → Meningo?","Tachypnoe altersabhängig","Eltern-Intuition beachten"]}];
 let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),notes=JSON.parse(localStorage.getItem('mts_n')||'[]'),selP=3,aCat='';
 function toggleTheme(){document.body.classList.toggle('dark');const dk=document.body.classList.contains('dark');localStorage.setItem('mts_theme',dk?'dark':'light');document.getElementById('themeBtn').textContent=dk?'☀️':'🌙'}
@@ -254,31 +271,72 @@ SI_.addEventListener('input',debounce(()=>{const q=SI_.value.trim().toLowerCase(
 function hl(t,ts){let r=t;ts.forEach(x=>{r=r.replace(new RegExp(`(${esc(x)})`,'gi'),'<mark style="background:var(--mark-bg);color:var(--mark-color);border-radius:2px;padding:0 1px">$1</mark>')});return r}
 function cl(c){return{Kardiologisch:2,Neurologisch:2,Respiratorisch:2,Trauma:3,Abdominell:3,Chirurgisch:3,Pädiatrisch:3,Psychiatrisch:3,Toxikologisch:2,Internistisch:3,Gynäkologisch:3,Urologisch:3,Allgemein:4,'HNO / Sinnesorgane':4,Dermatologisch:4,Orthopädisch:4,Spezial:2}[c]||3}
 
-// BODYMAP
-function initBM(){document.getElementById('bmSvg').innerHTML=bSVG();document.getElementById('bmContent').innerHTML='<div class="bm-hint">👆 Klicke auf eine Körperregion</div>';document.querySelectorAll('.bz').forEach(z=>{z.addEventListener('click',()=>{document.querySelectorAll('.bz').forEach(x=>x.classList.remove('on'));z.classList.add('on');shReg(z.dataset.r)});z.addEventListener('mouseenter',()=>{if(!z.classList.contains('on'))z.style.fill='var(--body-hover)'});z.addEventListener('mouseleave',()=>{if(!z.classList.contains('on'))z.style.fill=''})})}
-function shReg(k){const r=BR.find(x=>x.k===k);if(!r)return;const ds=[...new Set(r.ids)].map(id=>D.find(x=>x.id===id)).filter(Boolean);document.getElementById('bmContent').innerHTML=`<div class="bm-right"><h3>${r.n}</h3><div class="sub">${ds.length} Diagramme</div>${ds.map(d=>`<div class="bm-item" onclick="shD(${d.id})"><strong>${d.name}</strong><span>${d.d}</span></div>`).join('')}</div>`}
-function bSVG(){return`<svg viewBox="0 0 240 520" xmlns="http://www.w3.org/2000/svg">
-<ellipse class="bz" data-r="head" cx="120" cy="50" rx="33" ry="40"/>
-<text class="bl" x="120" y="54" text-anchor="middle" font-size="10">Kopf</text>
-<rect class="bz" data-r="head" x="109" y="88" width="22" height="16" rx="6"/>
-<path class="bz" data-r="chest" d="M78,104 Q70,106 66,126 L62,192 Q62,196 68,198 L172,198 Q178,196 178,192 L174,126 Q170,106 162,104 Z"/>
-<text class="bl" x="120" y="155" text-anchor="middle" font-size="10">Thorax</text>
-<path class="bz" data-r="abdomen" d="M68,198 L66,272 Q66,276 72,278 L168,278 Q174,276 174,272 L172,198 Z"/>
-<text class="bl" x="120" y="242" text-anchor="middle" font-size="10">Abdomen</text>
-<path class="bz" data-r="pelvis" d="M72,278 L66,316 Q80,342 120,342 Q160,342 174,316 L168,278 Z"/>
-<text class="bl" x="120" y="314" text-anchor="middle" font-size="9">Becken</text>
-<path class="bz" data-r="arm_l" d="M66,112 L40,124 Q30,128 26,144 L12,246 Q8,260 14,264 L20,264 Q26,260 28,246 L42,182 L60,196 L62,192 Z"/>
-<text class="bl" x="28" y="195" text-anchor="middle" font-size="8">L.Arm</text>
-<path class="bz" data-r="arm_r" d="M174,112 L200,124 Q210,128 214,144 L228,246 Q232,260 226,264 L220,264 Q214,260 212,246 L198,182 L180,196 L178,192 Z"/>
-<text class="bl" x="212" y="195" text-anchor="middle" font-size="8">R.Arm</text>
-<path class="bz" data-r="leg_l" d="M84,338 Q78,342 76,356 L66,456 Q64,474 70,478 L82,478 Q86,474 84,456 L92,376 L108,342 Q98,342 90,338 Z"/>
-<text class="bl" x="76" y="418" text-anchor="middle" font-size="8">L.Bein</text>
-<path class="bz" data-r="leg_r" d="M156,338 Q162,342 164,356 L174,456 Q176,474 170,478 L158,478 Q154,474 156,456 L148,376 L132,342 Q142,342 150,338 Z"/>
-<text class="bl" x="164" y="418" text-anchor="middle" font-size="8">R.Bein</text>
-<rect class="bz" data-r="skin" x="2" y="490" width="112" height="24" rx="8"/>
-<text class="bl" x="58" y="506" text-anchor="middle" font-size="8">🩹 Haut / Allgemein</text>
-<rect class="bz" data-r="psych" x="126" y="490" width="112" height="24" rx="8"/>
-<text class="bl" x="182" y="506" text-anchor="middle" font-size="8">🧩 Psych / Päd</text>
+// BODYMAP — dual figure front + back
+function initBM(){
+  document.getElementById('bmCanvas').innerHTML=
+    `<div class="bm-fig">${svgF()}<div class="bm-fig-label">Vorderseite</div></div>`+
+    `<div class="bm-fig">${svgB()}<div class="bm-fig-label">Rückseite</div></div>`;
+  document.getElementById('bmPills').innerHTML=BR.filter(r=>r.k==='skin'||r.k==='psych').map(r=>
+    `<button class="bm-pill" data-r="${r.k}">${r.k==='skin'?'🩹':'🧩'} ${r.n}</button>`).join('');
+  document.getElementById('bmContent').innerHTML='<div class="bm-hint">👆 Klicke auf eine Körperregion</div>';
+  document.querySelectorAll('.bz').forEach(z=>z.addEventListener('click',()=>bmSel(z.dataset.r)));
+  document.querySelectorAll('.bm-pill').forEach(p=>p.addEventListener('click',()=>bmSel(p.dataset.r)));
+}
+function bmSel(key){
+  document.querySelectorAll('.bz').forEach(x=>x.classList.toggle('on',x.dataset.r===key));
+  document.querySelectorAll('.bm-pill').forEach(p=>p.classList.toggle('on',p.dataset.r===key));
+  const rr=BR.find(x=>x.k===key);if(!rr)return;
+  const ds=[...new Set(rr.ids)].map(id=>D.find(x=>x.id===id)).filter(Boolean);
+  document.getElementById('bmContent').innerHTML=`<div class="bm-results"><h3>${rr.n}</h3><div class="sub">${ds.length} Diagramme</div>${ds.map(d=>`<div class="bm-item" onclick="shD(${d.id})"><strong>${d.name}</strong><span>${d.d}</span></div>`).join('')}</div>`;
+}
+function svgF(){return`<svg viewBox="0 0 200 560" xmlns="http://www.w3.org/2000/svg">
+<path class="bz" data-r="head" d="M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C103,100 106,98 108,96 L108,88 C114,84 120,80 124,74 C130,66 134,56 133,42 C132,24 118,10 100,10Z"/>
+<text class="bl" x="100" y="54" text-anchor="middle" font-size="9.5">Kopf</text>
+<path class="bz" data-r="head" d="M92,96 C92,102 93,108 94,112 L106,112 C107,108 108,102 108,96 C106,98 103,100 100,100 C97,100 94,98 92,96Z"/>
+<path class="bz" data-r="chest" d="M94,112 C86,114 74,118 66,122 C56,128 50,136 48,148 L44,190 C44,194 46,196 48,196 L152,196 C154,196 156,194 156,190 L152,148 C150,136 144,128 134,122 C126,118 114,114 106,112Z"/>
+<text class="bl" x="100" y="160" text-anchor="middle" font-size="9.5">Thorax</text>
+<path class="bz" data-r="abdomen" d="M48,196 L46,254 C46,262 50,270 56,276 L66,280 L134,280 L144,276 C150,270 154,262 154,254 L152,196Z"/>
+<text class="bl" x="100" y="242" text-anchor="middle" font-size="9.5">Abdomen</text>
+<path class="bz" data-r="pelvis" d="M66,280 L58,306 C58,314 62,324 72,332 C82,340 92,346 100,346 C108,346 118,340 128,332 C138,324 142,314 142,306 L134,280Z"/>
+<text class="bl" x="100" y="316" text-anchor="middle" font-size="9">Becken</text>
+<path class="bz" data-r="arm_r" d="M48,148 L42,140 C36,134 30,132 26,136 L20,142 C16,148 14,156 14,164 L10,224 C8,240 8,256 10,268 L12,286 C12,294 14,300 18,304 L20,300 L24,286 L30,248 L36,210 L40,194 L44,190Z"/>
+<text class="bl" x="24" y="222" text-anchor="middle" font-size="7" transform="rotate(-6,24,222)">R. Arm</text>
+<path class="bz" data-r="arm_l" d="M152,148 L158,140 C164,134 170,132 174,136 L180,142 C184,148 186,156 186,164 L190,224 C192,240 192,256 190,268 L188,286 C188,294 186,300 182,304 L180,300 L176,286 L170,248 L164,210 L160,194 L156,190Z"/>
+<text class="bl" x="176" y="222" text-anchor="middle" font-size="7" transform="rotate(6,176,222)">L. Arm</text>
+<path class="bz" data-r="arm_r" d="M12,286 C10,296 6,308 6,316 C6,322 8,326 12,326 L16,324 L18,316 L18,304Z" style="stroke-width:1"/>
+<path class="bz" data-r="arm_l" d="M188,286 C190,296 194,308 194,316 C194,322 192,326 188,326 L184,324 L182,316 L182,304Z" style="stroke-width:1"/>
+<path class="bz" data-r="leg_r" d="M72,332 C66,338 60,346 58,356 L52,420 C50,440 48,462 48,478 L46,518 C46,528 48,534 54,538 L60,540 C66,540 70,534 70,526 L74,486 L80,434 L86,392 L94,356 C88,350 80,340 74,334Z"/>
+<text class="bl" x="62" y="440" text-anchor="middle" font-size="7.5">R. Bein</text>
+<path class="bz" data-r="leg_l" d="M128,332 C134,338 140,346 142,356 L148,420 C150,440 152,462 152,478 L154,518 C154,528 152,534 146,538 L140,540 C134,540 130,534 130,526 L126,486 L120,434 L114,392 L106,356 C112,350 120,340 126,334Z"/>
+<text class="bl" x="138" y="440" text-anchor="middle" font-size="7.5">L. Bein</text>
+<path class="bz" data-r="leg_r" d="M46,518 L42,536 C40,544 42,552 48,554 L60,556 C66,556 70,550 70,544 L70,526Z" style="stroke-width:1"/>
+<path class="bz" data-r="leg_l" d="M154,518 L158,536 C160,544 158,552 152,554 L140,556 C134,556 130,550 130,544 L130,526Z" style="stroke-width:1"/>
+</svg>`}
+function svgB(){return`<svg viewBox="0 0 200 560" xmlns="http://www.w3.org/2000/svg">
+<path class="bz" data-r="head" d="M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C103,100 106,98 108,96 L108,88 C114,84 120,80 124,74 C130,66 134,56 133,42 C132,24 118,10 100,10Z"/>
+<text class="bl" x="100" y="54" text-anchor="middle" font-size="9.5">Kopf</text>
+<path class="bz" data-r="neck_back" d="M92,96 C92,102 93,108 94,112 L106,112 C107,108 108,102 108,96 C106,98 103,100 100,100 C97,100 94,98 92,96Z"/>
+<text class="bl" x="100" y="107" text-anchor="middle" font-size="6">HWS</text>
+<path class="bz" data-r="back_upper" d="M94,112 C86,114 74,118 66,122 C56,128 50,136 48,148 L44,190 C44,194 46,196 48,196 L152,196 C154,196 156,194 156,190 L152,148 C150,136 144,128 134,122 C126,118 114,114 106,112Z"/>
+<text class="bl" x="100" y="158" text-anchor="middle" font-size="9">Oberer Rücken</text>
+<text class="bl" x="100" y="170" text-anchor="middle" font-size="7" style="opacity:.65">BWS</text>
+<path class="bz" data-r="back_lower" d="M48,196 L46,254 C46,262 50,270 56,276 L66,280 L134,280 L144,276 C150,270 154,262 154,254 L152,196Z"/>
+<text class="bl" x="100" y="238" text-anchor="middle" font-size="9">Unterer Rücken</text>
+<text class="bl" x="100" y="250" text-anchor="middle" font-size="7" style="opacity:.65">LWS</text>
+<path class="bz" data-r="pelvis" d="M66,280 L58,306 C58,314 62,324 72,332 C82,340 92,346 100,346 C108,346 118,340 128,332 C138,324 142,314 142,306 L134,280Z"/>
+<text class="bl" x="100" y="316" text-anchor="middle" font-size="9">Gesäß</text>
+<path class="bz" data-r="arm_r" d="M48,148 L42,140 C36,134 30,132 26,136 L20,142 C16,148 14,156 14,164 L10,224 C8,240 8,256 10,268 L12,286 C12,294 14,300 18,304 L20,300 L24,286 L30,248 L36,210 L40,194 L44,190Z"/>
+<text class="bl" x="24" y="222" text-anchor="middle" font-size="7" transform="rotate(-6,24,222)">R. Arm</text>
+<path class="bz" data-r="arm_l" d="M152,148 L158,140 C164,134 170,132 174,136 L180,142 C184,148 186,156 186,164 L190,224 C192,240 192,256 190,268 L188,286 C188,294 186,300 182,304 L180,300 L176,286 L170,248 L164,210 L160,194 L156,190Z"/>
+<text class="bl" x="176" y="222" text-anchor="middle" font-size="7" transform="rotate(6,176,222)">L. Arm</text>
+<path class="bz" data-r="arm_r" d="M12,286 C10,296 6,308 6,316 C6,322 8,326 12,326 L16,324 L18,316 L18,304Z" style="stroke-width:1"/>
+<path class="bz" data-r="arm_l" d="M188,286 C190,296 194,308 194,316 C194,322 192,326 188,326 L184,324 L182,316 L182,304Z" style="stroke-width:1"/>
+<path class="bz" data-r="leg_r" d="M72,332 C66,338 60,346 58,356 L52,420 C50,440 48,462 48,478 L46,518 C46,528 48,534 54,538 L60,540 C66,540 70,534 70,526 L74,486 L80,434 L86,392 L94,356 C88,350 80,340 74,334Z"/>
+<text class="bl" x="62" y="440" text-anchor="middle" font-size="7.5">R. Bein</text>
+<path class="bz" data-r="leg_l" d="M128,332 C134,338 140,346 142,356 L148,420 C150,440 152,462 152,478 L154,518 C154,528 152,534 146,538 L140,540 C134,540 130,534 130,526 L126,486 L120,434 L114,392 L106,356 C112,350 120,340 126,334Z"/>
+<text class="bl" x="138" y="440" text-anchor="middle" font-size="7.5">L. Bein</text>
+<path class="bz" data-r="leg_r" d="M46,518 L42,536 C40,544 42,552 48,554 L60,556 C66,556 70,550 70,544 L70,526Z" style="stroke-width:1"/>
+<path class="bz" data-r="leg_l" d="M154,518 L158,536 C160,544 158,552 152,554 L140,556 C134,556 130,550 130,544 L130,526Z" style="stroke-width:1"/>
 </svg>`}
 
 // DIAGRAMS
