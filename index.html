@@ -152,6 +152,49 @@ header h1 .sub{font-weight:400;font-size:.85rem;color:var(--text3);display:block
 @media(max-width:640px){html{font-size:15px}.app{padding:10px}header h1{font-size:1.35rem}.nt{padding:6px 10px;font-size:.76rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}.bm-fig{width:120px}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.hr{display:none!important}}
+/* Calc */
+.calc-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.calc-tab{padding:7px 14px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-family:var(--font);font-size:.8rem;font-weight:500;border-radius:14px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow)}
+.calc-tab:hover{border-color:var(--accent)}.calc-tab.on{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.2)}
+.calc-box{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);max-width:600px}
+.calc-box h3{font-size:1rem;font-weight:600;margin-bottom:10px}
+.calc-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.calc-row label{font-size:.82rem;font-weight:500;color:var(--text2);min-width:100px}
+.calc-opts{display:flex;gap:4px;flex-wrap:wrap}
+.calc-opt{padding:6px 12px;border:1px solid var(--card-border);background:var(--bg);color:var(--text2);font-family:var(--font);font-size:.78rem;border-radius:var(--radius-xs);cursor:pointer;transition:all .12s;line-height:1.3}
+.calc-opt:hover{border-color:var(--accent)}.calc-opt.on{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.2);font-weight:600}
+.calc-result{margin-top:14px;padding:14px;border-radius:var(--radius-sm);font-size:1rem;font-weight:700;text-align:center;font-family:var(--mono)}
+.calc-result.r1{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.calc-result.r2{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.calc-result.r3{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.calc-result.r4{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.calc-result.r0{background:var(--bg3);color:var(--text2);border:1px solid var(--card-border)}
+.calc-slider{width:100%;max-width:300px;accent-color:var(--accent);cursor:pointer}
+.calc-val{font-family:var(--mono);font-weight:700;font-size:1.1rem;color:var(--accent);min-width:36px;text-align:center}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px}
+.calc-cell{padding:8px 4px;border:1px solid var(--card-border);background:var(--bg);border-radius:var(--radius-xs);text-align:center;font-size:.76rem;color:var(--text2);cursor:pointer;transition:all .12s}
+.calc-cell:hover{border-color:var(--accent)}.calc-cell.on{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.2);font-weight:600}
+.calc-cell b{display:block;font-size:.95rem;color:var(--text);font-family:var(--mono)}
+/* Training */
+.trn-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.trn-header h3{font-size:1rem;font-weight:600}
+.trn-stats{display:flex;gap:8px}
+.trn-stat{font-size:.78rem;color:var(--text2);padding:4px 10px;background:var(--bg2);border:1px solid var(--card-border);border-radius:14px;font-family:var(--mono);box-shadow:var(--shadow)}
+.trn-stat b{color:var(--accent)}
+.trn-case{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);max-width:700px}
+.trn-scenario{font-size:.92rem;line-height:1.7;color:var(--text);margin-bottom:14px;padding:14px;background:var(--bg3);border-radius:var(--radius-sm);border-left:3px solid var(--accent)}
+.trn-q{font-size:.86rem;font-weight:600;margin-bottom:8px}
+.trn-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+.trn-opt{padding:10px 14px;border:1px solid var(--card-border);background:var(--bg);border-radius:var(--radius-sm);cursor:pointer;font-size:.84rem;transition:all .12s;display:flex;align-items:center;gap:8px}
+.trn-opt:hover{border-color:var(--accent);background:var(--accent-bg)}
+.trn-opt.correct{border-color:var(--green);background:var(--green-bg);color:var(--green);font-weight:600}
+.trn-opt.wrong{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.trn-opt.dimmed{opacity:.5;pointer-events:none}
+.trn-explain{margin-top:12px;padding:12px;background:var(--bg3);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text2);line-height:1.6;border-left:3px solid var(--green)}
+.trn-next{margin-top:12px;padding:9px 20px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);font-family:var(--font);font-size:.84rem;font-weight:600;cursor:pointer;transition:opacity .15s}
+.trn-next:hover{opacity:.9}
+.trn-progress{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:14px;overflow:hidden}
+.trn-progress-bar{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
 </style>
 </head>
 <body>
@@ -167,6 +210,8 @@ header h1 .sub{font-weight:400;font-size:.85rem;color:var(--text3);display:block
     <button class="nt" data-t="diag">📋 Diagramme</button>
     <button class="nt" data-t="lvl">🚦 Stufen</button>
     <button class="nt" data-t="cs">📌 Cheatsheet</button>
+    <button class="nt" data-t="calc">🧮 Rechner</button>
+    <button class="nt" data-t="train">🎓 Training</button>
     <button class="nt" data-t="hist">📊 Verlauf</button>
   </nav>
 
@@ -198,6 +243,17 @@ header h1 .sub{font-weight:400;font-size:.85rem;color:var(--text3);display:block
   <div class="pnl" id="p-lvl"><div id="lvl"></div></div>
   <div class="pnl" id="p-cs"><div class="cg" id="cht"></div></div>
 
+  <!-- RECHNER -->
+  <div class="pnl" id="p-calc">
+    <div class="calc-tabs" id="calcTabs"></div>
+    <div id="calcArea"></div>
+  </div>
+
+  <!-- TRAINING -->
+  <div class="pnl" id="p-train">
+    <div id="trainArea"></div>
+  </div>
+
   <div class="pnl" id="p-hist">
     <div class="sr" id="stR"></div>
     <h3 style="font-size:.98rem;margin-bottom:8px;font-weight:600">Letzte Zuordnungen</h3>
@@ -225,7 +281,7 @@ let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),aCat='';
 function toggleTheme(){document.body.classList.toggle('dark');const dk=document.body.classList.contains('dark');localStorage.setItem('mts_theme',dk?'dark':'light');document.getElementById('themeBtn').textContent=dk?'☀️':'🌙'}
 (function(){if(localStorage.getItem('mts_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️'}})();
 // Nav
-document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.nt').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));document.getElementById('p-'+t.dataset.t).classList.add('on');if(t.dataset.t==='body')initBM();if(t.dataset.t==='diag')rDiag();if(t.dataset.t==='lvl')rLvl();if(t.dataset.t==='cs')rCS();if(t.dataset.t==='hist')rHist()}));
+document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.nt').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));document.getElementById('p-'+t.dataset.t).classList.add('on');if(t.dataset.t==='body')initBM();if(t.dataset.t==='diag')rDiag();if(t.dataset.t==='lvl')rLvl();if(t.dataset.t==='cs')rCS();if(t.dataset.t==='calc')initCalc();if(t.dataset.t==='train')initTrain();if(t.dataset.t==='hist')rHist()}));
 // Search
 const SI_=document.getElementById('SI');
 SI_.addEventListener('input',debounce(()=>{const q=SI_.value.trim().toLowerCase(),sB=document.getElementById('sB'),sC=document.getElementById('sC'),sH=document.getElementById('sH'),sR=document.getElementById('sR');if(q.length<2){sR.innerHTML='';sB.style.display='none';sH.style.display='block';return}sH.style.display='none';const ts=q.split(/[\s,;]+/).filter(t=>t.length>=2);let sc=D.map(d=>{let s=0,m=[];if(d.name.toLowerCase().includes(q)){s+=25;m.push(q)}if(d.d.toLowerCase().includes(q)){s+=12;m.push(q)}d.kw.forEach(k=>{if(k.includes(q)||q.includes(k)){s+=20;m.push(q)}});ts.forEach(t=>{d.kw.forEach(k=>{if(k===t)s+=12;else if(k.includes(t)){s+=8;m.push(t)}});if(d.name.toLowerCase().includes(t)){s+=10;m.push(t)}if(d.d.toLowerCase().includes(t)){s+=4;m.push(t)}});if(ts.length>1&&ts.every(t=>d.kw.some(k=>k.includes(t))||d.name.toLowerCase().includes(t)||d.d.toLowerCase().includes(t)))s+=18;return{...d,score:s,mt:[...new Set(m)]}}).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);sB.style.display='flex';sC.innerHTML=`<b>${sc.length}</b> Ergebnis${sc.length!==1?'se':''}`;if(!sc.length){sR.innerHTML='<div class="empty">Keine Treffer.</div>';return}sR.innerHTML=sc.slice(0,15).map(x=>`<div class="card" onclick="shD(${x.id})"><div class="ch"><span class="ct">${hl(x.name,ts)}</span><span class="tb tb-${cl(x.c)}"><span class="td td-${cl(x.c)}"></span>${x.c}</span></div><div class="cs">${hl(x.d,ts)}</div><div class="tags">${x.kw.filter(k=>x.mt.some(m=>k.includes(m))).slice(0,5).map(k=>`<span class="tag m">${k}</span>`).join('')}${x.kw.filter(k=>!x.mt.some(m=>k.includes(m))).slice(0,3).map(k=>`<span class="tag">${k}</span>`).join('')}</div></div>`).join('')},150));
@@ -356,6 +412,212 @@ function dl(b,n){const u=URL.createObjectURL(b),a=document.createElement('a');a.
 function ds(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
 function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+// ===== CALCULATOR =====
+let calcMode='gcs';
+function initCalc(){
+  const tabs=[{k:'gcs',n:'GCS'},{k:'news',n:'NEWS2'},{k:'nrs',n:'Schmerz NRS'},{k:'burn',n:'Verbrennung %'},{k:'kid',n:'Kinder-Gewicht'}];
+  document.getElementById('calcTabs').innerHTML=tabs.map(t=>`<button class="calc-tab ${calcMode===t.k?'on':''}" onclick="calcMode='${t.k}';initCalc()">${t.n}</button>`).join('');
+  const a=document.getElementById('calcArea');
+  if(calcMode==='gcs')a.innerHTML=rGCS();
+  else if(calcMode==='news')a.innerHTML=rNEWS();
+  else if(calcMode==='nrs')a.innerHTML=rNRS();
+  else if(calcMode==='burn')a.innerHTML=rBurn();
+  else if(calcMode==='kid')a.innerHTML=rKid();
+}
+// GCS
+let gcsE=4,gcsV=5,gcsM=6;
+function rGCS(){
+  const tot=gcsE+gcsV+gcsM;
+  const cls=tot<=8?'r1':tot<=12?'r2':tot<=14?'r3':'r4';
+  const lbl=tot<=8?'Schwer (Intubation erwägen)':tot<=12?'Mittelschwer':tot<=14?'Leicht':'Normal';
+  return`<div class="calc-box"><h3>Glasgow Coma Scale (GCS)</h3>
+  <div class="calc-row"><label>Augen (E)</label><div class="calc-opts">${[[1,'Keine'],[2,'Auf Schmerz'],[3,'Auf Ansprache'],[4,'Spontan']].map(([v,l])=>`<div class="calc-opt ${gcsE===v?'on':''}" onclick="gcsE=${v};initCalc()">${v} — ${l}</div>`).join('')}</div></div>
+  <div class="calc-row"><label>Verbal (V)</label><div class="calc-opts">${[[1,'Keine'],[2,'Unverständlich'],[3,'Inadäquat'],[4,'Verwirrt'],[5,'Orientiert']].map(([v,l])=>`<div class="calc-opt ${gcsV===v?'on':''}" onclick="gcsV=${v};initCalc()">${v} — ${l}</div>`).join('')}</div></div>
+  <div class="calc-row"><label>Motorik (M)</label><div class="calc-opts">${[[1,'Keine'],[2,'Strecksynergismen'],[3,'Beugesynergismen'],[4,'Ungezielte Abwehr'],[5,'Gezielte Abwehr'],[6,'Befolgt Aufforderung']].map(([v,l])=>`<div class="calc-opt ${gcsM===v?'on':''}" onclick="gcsM=${v};initCalc()">${v} — ${l}</div>`).join('')}</div></div>
+  <div class="calc-result ${cls}">GCS = ${tot} / 15 — ${lbl}</div></div>`;
+}
+// NEWS2
+let newsRR=0,newsSpO2=0,newsO2=0,newsT=0,newsSBP=0,newsHR=0,newsCNS=0;
+function rNEWS(){
+  const tot=newsRR+newsSpO2+newsO2+newsT+newsSBP+newsHR+newsCNS;
+  const cls=tot>=7?'r1':tot>=5?'r2':tot>=1?'r3':'r4';
+  const lbl=tot>=7?'Hohes Risiko — sofortige Eskalation':tot>=5?'Mittleres Risiko — dringende Bewertung':tot>=1?'Niedriges Risiko — Monitoring':'Sehr niedriges Risiko';
+  const param=(name,opts,val,fn)=>`<div class="calc-row"><label>${name}</label><div class="calc-opts">${opts.map(([v,l])=>`<div class="calc-opt ${val===v?'on':''}" onclick="${fn}=${v};initCalc()">${l} <b>(${v})</b></div>`).join('')}</div></div>`;
+  return`<div class="calc-box"><h3>NEWS2 Score</h3>
+  ${param('Atemfrequenz',[[3,'≤8'],[1,'9–11'],[0,'12–20'],[2,'21–24'],[3,'≥25']],newsRR,'newsRR')}
+  ${param('SpO₂',[[3,'≤91%'],[2,'92–93%'],[1,'94–95%'],[0,'≥96%']],newsSpO2,'newsSpO2')}
+  ${param('O₂-Gabe',[[0,'Nein'],[2,'Ja']],newsO2,'newsO2')}
+  ${param('Temperatur',[[3,'≤35,0'],[1,'35,1–36,0'],[0,'36,1–38,0'],[1,'38,1–39,0'],[2,'≥39,1']],newsT,'newsT')}
+  ${param('Syst. RR',[[3,'≤90'],[2,'91–100'],[1,'101–110'],[0,'111–219'],[3,'≥220']],newsSBP,'newsSBP')}
+  ${param('Herzfrequenz',[[3,'≤40'],[1,'41–50'],[0,'51–90'],[1,'91–110'],[2,'111–130'],[3,'≥131']],newsHR,'newsHR')}
+  ${param('Bewusstsein',[[0,'Wach (A)'],[3,'Nicht wach (V/P/U)']],newsCNS,'newsCNS')}
+  <div class="calc-result ${cls}">NEWS2 = ${tot} — ${lbl}</div></div>`;
+}
+// NRS
+let nrsVal=5;
+function rNRS(){
+  const cls=nrsVal===0?'r4':nrsVal<=3?'r4':nrsVal<=6?'r3':nrsVal<=9?'r2':'r1';
+  const lbl=nrsVal===0?'Schmerzfrei':nrsVal<=3?'Leichter Schmerz':nrsVal<=6?'Mäßiger Schmerz':nrsVal<=9?'Starker Schmerz':'Stärkster vorstellbarer Schmerz';
+  const faces=['😊','🙂','😐','😕','😟','😣','😖','😫','😩','🥺','😱'];
+  return`<div class="calc-box"><h3>Numerische Rating-Skala (NRS)</h3>
+  <div style="text-align:center;margin:16px 0"><span style="font-size:3rem">${faces[nrsVal]}</span></div>
+  <div class="calc-row" style="justify-content:center"><span style="font-size:.8rem;color:var(--text3)">0</span><input type="range" min="0" max="10" value="${nrsVal}" class="calc-slider" oninput="nrsVal=+this.value;initCalc()"><span style="font-size:.8rem;color:var(--text3)">10</span></div>
+  <div class="calc-result ${cls}">NRS = ${nrsVal} — ${lbl}</div>
+  <div style="font-size:.78rem;color:var(--text3);margin-top:8px;text-align:center">MTS: 0–4 → Grün/Blau · 5–7 → Gelb · 8–10 → Orange</div></div>`;
+}
+// Burn (Rule of 9)
+let burnSel={};
+function rBurn(){
+  const zones=[{k:'head',n:'Kopf',v:9},{k:'chest_f',n:'Thorax vorne',v:9},{k:'chest_b',n:'Thorax hinten',v:9},{k:'abd_f',n:'Abdomen vorne',v:9},{k:'abd_b',n:'Abdomen hinten',v:9},{k:'arm_l',n:'Arm links',v:9},{k:'arm_r',n:'Arm rechts',v:9},{k:'leg_lf',n:'Bein li. vorne',v:9},{k:'leg_lb',n:'Bein li. hinten',v:9},{k:'leg_rf',n:'Bein re. vorne',v:9},{k:'leg_rb',n:'Bein re. hinten',v:9},{k:'genital',n:'Genital',v:1}];
+  const total=zones.reduce((s,z)=>s+(burnSel[z.k]?z.v:0),0);
+  const cls=total>=30?'r1':total>=15?'r2':total>=10?'r3':'r4';
+  return`<div class="calc-box"><h3>Verbrennungsfläche — Neunerregel</h3>
+  <div class="calc-grid">${zones.map(z=>`<div class="calc-cell ${burnSel[z.k]?'on':''}" onclick="burnSel['${z.k}']=!burnSel['${z.k}'];initCalc()"><b>${z.v}%</b>${z.n}</div>`).join('')}</div>
+  <div class="calc-result ${cls}" style="margin-top:12px">KOF = ${total}%${total>=15?' — Schwerbrandverletzt':''}</div>
+  <div style="font-size:.78rem;color:var(--text3);margin-top:6px;text-align:center">Kinder: Kopf größer (18%), Beine kleiner (14% je). Ab 15% KOF → Verbrennungszentrum</div></div>`;
+}
+// Kid weight
+function rKid(){
+  const ages=[{a:'Neugeboren',kg:3.5},{a:'3 Monate',kg:6},{a:'6 Monate',kg:7.5},{a:'1 Jahr',kg:10},{a:'2 Jahre',kg:12},{a:'3 Jahre',kg:14},{a:'4 Jahre',kg:16},{a:'5 Jahre',kg:18},{a:'6 Jahre',kg:20},{a:'7 Jahre',kg:22},{a:'8 Jahre',kg:25},{a:'9 Jahre',kg:28},{a:'10 Jahre',kg:32},{a:'11 Jahre',kg:35},{a:'12 Jahre',kg:40}];
+  return`<div class="calc-box"><h3>Kinder-Gewichtsschätzung nach Alter</h3>
+  <div style="font-size:.8rem;color:var(--text2);margin-bottom:10px">Näherung: (Alter×2)+8 kg (1–12 J.) · Für Medikamentendosierung / Tubusgröße</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px">${ages.map(a=>`<div style="padding:8px;background:var(--bg);border:1px solid var(--card-border);border-radius:var(--radius-xs);text-align:center"><div style="font-size:.74rem;color:var(--text3)">${a.a}</div><div style="font-size:1rem;font-weight:700;font-family:var(--mono);color:var(--accent)">${a.kg} kg</div></div>`).join('')}</div>
+  <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:var(--radius-sm);font-size:.78rem;color:var(--text2)"><b>Tubus (ohne Cuff):</b> Alter/4 + 4 mm ID · <b>Tubus (mit Cuff):</b> Alter/4 + 3,5 mm ID · <b>Tubus-Tiefe oral:</b> Alter/2 + 12 cm</div></div>`;
+}
+
+// ===== TRAINING =====
+const CASES=[
+{s:"58-jähriger Mann, akuter retrosternaler Druckschmerz seit 20 Min., Ausstrahlung linker Arm, kaltschweißig, blass.",diag:34,lvl:2,ex:"Typische ACS-Symptomatik → Thoraxschmerz. Kaltschweißig + retrosternal = Orange."},
+{s:"23-jährige Frau, Schwellung der Lippen und Zunge 10 Min. nach Restaurantbesuch. Atemnot, Urtikaria.",diag:2,lvl:2,ex:"Anaphylaktische Reaktion → Allergie. Atemwegsbeteiligung = Orange."},
+{s:"4-jähriger Junge, bellender Husten, inspiratorischer Stridor, leichtes Fieber seit dem Abend.",diag:4,lvl:3,ex:"Pseudokrupp → Atemnot Kinder. Stridor in Ruhe = Gelb bis Orange."},
+{s:"72-jährige Frau, plötzlich hängender Mundwinkel rechts, Arm rechts kann nicht gehoben werden, verwaschene Sprache.",diag:45,lvl:2,ex:"FAST-Test positiv → Schlaganfall. Akutes fokalneurologisches Defizit = Orange."},
+{s:"35-jähriger Mann, seit 3 Tagen Halsschmerzen, hohes Fieber, Schluckbeschwerden, kann Mund kaum öffnen.",diag:16,lvl:3,ex:"V.a. Peritonsillarabszess → Halsschmerzen. Kieferklemme + Fieber = Gelb."},
+{s:"80-jährige Patientin, gestürzt über Teppichkante, Schmerzen linke Hüfte, Bein verkürzt und außenrotiert.",diag:13,lvl:3,ex:"V.a. Schenkelhalsfraktur → Extremitätenprobleme. Fehlstellung = Gelb."},
+{s:"28-jährige Schwangere, 32. SSW, vaginale Blutung, Bauchschmerzen, harter Uterus.",diag:31,lvl:2,ex:"V.a. vorzeitige Plazentalösung → Schwangerschaftsprobleme. Blutung + Schmerz = Orange."},
+{s:"45-jähriger Mann, epigastrische Schmerzen, gürtelförmig in den Rücken ausstrahlend, Übelkeit, Erbrechen.",diag:6,lvl:3,ex:"V.a. Pankreatitis → Bauchschmerzen Erw. Starke Schmerzen = Gelb."},
+{s:"19-jähriger Student, akute Hodenschmerzen links seit 2 Stunden, Hoden hochstehend, Übelkeit.",diag:19,lvl:2,ex:"V.a. Hodentorsion → Hodenschmerzen. Zeitkritisch = Orange."},
+{s:"67-jährige Patientin, plötzliche Atemnot, Thoraxschmerz atemabhängig, geschwollenes linkes Bein seit 3 Tagen.",diag:34,lvl:2,ex:"V.a. Lungenembolie → Thoraxschmerz. Akute Dyspnoe + TVT-Zeichen = Orange."},
+{s:"8 Monate alter Säugling, schreit untröstlich seit 4 Stunden, zieht Beine an, Erbrechen, rote Geleestühle.",diag:7,lvl:2,ex:"V.a. Invagination → Bauchschmerzen Kinder. Gelee-Stühle + Schmerzen = Orange."},
+{s:"40-jährige Frau, Schwellung und Rötung rechter Unterschenkel, Fieber 38,5°C, rote Streifen Richtung Knie.",diag:1,lvl:3,ex:"Phlegmone mit Lymphangitis → Abszess/lokale Infektion. Fieber + Ausbreitung = Gelb."},
+{s:"55-jähriger Mann, starker Kopfschmerz 'wie noch nie', plötzlich aufgetreten, Nackensteife, Übelkeit.",diag:22,lvl:2,ex:"V.a. Subarachnoidalblutung → Kopfschmerzen. Donnerschlagkopfschmerz = Orange."},
+{s:"32-jährige Frau, Panikattacke, Herzrasen, Kribbeln in Händen und um den Mund, Hyperventilation.",diag:28,lvl:3,ex:"Psychiatrische Vorstellung. Panikattacke = Gelb."},
+{s:"3-jähriges Kind, Fieber 40,2°C, Petechien am Rumpf, reduzierter AZ, will nicht trinken.",diag:44,lvl:2,ex:"Fieber + Petechien → Fieber Kinder. V.a. Meningokokken = sofort Orange!"},
+{s:"60-jähriger Diabetiker, verwirrt, kaltschweißig, zittrig, BZ 32 mg/dl.",diag:11,lvl:2,ex:"Schwere Hypoglykämie → Diabetes. Bewusstseinsstörung = Orange."},
+{s:"25-jähriger Mann, Schnittwunde am Unterarm durch Glasscherbe, ca. 5 cm, mäßig blutend, Sensibilität der Finger erhalten.",diag:41,lvl:4,ex:"Einfache Schnittwunde → Wunden. Keine Nervenverletzung = Grün."},
+{s:"78-jährige Patientin, AZ-Verschlechterung seit 2 Tagen, kann kaum trinken, desorientiert, Fieber 38,8°C.",diag:36,lvl:3,ex:"Unwohlsein Erw. + Fieber. AZ↓ + Desorientiertheit = Gelb."},
+{s:"15-jähriges Mädchen, bewusstlos nach Partynacht, Erbrechen, Alkoholgeruch, GCS 10.",diag:35,lvl:2,ex:"Alkoholintoxikation → Überdosierung. GCS ≤ 12 = Orange."},
+{s:"42-jähriger Mann, akut aufgetretenes Vorhofflimmern, Herzfrequenz 160/min, leichte Dyspnoe, RR stabil.",diag:18,lvl:2,ex:"Tachyarrhythmia absoluta → Herzklopfen. HF > 150 + Dyspnoe = Orange."},
+{s:"Kleinkind 2 Jahre, hat Knopfzellbatterie verschluckt. Symptomfrei.",diag:14,lvl:2,ex:"Fremdkörper — Knopfzelle = Orange, immer zeitkritisch wegen Verätzungsgefahr."},
+{s:"50-jährige Frau, seit 2 Stunden stärkste Flankenschmerzen rechts, Hämaturie, kann nicht stillsitzen.",diag:38,lvl:3,ex:"Nierenkolik → Urologische Probleme. Starke Schmerzen = Gelb."},
+{s:"30-jähriger Mann, Motorradunfall, Prellmarke Thorax, Atemnot, abgeschwächtes Atemgeräusch links.",diag:51,lvl:2,ex:"V.a. Pneumothorax → Thoraxverletzung. Atemnot nach Trauma = Orange."},
+{s:"6-jähriges Kind, zum ersten Mal Krampfanfall, jetzt postiktal und schläfrig, Fieber 39,5°C.",diag:24,lvl:2,ex:"Fieberkrampf / Erstanfall → Krampfanfall. Erstanfall = Orange."},
+{s:"65-jähriger Mann, rektale Blutung, Schwindel, Blutdruck 90/60, HF 110.",diag:12,lvl:2,ex:"GI-Blutung → Durchfall/Erbrechen. Schock-Zeichen = Orange."},
+{s:"22-jährige Frau, starke Unterbauchschmerzen, letzte Periode vor 7 Wochen, vaginale Schmierblutung.",diag:31,lvl:2,ex:"V.a. Extrauteringravidität → Schwangerschaftsprobleme. Akuter Bauch + Blutung = Orange."},
+{s:"70-jähriger Patient, plötzlicher Sehverlust rechtes Auge, schmerzlos, seit 30 Minuten.",diag:5,lvl:2,ex:"V.a. Zentralarterienverschluss → Augenprobleme. Akuter Sehverlust = Orange."},
+{s:"38-jährige Frau, generalisierter juckender Hautausschlag seit 2 Tagen, kein Fieber, stabiler AZ.",diag:17,lvl:4,ex:"Hautausschlag ohne Allgemeinsymptome → Grün."},
+{s:"Kind 4 Jahre, Ohrenschmerzen rechts seit gestern, Fieber 38,5°C, weint viel.",diag:27,lvl:4,ex:"V.a. Otitis media → Ohrenprobleme. Fieber + Schmerzen ohne Komplikation = Grün."},
+{s:"80-jähriger Mann, gestürzt auf Kopf, nimmt Marcumar, GCS 14, Amnesie für das Ereignis.",diag:23,lvl:2,ex:"SHT + Antikoagulation → Kopfverletzung. Marcumar + Amnesie = Orange."},
+{s:"27-jährige Frau, Verbrühung Oberkörper durch kochendes Wasser, ca. 20% KOF, Blasenbildung.",diag:39,lvl:2,ex:"Großflächige Verbrennung → Verbrennung. > 15% KOF = Orange."},
+{s:"45-jähriger Mann, akuter Lumbago, kann sich nicht mehr aufrichten, kein Taubheitsgefühl, kein Harnverhalt.",diag:30,lvl:4,ex:"Hexenschuss → Rückenschmerzen. Keine Red Flags = Grün."},
+{s:"Gleicher Patient, aber jetzt mit Reithosenanästhesie und Blasenentleerungsstörung.",diag:30,lvl:2,ex:"Cauda-equina-Syndrom → Rückenschmerzen. Blasenstörung = sofort Orange!"},
+{s:"50-jähriger Mann, Rötung und Schwellung rechte Wange, Fieber, klopfempfindlicher Backenzahn.",diag:42,lvl:3,ex:"Dentogener Abszess → Zahnschmerzen. Fieber + Schwellung = Gelb."},
+{s:"20-jährige Studentin, seit heute Morgen Kopfschmerzen, Nackensteife, Lichtscheu, Fieber 39,8°C.",diag:22,lvl:2,ex:"V.a. Meningitis → Kopfschmerzen. Meningismus + Fieber = Orange."},
+{s:"88-jährige Pflegeheimbewohnerin, zunehmend verwirrt, Fieber, übelriechender Urin.",diag:38,lvl:3,ex:"V.a. Harnwegsinfekt + Delir → Urologische Probleme. AZ↓ + Verwirrtheit = Gelb."},
+{s:"5-jähriges Kind, Stromunfall an Steckdose, kurzer Schmerzschrei, jetzt symptomfrei.",diag:48,lvl:3,ex:"Stromunfall → Elektrische Verletzung. Niederspannung Kind = Gelb (EKG-Monitoring)."},
+{s:"30-jährige Frau, Schwellung Unterkiefer rechts seit 3 Tagen, zunehmend, Mundöffnung eingeschränkt.",diag:15,lvl:3,ex:"Submandibulär-Schwellung → Gesichtsprobleme. Kieferklemme = Gelb."},
+{s:"60-jähriger Mann, seit 1 Woche zunehmende Belastungsdyspnoe, Orthopnoe, periphere Ödeme.",diag:3,lvl:3,ex:"Herzinsuffizienz-Dekompensation → Atemnot Erw. Zunehmende Dyspnoe = Gelb."},
+{s:"33-jährige Frau, Wespenstich vor 5 Minuten, bekannte Wespenallergie, aktuell nur lokale Schwellung.",diag:2,lvl:3,ex:"Allergie mit bekannter Sensibilisierung → Allergie. Aktuell nur lokal = Gelb, aber Überwachung."},
+{s:"47-jähriger Mann, plötzlicher heftigster Rückenschmerz, reißender Charakter, RR-Differenz > 20 mmHg an beiden Armen.",diag:34,lvl:1,ex:"V.a. Aortendissektion → Thoraxschmerz. Reißender Schmerz + RR-Differenz = Rot!"},
+{s:"18-jährige Patientin, Ritzen beider Unterarme, oberflächlich, psychisch belastet, keine Suizidalität.",diag:28,lvl:3,ex:"Selbstverletzung → Psychiatrische Vorstellung. Gelb — psychiatrische Evaluation."},
+{s:"75-jähriger Mann, akute Verwirrtheit, Fieber 39°C, Tachykardie 120/min, RR 85/50.",diag:43,lvl:2,ex:"V.a. Sepsis → Fieber Erw. Fieber + Schock-Zeichen = Orange."},
+{s:"2-jähriges Kind, trinkt seit 24h kaum, schlaff, trockene Windeln, eingesunkene Fontanelle.",diag:37,lvl:2,ex:"Dehydration → Unwohlsein Kinder. Eingesunkene Fontanelle = Orange."},
+{s:"40-jähriger Mann, stumpfes Bauchtrauma durch Fahrradlenker, zunehmende Bauchschmerzen, Prellmarke linker Oberbauch.",diag:52,lvl:2,ex:"V.a. Milzruptur → Bauchverletzung. Zunehmende Schmerzen = Orange."},
+{s:"62-jährige Frau, akute Schwellung rechtes Bein, Rötung, Überwärmung, Wadendruckschmerz.",diag:13,lvl:3,ex:"V.a. tiefe Beinvenenthrombose → Extremitätenprobleme. TVT = Gelb."},
+{s:"29-jähriger Mann, tonisch-klonischer Anfall seit > 5 Minuten, kein Sistieren.",diag:24,lvl:1,ex:"Status epilepticus → Krampfanfall. > 5 Min = Rot!"},
+{s:"Mutter mit 6 Monate altem Säugling: 'Er ist anders als sonst, liegt nur da, trinkt schlecht.'",diag:8,lvl:3,ex:"Besorgte Eltern. Trinkschwäche + Lethargie = mindestens Gelb."},
+{s:"55-jährige Frau, Nasenbluten seit 40 Minuten, nimmt Marcumar, Kompression bringt nichts.",diag:25,lvl:3,ex:"Nasenbluten unter Antikoagulation → Nasenbluten. Unstillbar + Marcumar = Gelb."},
+{s:"12-jähriges Kind, Asthmaanfall, kann nicht mehr sprechen, SpO₂ 88%, sichtbare Einziehungen.",diag:4,lvl:1,ex:"Schwerer Asthmaanfall → Atemnot Kinder. Sprechunfähig + SpO₂ < 92% = Rot!"}
+];
+let trnIdx=0,trnAns=null,trnScore=0,trnDone=0,trnOrder=[];
+function initTrain(){
+  if(!trnOrder.length||trnDone>=trnOrder.length){trnOrder=shuffle([...Array(CASES.length).keys()]);trnIdx=0;trnAns=null;trnScore=0;trnDone=0;}
+  rTrn();
+}
+function rTrn(){
+  const ci=trnOrder[trnIdx];const c=CASES[ci];
+  const diag=D.find(x=>x.id===c.diag);
+  // Generate 4 options (correct + 3 random)
+  const opts=genOpts(c.diag);
+  const pct=trnDone>0?Math.round(trnScore/trnDone*100):0;
+  document.getElementById('trainArea').innerHTML=`
+    <div class="trn-header">
+      <h3>🎓 Fall ${trnDone+1} / ${CASES.length}</h3>
+      <div class="trn-stats">
+        <div class="trn-stat">✅ <b>${trnScore}</b>/${trnDone}</div>
+        <div class="trn-stat">${pct}%</div>
+      </div>
+    </div>
+    <div class="trn-progress"><div class="trn-progress-bar" style="width:${(trnDone/CASES.length)*100}%"></div></div>
+    <div class="trn-case">
+      <div class="trn-scenario">${c.s}</div>
+      <div class="trn-q">Welches Präsentationsdiagramm wählst du?</div>
+      <div class="trn-opts" id="tOpts">${opts.map((o,i)=>{
+        const dd=D.find(x=>x.id===o);
+        let cls='trn-opt';
+        if(trnAns!==null){
+          if(o===c.diag)cls+=' correct';
+          else if(i===trnAns&&o!==c.diag)cls+=' wrong';
+          else cls+=' dimmed';
+        }
+        return`<div class="${cls}" ${trnAns===null?`onclick="trnAnswer(${i},${o},${c.diag})"`:''}>
+          <span class="tb tb-${cl(dd.c)}"><span class="td td-${cl(dd.c)}"></span></span>
+          ${dd.name}
+        </div>`;
+      }).join('')}</div>
+      ${trnAns!==null?`
+        <div class="trn-q" style="margin-top:10px">Welche Dringlichkeitsstufe?</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px" id="tLvl">${[1,2,3,4,5].map(l=>{
+          let cls='calc-opt';
+          if(trnAns==='lvl'){
+            if(l===c.lvl)cls+=' on';
+          }
+          return`<div class="${cls}" ${trnAns==='lvl'?'':`onclick="trnLvl(${l},${c.lvl})"`} style="display:flex;align-items:center;gap:4px"><span class="td td-${l}"></span>${LV[l-1].n}</div>`;
+        }).join('')}</div>
+        ${trnAns==='lvl'?`<div class="trn-explain"><b>✓ Richtig:</b> ${diag.name} — Stufe ${c.lvl} (${LV[c.lvl-1].n})<br>${c.ex}</div>
+        <button class="trn-next" onclick="nextTrn()">Nächster Fall →</button>`:''}
+      `:''}
+    </div>
+    ${trnDone>=CASES.length?`<div style="text-align:center;margin-top:16px"><button class="rbtn" onclick="trnOrder=[];initTrain()" style="background:var(--accent-bg);color:var(--accent)">🔄 Neue Runde starten</button></div>`:''}
+  `;
+}
+function trnAnswer(idx,chosen,correct){
+  trnAns='diag';
+  if(chosen===correct)trnScore++;
+  trnAns='diag';
+  // Re-render with answer revealed, now ask for level
+  const ci=trnOrder[trnIdx];const c=CASES[ci];const diag=D.find(x=>x.id===c.diag);
+  const opts=genOpts(c.diag);
+  // Update opts display
+  document.querySelectorAll('#tOpts .trn-opt').forEach((el,i)=>{
+    el.style.pointerEvents='none';
+    if(opts[i]===c.diag)el.classList.add('correct');
+    else if(i===idx&&opts[i]!==c.diag)el.classList.add('wrong');
+    else el.classList.add('dimmed');
+  });
+  // Show level question
+  trnAns='diag';rTrn();
+}
+function trnLvl(chosen,correct){trnAns='lvl';rTrn()}
+function nextTrn(){trnDone++;trnIdx=(trnIdx+1)%trnOrder.length;trnAns=null;rTrn()}
+let _lastOpts={};
+function genOpts(correctId){
+  if(_lastOpts.id===correctId)return _lastOpts.opts;
+  const wrong=D.filter(x=>x.id!==correctId).sort(()=>Math.random()-.5).slice(0,3).map(x=>x.id);
+  const all=[correctId,...wrong].sort(()=>Math.random()-.5);
+  _lastOpts={id:correctId,opts:all};return all;
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
 rLvl();rCS();SI_.focus();
 </script>
 </body>
