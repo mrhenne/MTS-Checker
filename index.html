@@ -7,886 +7,316 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-/* ===== LIGHT MODE (Default) ===== */
 :root{
-  --bg:#f4f6f9;--bg2:#ffffff;--bg3:#edf0f5;--bg4:#d5dae3;
-  --text:#1a2236;--text2:#4a5568;--text3:#7b8599;
-  --red:#dc2626;--red-bg:rgba(220,38,38,.08);--red-border:rgba(220,38,38,.25);
-  --orange:#ea580c;--orange-bg:rgba(234,88,12,.08);--orange-border:rgba(234,88,12,.25);
-  --yellow:#ca8a04;--yellow-bg:rgba(202,138,4,.08);--yellow-border:rgba(202,138,4,.25);
-  --green:#16a34a;--green-bg:rgba(22,163,74,.08);--green-border:rgba(22,163,74,.25);
-  --blue:#2563eb;--blue-bg:rgba(37,99,235,.08);--blue-border:rgba(37,99,235,.25);
-  --accent:#4f46e5;--accent-bg:rgba(79,70,229,.07);--accent-light:#6366f1;
-  --radius:12px;--radius-sm:8px;--radius-xs:6px;
-  --shadow:0 2px 12px rgba(0,0,0,.06);
+  --bg:#f3f5f9;--bg2:#ffffff;--bg3:#eaeff5;--bg4:#d2d9e5;
+  --text:#141c2e;--text2:#485168;--text3:#7a8498;
+  --red:#dc2626;--red-bg:rgba(220,38,38,.07);--red-border:rgba(220,38,38,.22);
+  --orange:#ea580c;--orange-bg:rgba(234,88,12,.07);--orange-border:rgba(234,88,12,.22);
+  --yellow:#b45309;--yellow-bg:rgba(180,83,9,.07);--yellow-border:rgba(180,83,9,.22);
+  --green:#16a34a;--green-bg:rgba(22,163,74,.07);--green-border:rgba(22,163,74,.22);
+  --blue:#2563eb;--blue-bg:rgba(37,99,235,.07);--blue-border:rgba(37,99,235,.22);
+  --accent:#4338ca;--accent-bg:rgba(67,56,202,.06);--accent-light:#6366f1;
+  --card-border:rgba(0,0,0,.07);
+  --radius:14px;--radius-sm:10px;--radius-xs:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.08);
   --font:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
-  --mark-bg:rgba(79,70,229,.12);--mark-color:var(--accent);
-  --card-hover-border:var(--accent);
+  --mark-bg:rgba(67,56,202,.1);--mark-color:var(--accent);
+  --body-fill:#e0e7f1;--body-stroke:#b0bed4;--body-hover:#cdd7e8;--body-active:rgba(67,56,202,.22);--body-active-stroke:var(--accent);
 }
-
-/* ===== DARK MODE ===== */
 .dark{
-  --bg:#0a0e17;--bg2:#111827;--bg3:#1a2235;--bg4:#2d3a52;
+  --bg:#0b0f1a;--bg2:#141b2d;--bg3:#1c2640;--bg4:#2c3a56;
   --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --red:#ef4444;--red-bg:rgba(239,68,68,.12);--red-border:rgba(239,68,68,.3);
-  --orange:#f97316;--orange-bg:rgba(249,115,22,.12);--orange-border:rgba(249,115,22,.3);
-  --yellow:#eab308;--yellow-bg:rgba(234,179,8,.12);--yellow-border:rgba(234,179,8,.3);
-  --green:#22c55e;--green-bg:rgba(34,197,94,.12);--green-border:rgba(34,197,94,.3);
-  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.12);--blue-border:rgba(59,130,246,.3);
-  --accent:#818cf8;--accent-bg:rgba(129,140,248,.1);--accent-light:#a5b4fc;
-  --shadow:0 4px 24px rgba(0,0,0,.3);
-  --mark-bg:rgba(129,140,248,.2);--mark-color:var(--accent);
-  --card-hover-border:var(--accent);
+  --red:#ef4444;--red-bg:rgba(239,68,68,.1);--red-border:rgba(239,68,68,.28);
+  --orange:#f97316;--orange-bg:rgba(249,115,22,.1);--orange-border:rgba(249,115,22,.28);
+  --yellow:#eab308;--yellow-bg:rgba(234,179,8,.1);--yellow-border:rgba(234,179,8,.28);
+  --green:#22c55e;--green-bg:rgba(34,197,94,.1);--green-border:rgba(34,197,94,.28);
+  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.1);--blue-border:rgba(59,130,246,.28);
+  --accent:#818cf8;--accent-bg:rgba(129,140,248,.08);--accent-light:#a5b4fc;
+  --card-border:rgba(255,255,255,.06);
+  --shadow:0 4px 24px rgba(0,0,0,.25);--shadow-lg:0 12px 48px rgba(0,0,0,.35);
+  --mark-bg:rgba(129,140,248,.18);--mark-color:var(--accent-light);
+  --body-fill:#1c2640;--body-stroke:#3b4f72;--body-hover:#253350;--body-active:rgba(129,140,248,.22);--body-active-stroke:var(--accent);
 }
-
 html{font-size:16.5px;scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
-
-.app{max-width:1200px;margin:0 auto;padding:16px}
-
-/* Header */
-header{text-align:center;padding:32px 16px 24px;position:relative}
-header h1{font-size:1.9rem;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+.app{max-width:1200px;margin:0 auto;padding:16px 20px}
+header{text-align:center;padding:28px 16px 18px;position:relative}
+header h1{font-size:1.85rem;font-weight:700;letter-spacing:-.025em}
 header h1 span{background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-header p{color:var(--text2);font-size:.92rem}
-
-.header-actions{position:absolute;top:16px;right:16px;display:flex;gap:8px}
-.theme-toggle{width:40px;height:40px;border-radius:var(--radius-sm);border:1px solid var(--bg4);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.15rem;transition:all .2s}
-.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
-
-.disclaimer{background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--radius-sm);padding:10px 14px;margin:16px auto 0;max-width:720px;font-size:.8rem;color:var(--orange);text-align:left;line-height:1.5}
-.disclaimer strong{font-weight:600}
-
-/* Nav */
-.nav-tabs{display:flex;gap:6px;padding:8px;background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);margin:20px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+header p{color:var(--text2);font-size:.88rem;margin-top:2px}
+.header-right{position:absolute;top:16px;right:8px}
+.hdr-btn{width:38px;height:38px;border-radius:var(--radius-xs);border:1px solid var(--bg4);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .2s}
+.hdr-btn:hover{border-color:var(--accent);color:var(--accent)}
+.disc{background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--radius-sm);padding:9px 14px;margin:12px auto 0;max-width:740px;font-size:.76rem;color:var(--orange);text-align:left;line-height:1.5}
+.disc b{font-weight:600}
+.nav-tabs{display:flex;gap:4px;padding:6px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);margin:16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;box-shadow:var(--shadow)}
 .nav-tabs::-webkit-scrollbar{display:none}
-.nav-tab{flex-shrink:0;padding:10px 18px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:.88rem;font-weight:500;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;white-space:nowrap}
+.nav-tab{flex-shrink:0;padding:9px 15px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:.84rem;font-weight:500;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;white-space:nowrap}
 .nav-tab:hover{color:var(--text);background:var(--bg3)}
-.nav-tab.active{color:#fff;background:var(--accent);box-shadow:0 2px 12px rgba(79,70,229,.25)}
-.dark .nav-tab.active{box-shadow:0 2px 12px rgba(129,140,248,.3)}
-
-/* Panels */
-.panel{display:none;animation:fadeIn .3s ease}
-.panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* Search */
-.search-box{position:relative;margin-bottom:20px}
-.search-box input{width:100%;padding:15px 16px 15px 48px;background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:1.05rem;outline:none;transition:border-color .2s}
-.search-box input:focus{border-color:var(--accent)}
-.search-box input::placeholder{color:var(--text3)}
-.search-box svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text3);width:20px;height:20px}
-.search-hint{font-size:.82rem;color:var(--text3);margin-top:6px;padding-left:4px}
-
-/* Cards */
-.card{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;transition:all .2s;cursor:pointer}
-.card:hover{border-color:var(--card-hover-border);box-shadow:var(--shadow);transform:translateY(-1px)}
-.card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.card-title{font-weight:600;font-size:1.02rem}
-.card-subtitle{font-size:.88rem;color:var(--text2);line-height:1.5}
-
-/* Tags */
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.tag{font-size:.76rem;padding:4px 10px;border-radius:20px;font-weight:500;background:var(--bg3);color:var(--text2);border:1px solid transparent;transition:all .15s}
-.tag.matched{background:var(--accent-bg);color:var(--accent);border-color:rgba(79,70,229,.2)}
-.dark .tag.matched{border-color:rgba(129,140,248,.25)}
-
-/* Triage badges */
-.triage-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:.78rem;font-weight:600;white-space:nowrap}
-.triage-1{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
-.triage-2{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
-.triage-3{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
-.triage-4{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.triage-5{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
-.triage-dot{width:8px;height:8px;border-radius:50%}
-.dot-1{background:var(--red)}.dot-2{background:var(--orange)}.dot-3{background:var(--yellow)}.dot-4{background:var(--green)}.dot-5{background:var(--blue)}
-
-/* Results bar */
-.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
-.results-count{font-size:.88rem;color:var(--text2)}
-.results-count strong{color:var(--text);font-weight:600}
-
-/* Category Filter */
-.filter-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.filter-btn{padding:6px 14px;border:1px solid var(--bg4);background:var(--bg2);color:var(--text2);font-family:var(--font);font-size:.8rem;font-weight:500;border-radius:20px;cursor:pointer;transition:all .2s}
-.filter-btn:hover{border-color:var(--text3)}
-.filter-btn.active{background:var(--accent-bg);color:var(--accent);border-color:rgba(79,70,229,.25)}
-
-/* Triage Levels */
-.level-card{border-radius:var(--radius);padding:18px;margin-bottom:12px}
-.level-card h3{font-size:1.12rem;font-weight:700;margin-bottom:4px}
-.level-card .time{font-size:.88rem;opacity:.85;margin-bottom:8px}
-.level-card .desc{font-size:.88rem;opacity:.9;line-height:1.6}
+.nav-tab.active{color:#fff;background:var(--accent);box-shadow:0 2px 10px rgba(67,56,202,.2)}
+.dark .nav-tab.active{box-shadow:0 2px 10px rgba(129,140,248,.2)}
+.panel{display:none;animation:fu .3s ease}.panel.active{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sb{position:relative;margin-bottom:16px}
+.sb input{width:100%;padding:13px 16px 13px 44px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:1rem;outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:var(--shadow)}
+.sb input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+.sb input::placeholder{color:var(--text3)}
+.sb svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text3);width:18px;height:18px;pointer-events:none}
+.hint{font-size:.78rem;color:var(--text3);margin-top:4px;padding-left:4px}
+.card{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px 16px;margin-bottom:9px;transition:all .2s;cursor:pointer;box-shadow:var(--shadow)}
+.card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.ct{font-weight:600;font-size:.98rem}.cs{font-size:.84rem;color:var(--text2);line-height:1.5}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.tag{font-size:.72rem;padding:3px 8px;border-radius:16px;font-weight:500;background:var(--bg3);color:var(--text3)}
+.tag.m{background:var(--accent-bg);color:var(--accent)}
+.tb{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:16px;font-size:.74rem;font-weight:600;white-space:nowrap}
+.tb-1{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.tb-2{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.tb-3{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.tb-4{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.tb-5{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.td{width:7px;height:7px;border-radius:50%}.td-1{background:var(--red)}.td-2{background:var(--orange)}.td-3{background:var(--yellow)}.td-4{background:var(--green)}.td-5{background:var(--blue)}
+.rbar{display:flex;align-items:center;margin-bottom:10px;font-size:.84rem;color:var(--text2)}.rbar b{color:var(--text);margin-right:4px}
+.frow{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.fb{padding:5px 12px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-family:var(--font);font-size:.76rem;font-weight:500;border-radius:16px;cursor:pointer;transition:all .15s}
+.fb:hover{border-color:var(--text3)}.fb.a{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.2)}
+.lc{border-radius:var(--radius);padding:15px 16px;margin-bottom:9px}
+.lc h3{font-size:1.05rem;font-weight:700;margin-bottom:2px}
+.lc .tm{font-size:.84rem;opacity:.85;margin-bottom:5px}.lc .ds{font-size:.84rem;opacity:.9;line-height:1.6}
 .lc-1{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
 .lc-2{background:var(--orange-bg);border:1px solid var(--orange-border);color:var(--orange)}
 .lc-3{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
 .lc-4{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
 .lc-5{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue)}
 
-/* Guided Triage */
-.guided-step{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);padding:20px;margin-bottom:16px}
-.guided-step h3{font-size:1.02rem;font-weight:600;margin-bottom:12px}
-.option-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
-.option-btn{padding:13px 15px;background:var(--bg3);border:1px solid var(--bg4);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.9rem;text-align:left;cursor:pointer;transition:all .2s;line-height:1.4}
-.option-btn:hover{border-color:var(--accent);background:var(--accent-bg)}
-.option-btn.selected{border-color:var(--accent);background:var(--accent-bg);box-shadow:0 0 0 2px rgba(79,70,229,.15)}
+/* BODYMAP */
+.bm-wrap{display:flex;gap:28px;align-items:flex-start}
+.bm-left{flex:0 0 260px;position:sticky;top:20px}
+.bm-left svg{width:100%;height:auto;display:block}
+.bm-left svg .bz{fill:var(--body-fill);stroke:var(--body-stroke);stroke-width:1.5;cursor:pointer;transition:fill .15s,stroke .15s;stroke-linejoin:round}
+.bm-left svg .bz:hover{fill:var(--body-hover)}
+.bm-left svg .bz.on{fill:var(--body-active);stroke:var(--body-active-stroke);stroke-width:2.5}
+.bm-left svg .bl{fill:var(--text3);font-family:var(--font);font-weight:600;pointer-events:none;user-select:none}
+.bm-right{flex:1;min-width:0}
+.bm-right h3{font-size:1.05rem;font-weight:600;margin-bottom:3px}
+.bm-right .sub{font-size:.82rem;color:var(--text2);margin-bottom:12px}
+.bm-item{padding:12px 14px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;box-shadow:var(--shadow);margin-bottom:8px}
+.bm-item:hover{border-color:var(--accent);transform:translateX(3px);box-shadow:var(--shadow-lg)}
+.bm-item strong{font-size:.9rem;display:block;margin-bottom:1px}
+.bm-item span{font-size:.78rem;color:var(--text2)}
+.bm-hint{text-align:center;color:var(--text3);font-size:.88rem;padding:32px 16px}
 
-/* Breadcrumb */
-.breadcrumb{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:16px;font-size:.85rem;color:var(--text3)}
-.breadcrumb span{color:var(--accent);cursor:pointer}
-.breadcrumb span:hover{text-decoration:underline}
+/* NOTES */
+.nw{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.nf{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.nf h3{font-size:1rem;font-weight:600;margin-bottom:12px}
+.nr{margin-bottom:11px}
+.nr label{display:block;font-size:.8rem;font-weight:500;color:var(--text2);margin-bottom:3px}
+.nr input,.nr select,.nr textarea{width:100%;padding:9px 11px;background:var(--bg);border:1px solid var(--bg4);border-radius:var(--radius-xs);color:var(--text);font-family:var(--font);font-size:.88rem;outline:none;transition:border-color .2s}
+.nr input:focus,.nr select:focus,.nr textarea:focus{border-color:var(--accent)}
+.nr textarea{resize:vertical;min-height:68px}
+.np{display:flex;gap:6px;margin-top:4px}
+.nc{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .15s}
+.nc:hover{transform:scale(1.15)}.nc.on{border-color:var(--text);box-shadow:0 0 0 2px var(--bg)}
+.nsub{padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);font-family:var(--font);font-size:.86rem;font-weight:600;cursor:pointer;transition:opacity .2s}.nsub:hover{opacity:.9}
+.nl{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);max-height:640px;overflow-y:auto}
+.nl h3{font-size:1rem;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.nbadge{font-size:.73rem;background:var(--accent-bg);color:var(--accent);padding:2px 8px;border-radius:10px}
+.nc2{padding:11px;border-radius:var(--radius-sm);margin-bottom:7px;border-left:4px solid var(--accent);background:var(--bg);position:relative}
+.nc2 .h{display:flex;justify-content:space-between;margin-bottom:3px}
+.nc2 .nm{font-weight:600;font-size:.88rem}
+.nc2 .ti{font-size:.7rem;color:var(--text3)}
+.nc2 .dg{font-size:.76rem;color:var(--accent);margin-bottom:3px;font-weight:500}
+.nc2 .tx{font-size:.82rem;color:var(--text2);line-height:1.5}
+.nc2 .pr{position:absolute;top:7px;right:7px}
+.nc2 .dl{position:absolute;bottom:6px;right:6px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:.75rem;border-radius:4px}
+.nc2 .dl:hover{background:var(--red-bg);color:var(--red)}
+.nb1{border-left-color:var(--red)}.nb2{border-left-color:var(--orange)}.nb3{border-left-color:var(--yellow)}.nb4{border-left-color:var(--green)}.nb5{border-left-color:var(--blue)}
 
-/* Result Display */
-.result-display{background:var(--bg2);border-radius:var(--radius);padding:28px;text-align:center;border:1px solid var(--bg4)}
-.result-display .big-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:var(--radius);font-size:1.2rem;font-weight:700;margin-bottom:12px}
-.result-display .diagram-name{font-size:1.02rem;color:var(--text);margin-bottom:6px;font-weight:600}
-.result-display .diagram-desc{font-size:.9rem;color:var(--text2);max-width:540px;margin:0 auto 16px;line-height:1.6}
-.restart-btn{padding:10px 24px;background:var(--bg3);border:1px solid var(--bg4);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.88rem;cursor:pointer;transition:all .2s}
-.restart-btn:hover{border-color:var(--accent);background:var(--accent-bg)}
-
-/* History */
-.history-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-sm);margin-bottom:8px}
-.history-item .info{flex:1}
-.history-item .info .symptom{font-weight:500;font-size:.92rem}
-.history-item .info .meta{font-size:.78rem;color:var(--text3);margin-top:2px}
-.history-item .actions{display:flex;gap:6px}
-.icon-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--bg4);background:var(--bg3);border-radius:var(--radius-xs);color:var(--text3);cursor:pointer;transition:all .2s;font-size:.9rem}
-.icon-btn:hover{border-color:var(--red);color:var(--red)}
-
-/* Export */
-.export-section{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-.export-btn{padding:10px 20px;background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.88rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
-.export-btn:hover{border-color:var(--accent);background:var(--accent-bg)}
-.export-btn svg{width:16px;height:16px}
-
-/* Cheatsheet */
-.cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.cheat-card{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);padding:16px}
-.cheat-card h4{font-size:.92rem;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.cheat-card ul{list-style:none;padding:0}
-.cheat-card li{font-size:.84rem;color:var(--text2);padding:4px 0;padding-left:18px;position:relative;line-height:1.5}
-.cheat-card li::before{content:'›';position:absolute;left:4px;color:var(--text3);font-weight:700}
-
-/* Stats */
-.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:20px}
-.stat-box{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-sm);padding:16px;text-align:center}
-.stat-box .num{font-size:1.7rem;font-weight:700;font-family:var(--mono);color:var(--accent)}
-.stat-box .label{font-size:.78rem;color:var(--text3);margin-top:2px}
-
-/* Detail Overlay */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:11px}
+.cc{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.cc h4{font-size:.88rem;font-weight:600;margin-bottom:7px}
+.cc ul{list-style:none}.cc li{font-size:.8rem;color:var(--text2);padding:3px 0 3px 15px;position:relative;line-height:1.45}
+.cc li::before{content:'›';position:absolute;left:3px;color:var(--text3);font-weight:700}
+.sr{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px;margin-bottom:16px}
+.sx{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:13px;text-align:center;box-shadow:var(--shadow)}
+.sx .n{font-size:1.5rem;font-weight:700;font-family:var(--mono);color:var(--accent)}
+.sx .l{font-size:.74rem;color:var(--text3);margin-top:2px}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);margin-bottom:6px;box-shadow:var(--shadow)}
+.hi .inf{flex:1}.hi .sym{font-weight:500;font-size:.88rem}.hi .met{font-size:.74rem;color:var(--text3);margin-top:1px}
+.hi .act{display:flex;gap:4px}
+.ib{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--card-border);background:var(--bg2);border-radius:var(--radius-xs);color:var(--text3);cursor:pointer;transition:all .15s;font-size:.82rem}.ib:hover{border-color:var(--red);color:var(--red)}
+.es{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.eb{padding:8px 16px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.83rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow)}
+.eb:hover{border-color:var(--accent);background:var(--accent-bg)}
+.eb svg{width:14px;height:14px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
 .overlay.open{display:flex}
-.overlay-content{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);max-width:620px;width:100%;max-height:85vh;overflow-y:auto;padding:28px;position:relative;animation:slideUp .3s ease;box-shadow:0 12px 48px rgba(0,0,0,.15)}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.overlay-close{position:absolute;top:14px;right:14px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--bg4);background:var(--bg3);border-radius:var(--radius-xs);color:var(--text3);cursor:pointer;font-size:1.1rem;transition:all .2s}
-.overlay-close:hover{color:var(--text);border-color:var(--text3)}
-
-/* Empty state */
-.empty-state{text-align:center;padding:48px 20px;color:var(--text3)}
-.empty-state p{font-size:.92rem}
-
-/* Responsive */
-@media(max-width:640px){
-  html{font-size:15px}
-  .app{padding:10px}
-  header{padding:20px 10px 16px}
-  header h1{font-size:1.5rem}
-  .header-actions{top:10px;right:10px}
-  .option-grid{grid-template-columns:1fr}
-  .cheat-grid{grid-template-columns:1fr}
-  .stat-row{grid-template-columns:repeat(2,1fr)}
-  .nav-tab{padding:8px 14px;font-size:.82rem}
-}
-
+.oc{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);max-width:600px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative;animation:su .25s ease;box-shadow:var(--shadow-lg)}
+@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.ox{position:absolute;top:10px;right:10px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--card-border);background:var(--bg3);border-radius:var(--radius-xs);color:var(--text3);cursor:pointer;font-size:.95rem}.ox:hover{color:var(--text)}
+.rbtn{padding:9px 20px;background:var(--bg3);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.84rem;cursor:pointer;transition:all .15s}
+.rbtn:hover{border-color:var(--accent);background:var(--accent-bg)}
+.empty{text-align:center;padding:36px 16px;color:var(--text3);font-size:.88rem}
+@media(max-width:768px){.bm-wrap{flex-direction:column;align-items:center}.bm-left{flex:none;width:200px;position:static}.nw{grid-template-columns:1fr}}
+@media(max-width:640px){html{font-size:15px}.app{padding:10px}header{padding:16px 8px 12px}header h1{font-size:1.4rem}.nav-tab{padding:7px 11px;font-size:.78rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-@media print{
-  body{background:#fff!important;color:#000!important}
-  .nav-tabs,.search-box,.filter-row,.export-section,.header-actions{display:none!important}
-  .card,.level-card,.cheat-card{break-inside:avoid}
-}
+@media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.header-right{display:none!important}.card,.lc,.cc{break-inside:avoid}}
 </style>
 </head>
 <body>
-<div class="app" id="app">
+<div class="app">
   <header>
-    <div class="header-actions">
-      <button class="theme-toggle" onclick="toggleTheme()" title="Dark/Light Mode" id="themeBtn">🌙</button>
-    </div>
+    <div class="header-right"><button class="hdr-btn" onclick="toggleTheme()" id="themeBtn" title="Dark/Light">🌙</button></div>
     <h1><span>MTS</span> Triage Navigator</h1>
-    <p>Manchester Triage System — Symptom-basierte Zuordnung zu Präsentationsdiagrammen</p>
-    <div class="disclaimer">
-      <strong>⚠ Hinweis:</strong> Dieses Tool dient als Entscheidungshilfe und ersetzt nicht die offizielle MTS-Schulung oder das klinische Urteil. Die Zuordnungen basieren auf den 52 Präsentationsdiagrammen des MTS. Verbindlich ist immer das offizielle MTS-Handbuch.
-    </div>
+    <p>Symptom → Präsentationsdiagramm · Manchester Triage System</p>
+    <div class="disc"><b>⚠ Hinweis:</b> Entscheidungshilfe — ersetzt nicht MTS-Schulung oder klinisches Urteil. Verbindlich ist das offizielle MTS-Handbuch.</div>
   </header>
-
-  <nav class="nav-tabs" id="navTabs">
-    <button class="nav-tab active" data-tab="search">🔍 Symptomsuche</button>
-    <button class="nav-tab" data-tab="guided">🧭 Geführte Triage</button>
-    <button class="nav-tab" data-tab="diagrams">📋 Alle Diagramme</button>
-    <button class="nav-tab" data-tab="levels">🚦 Dringlichkeitsstufen</button>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-tab="search">🔍 Suche</button>
+    <button class="nav-tab" data-tab="bodymap">🫀 Bodymap</button>
+    <button class="nav-tab" data-tab="diagrams">📋 Diagramme</button>
+    <button class="nav-tab" data-tab="notes">📝 Übergabe</button>
+    <button class="nav-tab" data-tab="levels">🚦 Stufen</button>
     <button class="nav-tab" data-tab="cheatsheet">📌 Cheatsheet</button>
     <button class="nav-tab" data-tab="history">📊 Verlauf</button>
   </nav>
 
-  <!-- PANEL: Symptomsuche -->
   <div class="panel active" id="panel-search">
-    <div class="search-box">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="symptomSearch" placeholder="Symptom eingeben z.B. Brustschmerz, Atemnot, Schwellung Kiefer..." autocomplete="off">
-    </div>
-    <div class="search-hint" id="searchHint">Gib ein oder mehrere Symptome ein — Ergebnisse erscheinen sofort</div>
-    <div class="results-bar" id="resultsBar" style="display:none">
-      <span class="results-count" id="resultsCount"></span>
-    </div>
-    <div id="searchResults"></div>
+    <div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="SI" placeholder="Symptome eingeben z.B. Schwellung Unterkiefer, Atemnot, Fieber..." autocomplete="off"></div>
+    <div class="hint" id="sHint">Mehrere Begriffe möglich — Ergebnisse erscheinen sofort</div>
+    <div class="rbar" id="sBar" style="display:none"><span id="sCount"></span></div>
+    <div id="sRes"></div>
   </div>
 
-  <!-- PANEL: Geführte Triage -->
-  <div class="panel" id="panel-guided">
-    <div class="breadcrumb" id="guidedBreadcrumb"></div>
-    <div id="guidedContent"></div>
+  <div class="panel" id="panel-bodymap">
+    <div class="bm-wrap"><div class="bm-left" id="bmSvg"></div><div class="bm-right" id="bmContent"><div class="bm-hint">👆 Klicke auf eine Körperregion</div></div></div>
   </div>
 
-  <!-- PANEL: Alle Diagramme -->
   <div class="panel" id="panel-diagrams">
-    <div class="search-box">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="diagramFilter" placeholder="Diagramm filtern..." autocomplete="off">
-    </div>
-    <div class="filter-row" id="categoryFilters"></div>
-    <div class="results-bar"><span class="results-count" id="diagramCount"></span></div>
-    <div id="diagramList"></div>
+    <div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="dF" placeholder="Filtern..." autocomplete="off"></div>
+    <div class="frow" id="cF"></div>
+    <div class="rbar"><span id="dC"></span></div>
+    <div id="dL"></div>
   </div>
 
-  <!-- PANEL: Dringlichkeitsstufen -->
-  <div class="panel" id="panel-levels"><div id="levelsContent"></div></div>
+  <div class="panel" id="panel-notes">
+    <div class="nw">
+      <div class="nf">
+        <h3>📝 Patient dokumentieren</h3>
+        <div class="nr"><label>Kürzel / Zimmer</label><input type="text" id="nPat" placeholder="z.B. Zi.3 Müller"></div>
+        <div class="nr"><label>Diagramm</label><select id="nDiag"><option value="">— wählen —</option></select></div>
+        <div class="nr"><label>Stufe</label><div class="np" id="nPrio"></div></div>
+        <div class="nr"><label>Notiz / Befund</label><textarea id="nText" placeholder="Klinischer Eindruck, Vitalwerte, Maßnahmen..."></textarea></div>
+        <button class="nsub" onclick="saveNote()">Speichern</button>
+      </div>
+      <div class="nl"><h3>Patienten <span class="nbadge" id="nBadge">0</span></h3><div id="nList"></div></div>
+    </div>
+  </div>
 
-  <!-- PANEL: Cheatsheet -->
-  <div class="panel" id="panel-cheatsheet"><div class="cheat-grid" id="cheatContent"></div></div>
+  <div class="panel" id="panel-levels"><div id="lvl"></div></div>
+  <div class="panel" id="panel-cheatsheet"><div class="cg" id="cht"></div></div>
 
-  <!-- PANEL: Verlauf & Export -->
   <div class="panel" id="panel-history">
-    <div class="stat-row" id="statsRow"></div>
-    <h3 style="font-size:1.05rem;margin-bottom:12px;font-weight:600">Letzte Zuordnungen</h3>
-    <div id="historyList"></div>
-    <div class="export-section">
-      <button class="export-btn" onclick="exportJSON()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0-3-3m3 3 3-3M3 17v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/></svg>Export (JSON)</button>
-      <button class="export-btn" onclick="exportCSV()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0-3-3m3 3 3-3M3 17v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/></svg>Export (CSV)</button>
-      <button class="export-btn" onclick="importData()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 16V10m0 0 3 3m-3-3-3 3M3 17v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/></svg>Import</button>
-      <button class="export-btn" onclick="clearHistory()" style="border-color:var(--red-border);color:var(--red)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m19 7-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16"/></svg>Verlauf löschen</button>
+    <div class="sr" id="stR"></div>
+    <h3 style="font-size:1rem;margin-bottom:9px;font-weight:600">Letzte Zuordnungen</h3>
+    <div id="hList"></div>
+    <div class="es">
+      <button class="eb" onclick="expJ()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0-3-3m3 3 3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/></svg>JSON</button>
+      <button class="eb" onclick="expC()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0-3-3m3 3 3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/></svg>CSV</button>
+      <button class="eb" onclick="impD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V10m0 0l3 3m-3-3l-3 3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/></svg>Import</button>
+      <button class="eb" onclick="clrH()" style="color:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 7-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Löschen</button>
     </div>
-    <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
+    <input type="file" id="impF" accept=".json" style="display:none" onchange="hImp(event)">
   </div>
 </div>
 
-<!-- Detail Overlay -->
-<div class="overlay" id="detailOverlay" onclick="if(event.target===this)closeOverlay()">
-  <div class="overlay-content" id="overlayContent"></div>
-</div>
+<div class="overlay" id="detO" onclick="if(event.target===this)clO()"><div class="oc" id="oC"></div></div>
 
 <script>
-// ============================================================
-// DATA: 52 MTS Presentation Diagrams — EXPANDED KEYWORDS
-// ============================================================
-const DIAGRAMS = [
-  {id:1,name:"Abszess / lokale Infektion",category:"Chirurgisch",
-   keywords:["abszess","eiter","eitrig","schwellung","rötung","lokale infektion","entzündung","furunkel","karbunkel","phlegmone","wunde infektion","überwärmung","fluktuation","abszess wange","abszess achsel","abszess leiste","abszess anal","perianalabszess","pilonidalabszess","panaritium","paronychie","eiterbeule","druckschmerz lokal","einschmelzung"],
-   desc:"Lokalisierte Eiteransammlung oder Infektion der Haut/Weichteile"},
+const D=[{id:1,name:"Abszess / lokale Infektion",c:"Chirurgisch",kw:["abszess","eiter","eitrig","schwellung lokal","rötung lokal","lokale infektion","entzündung lokal","furunkel","karbunkel","phlegmone","wunde infektion","überwärmung","fluktuation","abszess wange","abszess achsel","abszess leiste","abszess anal","perianalabszess","panaritium","paronychie","eiterbeule","einschmelzung"],d:"Lokalisierte Eiteransammlung / Infektion Haut/Weichteile"},{id:2,name:"Allergie",c:"Allgemein",kw:["allergie","allergische reaktion","anaphylaxie","anaphylaktisch","urtikaria akut","quincke-ödem","nesselsucht","angioödem","schwellung gesicht allergisch","schwellung lippe","schwellung zunge","schwellung rachen","allergischer schock","juckreiz plötzlich","atemnot allergie","wespenallergie","nussallergie","medikamentenallergie","latexallergie","zungenschwellung","lippenschwellung","schwellung nach essen"],d:"Allergische Reaktion mild bis anaphylaktisch"},{id:3,name:"Asthma / Atemnot Erw.",c:"Respiratorisch",kw:["atemnot","dyspnoe","asthma","kurzatmigkeit","giemen","pfeifen","atemgeräusch","luftnot","bronchospasmus","copd","copd exazerbation","spo2 niedrig","zyanose","tachypnoe","orthopnoe","belastungsdyspnoe","atemhilfsmuskulatur","einziehungen","lungenödem","rasselgeräusche","spastik","obstruktion"],d:"Atembeschwerden / Asthma Erwachsene"},{id:4,name:"Atemnot Kinder",c:"Pädiatrisch",kw:["atemnot kind","krupp","stridor","pseudokrupp","epiglottitis","kind atmet schlecht","kind pfeift","bronchiolitis","bellender husten","kind blaue lippen","nasenflügeln","einziehungen kind","tachypnoe kind"],d:"Atemprobleme Kinder inkl. Krupp"},{id:5,name:"Augenprobleme",c:"HNO / Sinnesorgane",kw:["auge","sehstörung","augenrötung","augenschmerz","fremdkörper auge","augenverätzung","konjunktivitis","sehverlust","doppelbilder","augentrauma","lichtblitze","glaukom","hornhauterosion","schweißblende","pupillendifferenz","auge geschwollen","auge tränt","lidverletzung","amaurosis fugax"],d:"Akute Augenbeschwerden / Sehstörungen"},{id:6,name:"Bauchschmerzen Erw.",c:"Abdominell",kw:["bauchschmerzen","abdominalschmerz","übelkeit","kolik","magenschmerzen","oberbauchschmerzen","unterbauchschmerzen","rechter unterbauch","appendizitis","peritonismus","abwehrspannung","loslassschmerz","blähbauch","ileus","darmverschluss","gallenkolik","pankreatitis","gürtelförmig","mesenterialischämie","divertikulitis"],d:"Abdominelle Beschwerden Erwachsene"},{id:7,name:"Bauchschmerzen Kinder",c:"Pädiatrisch",kw:["bauchschmerzen kind","kind erbricht","kind übelkeit","invagination","dreimonatskolik","säuglingskolik","kind erbricht grün"],d:"Abdominelle Beschwerden Kinder"},{id:8,name:"Besorgte Eltern",c:"Pädiatrisch",kw:["besorgte eltern","kind auffällig","kind anders","eltern beunruhigt","kind weint viel","kind trinkt nicht","kind schläft nur","säugling auffällig","kind lethargisch"],d:"Eltern besorgt — kein klares Leitsymptom"},{id:9,name:"Bewusstlosigkeit / Synkope",c:"Neurologisch",kw:["bewusstlosigkeit","synkope","ohnmacht","kollaps","umgefallen","kreislaufkollaps","bewusstlos","nicht ansprechbar","zusammengebrochen","blackout","gcs","koma","somnolenz","sopor","bewusstseinsstörung","präsynkope","vasovagal"],d:"Bewusstseinsverlust vorübergehend/anhaltend"},{id:10,name:"Bisse und Stiche",c:"Trauma",kw:["biss","tierbiss","insektenstich","zeckenbiss","schlangenbiss","hundebiss","katzenbiss","wespenstich","bienenstich","menschenbiss","bisswunde","schwellung stich"],d:"Tier-/Insektenbisse u. -stiche"},{id:11,name:"Diabetes / Hyperglykämie",c:"Internistisch",kw:["diabetes","blutzucker hoch","hyperglykämie","ketoazidose","dka","zucker entgleist","polyurie","polydipsie","acetongeruch","diabetisches koma","hypoglykämie","unterzucker","zuckerschock","bz hoch","bz niedrig","kussmaul"],d:"Diabetische Stoffwechselentgleisung"},{id:12,name:"Durchfall und Erbrechen",c:"Abdominell",kw:["durchfall","erbrechen","gastroenteritis","diarrhoe","brechdurchfall","dehydration","exsikkose","norovirus","magen-darm","kaffeesatzerbrechen","hämatemesis","blutig erbrechen","austrocknung"],d:"Brechdurchfall / Flüssigkeitsverlust"},{id:13,name:"Extremitätenprobleme",c:"Trauma",kw:["arm schmerzen","bein schmerzen","extremität","gelenkschmerzen","schwellung extremität","fehlstellung","fraktur","knochenbruch","gelenk geschwollen","knöchel","sprunggelenk","knie","schulter","ellenbogen","handgelenk","finger","zeh","fuß","oberschenkel","unterschenkel","luxation","verrenkung","verstauchung","distorsion","kompartment","thrombose bein","schwellung bein einseitig","wadenschmerz","achillessehne","bänderriss","meniskus","dms"],d:"Schmerzen/Schwellung Arme/Beine"},{id:14,name:"Fremdkörper",c:"Allgemein",kw:["fremdkörper","verschluckt","eingeatmet","aspiration","fremdkörper nase","fremdkörper ohr","kind verschluckt","bolus","batterie verschluckt","knopfzelle","fischgräte","erstickungsgefahr","fremdkörper atemweg","fremdkörper rektal"],d:"Fremdkörper Atemwege/GI-Trakt/Körperöffnungen"},{id:15,name:"Gesichtsprobleme",c:"HNO / Sinnesorgane",kw:["gesichtsschwellung","gesichtsschmerz","kieferschmerz","kiefer","unterkiefer","oberkiefer","parotis","parotitis","speicheldrüse","speicheldrüsenentzündung","fazialisparese","gesicht schief","mundsperre","kieferklemme","schwellung kiefer","schwellung unterkiefer","schwellung oberkiefer","schwellung wange","wange geschwollen","wange dick","kiefer geschwollen","gesicht geschwollen","kinn geschwollen","jochbein","kauschmerz","gesichtstrauma","schwellung submandibulär","lymphknoten kiefer","lymphknoten hals","trigeminusneuralgie","gesichtslähmung","mundbodenabszess","angina ludwig","schwellung mandibulär","dicke backe","schwellung hals seitlich","submandibulär"],d:"Schwellungen/Schmerzen Gesicht/Kiefer"},{id:16,name:"Halsschmerzen",c:"HNO / Sinnesorgane",kw:["halsschmerzen","schluckbeschwerden","angina","tonsillitis","pharyngitis","peritonsillarabszess","hals geschwollen","mandeln","epiglottitis","heiserkeit","laryngitis","halsentzündung","schluckschmerzen","kloß im hals","globusgefühl","dysphagie","odynophagie","streptokokken"],d:"Hals-/Rachenschmerzen, Schluckbeschwerden"},{id:17,name:"Hautausschlag",c:"Dermatologisch",kw:["hautausschlag","exanthem","petechien","purpura","bläschen","rash","masern","windpocken","scharlach","urtikaria","erythem","ekzem akut","erythema migrans","gürtelrose","herpes zoster","kontaktdermatitis","arzneimittelexanthem","stevens-johnson","meningokokken petechien","glastest","quaddeln","juckreiz"],d:"Akute Hautveränderungen / Exantheme"},{id:18,name:"Herzklopfen",c:"Kardiologisch",kw:["herzklopfen","palpitation","herzrasen","tachykardie","arrhythmie","herzstolpern","vorhofflimmern","unregelmäßiger puls","herzrhythmusstörung","svt","bradykardie","extrasystolen","herzflattern","schrittmacher","defibrillator"],d:"Herzrhythmusstörungen / Palpitationen"},{id:19,name:"Hodenschmerzen",c:"Urologisch",kw:["hodenschmerzen","hodenschwellung","hodentorsion","hoden verdreht","skrotum","epididymitis","orchitis","hoden geschwollen","hoden akut"],d:"Akute Hodenschmerzen/-schwellung"},{id:20,name:"Irritiertes Kind",c:"Pädiatrisch",kw:["schreiendes baby","kind schreit","kind nicht beruhigen","irritiertes kind","säugling schreit","baby schreit","kind untröstlich","fontanelle vorgewölbt","kind überstreckt"],d:"Untröstliches Kind/Säugling"},{id:21,name:"Katastrophe / MANV",c:"Spezial",kw:["massenanfall","katastrophe","manv","großschadenslage","mehrere verletzte","terror","explosion","sichtung manv"],d:"Massenanfall von Verletzten"},{id:22,name:"Kopfschmerzen",c:"Neurologisch",kw:["kopfschmerzen","migräne","cephalgie","donnerschlagkopfschmerz","kopfschmerz akut","nackensteife","meningismus","subarachnoidalblutung","kopfschmerz stärkster","spannungskopfschmerz","clusterkopfschmerz","kopfschmerz erbrechen","kopfschmerz fieber","meningitis verdacht","arteriitis temporalis"],d:"Akute Kopfschmerzen"},{id:23,name:"Kopfverletzung",c:"Trauma",kw:["kopfverletzung","schädel-hirn-trauma","sht","sturz kopf","kopfplatzwunde","commotio","bewusstlosigkeit sturz","schädelfraktur","amnesie unfall","beule kopf","brillenhämatom","liquoraustritt","erbrechen kopftrauma","pupillendifferenz trauma"],d:"Traumatische Kopf-/Schädelverletzung"},{id:24,name:"Krampfanfall",c:"Neurologisch",kw:["krampfanfall","epilepsie","anfall","konvulsion","status epilepticus","tonisch-klonisch","grand mal","fieberkrampf","zucken","epileptischer anfall","absence","postiktal","zungenbiss","einnässen anfall","erstanfall"],d:"Epileptische Anfälle / Krämpfe"},{id:25,name:"Nasenbluten",c:"HNO / Sinnesorgane",kw:["nasenbluten","epistaxis","nase blutet","nasenbluten stark","tamponade nase","nasenbluten antikoagulation"],d:"Akute Nasenblutung"},{id:26,name:"Nackenschmerzen",c:"Trauma",kw:["nackenschmerzen","hws","halswirbelsäule","nackensteife","torticollis","nackenverletzung","hws distorsion","schleudertrauma","hws fraktur","zervikalsyndrom","hws trauma"],d:"Schmerzen/Verletzung HWS"},{id:27,name:"Ohrenprobleme",c:"HNO / Sinnesorgane",kw:["ohrenschmerzen","otitis","otitis media","otitis externa","hörsturz","schwerhörigkeit plötzlich","trommelfell","ohr fremdkörper","tinnitus akut","schwindel ohr","morbus menière","mastoiditis","ohr geschwollen","ohrbluten"],d:"Akute Ohrenbeschwerden"},{id:28,name:"Psychiatrische Vorstellung",c:"Psychiatrisch",kw:["psychiatrisch","suizidgedanken","suizidal","suizidversuch","psychose","verwirrt","agitiert","halluzination","wahnhaft","selbstverletzung","erregungszustand","panikattacke","depressiv akut","stimmenhören","katatonie","alkoholentzug","delirium tremens","delir","entzug"],d:"Psychiatrische Notfälle / Suizidalität"},{id:29,name:"PV-Blutung",c:"Gynäkologisch",kw:["vaginale blutung","pv blutung","unterleibsblutung","periodenblutung stark","zwischenblutung","postmenopausal blutung","abort","fehlgeburt","menorrhagie","starke regelblutung","kontaktblutung"],d:"Vaginale Blutung"},{id:30,name:"Rückenschmerzen",c:"Orthopädisch",kw:["rückenschmerzen","lumbago","hexenschuss","ischias","bandscheibe","bandscheibenvorfall","lws","reithosenanästhesie","cauda equina","kreuzschmerzen","radikulopathie","ausstrahlung bein","rücken blockiert","bws schmerzen","blasenstörung rücken"],d:"Akute/chronische Rückenschmerzen"},{id:31,name:"Schwangerschaftsprobleme",c:"Gynäkologisch",kw:["schwangerschaft","schwanger","wehen","vorzeitige wehen","präeklampsie","eklampsie","hellp","blutung schwanger","fruchtwasserabgang","eileiterschwangerschaft","eug","hyperemesis","nabelschnurvorfall","geburt","sturzgeburt"],d:"Schwangerschafts-Komplikationen"},{id:32,name:"STI",c:"Allgemein",kw:["sti","sexuell übertragbar","geschlechtskrankheit","gonorrhoe","chlamydien","syphilis","genitalulkus","ausfluss genital","herpes genitalis","nadelstichverletzung"],d:"Sexuell übertragbare Infektionen"},{id:33,name:"Stürze",c:"Trauma",kw:["sturz","gestürzt","gefallen","sturzfolge","prellung","kontusion","alter mensch gestürzt","sturz leiter","sturz höhe","treppensturz","fahrrad gestürzt"],d:"Verletzungen nach Stürzen"},{id:34,name:"Thoraxschmerz",c:"Kardiologisch",kw:["brustschmerzen","thoraxschmerz","engegefühl brust","retrosternal","herzinfarkt","acs","akutes koronarsyndrom","angina pectoris","brustdruck","brustenge","nitro","ausstrahlung arm","ausstrahlung kiefer","kaltschweißig","vernichtungsschmerz","aortendissektion","lungenembolie","pleuritisch","brustschmerz atemabhängig"],d:"Brustschmerzen — kardial/pulmonal"},{id:35,name:"Überdosierung / Vergiftung",c:"Toxikologisch",kw:["vergiftung","überdosis","intoxikation","suizidversuch medikamente","drogenintoxikation","pilzvergiftung","alkoholintoxikation","tabletteneinnahme","paracetamol","opiatintoxikation","kokain","giftnotruf","kohlenmonoxid","rauchgas","methanol"],d:"Toxische Substanzen / Überdosis"},{id:36,name:"Unwohlsein Erw.",c:"Allgemein",kw:["unwohlsein","az verschlechtert","schwäche","schlapp","kraftlos","malaise","erschöpfung","abgeschlagenheit","fatigue","reduzierter az","bettlägerig","schwindel allgemein","appetitlos","blass","zittrig","dehydriert"],d:"Allgemeines Krankheitsgefühl / Schwäche"},{id:37,name:"Unwohlsein Kinder",c:"Pädiatrisch",kw:["kind krank","kind schlapp","kind trinkt schlecht","kind isst nicht","säugling auffällig","kind blass","kind apathisch","kind spielt nicht","kind dehydriert"],d:"Krankheitsgefühl Kinder"},{id:38,name:"Urologische Probleme",c:"Urologisch",kw:["harnverhalt","dysurie","hämaturie","blut im urin","harnwegsinfekt","hwi","nierenkolik","nierensteine","flankenschmerz","harnleiterstein","pollakisurie","brennen wasserlassen","katheter","paraphimose","prostatitis","pyelonephritis","urin rot"],d:"Harntrakt / Nieren"},{id:39,name:"Verbrennung / Verbrühung",c:"Trauma",kw:["verbrennung","verbrühung","brandwunde","hitzeschaden","verbrennung kind","verbrennung gesicht","inhalationstrauma","blasenbildung","neunerregel","kontaktverbrennung","sonnenbrand schwer"],d:"Thermische/chemische Hautschäden"},{id:40,name:"Verhaltensauffälligkeiten",c:"Psychiatrisch",kw:["aggressiv","verhaltensauffällig","randaliert","gewalttätig","fremdgefährdung","intoxikation aggressiv","tobsucht","bedrohlich","fixierung","zwangseinweisung","handgreiflich"],d:"Aggressives Verhalten"},{id:41,name:"Wunden",c:"Chirurgisch",kw:["wunde","schnittwunde","platzwunde","risswunde","stichwunde","bisswunde","offene wunde","blutend","wundversorgung","naht","tetanus","tiefe wunde","sehnenverletzung","glasschnitt","messerwunde","schürfwunde","amputationsverletzung","fingerkuppe"],d:"Offene Verletzungen Haut/Weichteile"},{id:42,name:"Zahnschmerzen",c:"HNO / Sinnesorgane",kw:["zahnschmerzen","zahnschmerz","zahnentzündung","zahnfleisch","abszess zahn","zahntrauma","zahn abgebrochen","kieferschmerz dental","dentogen","zahn ausgeschlagen","pulpitis","wange geschwollen zahnschmerz"],d:"Zahn-/Kieferschmerzen"},{id:43,name:"Fieber Erw.",c:"Allgemein",kw:["fieber","temperatur erhöht","schüttelfrost","sepsis","fieberschub","hochfiebrig","pyrexie","fieber über 39","fieber über 40","neutropenes fieber","fieber reise","fieber hautausschlag","fieber nackensteife"],d:"Erhöhte Temperatur Erwachsene"},{id:44,name:"Fieber Kinder",c:"Pädiatrisch",kw:["fieber kind","kind fieber","fieberkrampf","kind heiß","säugling fieber","fieber neugeborenes","kind fieber über 40","dreitagefieber","kind petechien fieber"],d:"Erhöhte Temperatur Kinder"},{id:45,name:"Schlaganfall / Fokale Neuro",c:"Neurologisch",kw:["schlaganfall","apoplex","hemiparese","halbseitenlähmung","sprachstörung","aphasie","dysarthrie","gesichtslähmung plötzlich","arm schwäche plötzlich","bein schwäche plötzlich","tia","fast test","sehstörung plötzlich","hängender mundwinkel","verwaschen sprechen","wortfindungsstörung","stroke","hirnblutung","lyse","thrombektomie"],d:"Akute neurologische Ausfälle / Schlaganfall"},{id:46,name:"Blutung / Nachblutung",c:"Chirurgisch",kw:["blutung","nachblutung","wundblutung","blutung op","starke blutung","hämorrhagie","arteriell spritzend","druckverband","tourniquet","marcumar blutung","gerinnungsstörung blutung"],d:"Aktive Blutung"},{id:47,name:"Chemische Exposition",c:"Toxikologisch",kw:["verätzung chemisch","chemische exposition","gefahrstoff","säure","lauge","chemische verbrennung","augenverätzung","hautverätzung","gasinhalation","reizgas","chlorgas","flusssäure","dekontamination"],d:"Kontakt mit Gefahrstoffen"},{id:48,name:"Elektrische Verletzung",c:"Trauma",kw:["stromunfall","stromschlag","elektrounfall","blitz","blitzschlag","hochspannung","steckdose kind","lichtbogen"],d:"Strom-/Blitzverletzung"},{id:49,name:"Ertrinken",c:"Trauma",kw:["ertrinken","beinahe-ertrinken","submersion","aspiration wasser","wasserunfall","kind pool","tauchunfall"],d:"Beinahe-Ertrinken"},{id:50,name:"Hypothermie",c:"Allgemein",kw:["unterkühlung","hypothermie","erfrierung","kälteschaden","kerntemperatur niedrig","obdachlos kalt","lawinenverschüttung","frostbeule"],d:"Unterkühlung / Erfrierung"},{id:51,name:"Thoraxverletzung",c:"Trauma",kw:["thoraxtrauma","rippenfraktur","rippenprellung","pneumothorax","hämatothorax","brustkorbverletzung","spannungspneumothorax","hautemphysem","flail chest","sternum fraktur"],d:"Brustkorb-Trauma"},{id:52,name:"Bauchverletzung",c:"Trauma",kw:["bauchtrauma","abdominaltrauma","stichverletzung bauch","milzruptur","leberruptur","penetrierendes bauchtrauma","stumpfes bauchtrauma","gurtprellung","fast sonographie"],d:"Bauch-Trauma"}];
+const CATS=[...new Set(D.map(x=>x.c))].sort();
+const LV=[{l:1,n:"Sofort",t:"0 Min",r:"-",d:"Unmittelbare Lebensgefahr. Sofortige Behandlung."},{l:2,n:"Sehr dringend",t:"≤ 10 Min",r:"10 Min",d:"Potenziell lebensbedrohlich. ACS, Schlaganfall, Anaphylaxie."},{l:3,n:"Dringend",t:"≤ 30 Min",r:"30 Min",d:"Starke Schmerzen, hohes Fieber + AZ↓, psychiatrische Krise."},{l:4,n:"Normal",t:"≤ 90 Min",r:"60 Min",d:"Mäßige Schmerzen, leichtes Fieber, kleine Wunde."},{l:5,n:"Nicht dringend",t:"≤ 120 Min",r:"120 Min",d:"Chronische Beschwerden, Bagatelleverletzung."}];
+const EM=['🔴','🟠','🟡','🟢','🔵'];
+const BR=[{k:'head',n:'Kopf / Neurologie',ids:[5,9,15,22,23,24,25,27,42,45]},{k:'chest',n:'Thorax / Herz / Lunge',ids:[3,18,34,51]},{k:'abdomen',n:'Abdomen / GI-Trakt',ids:[6,7,12,52]},{k:'pelvis',n:'Urogenital / Gynäko',ids:[19,29,31,32,38]},{k:'arm_l',n:'Linker Arm',ids:[13,33,41]},{k:'arm_r',n:'Rechter Arm',ids:[13,33,41]},{k:'leg_l',n:'Linkes Bein',ids:[13,30,33]},{k:'leg_r',n:'Rechtes Bein',ids:[13,30,33]},{k:'skin',n:'Haut / Allgemein',ids:[1,2,10,11,14,17,35,36,39,43,46,47,48,50]},{k:'psych',n:'Psych / Pädiatrie',ids:[4,7,8,20,28,37,40,44]}];
+const CS=[{t:"🔴 Sofort — Red Flags",i:["Atemstillstand","Kreislaufstillstand","Bewusstlosigkeit ohne Schutzreflexe","Massive arterielle Blutung","Anaphylaktischer Schock","Status epilepticus"]},{t:"🟠 Sehr dringend",i:["Schwere Atemnot / SpO₂ < 92%","Schwere Thoraxschmerzen (ACS)","Fokalneurologisches Defizit","GCS ≤ 12","Unkontrollierbare Blutung","Akutes Abdomen + Abwehrspannung"]},{t:"🟡 Dringend",i:["Fieber > 39°C + AZ↓","Starke Schmerzen NRS 7–10","Erbrechen + Dehydration","Akute Verwirrtheit","Nicht reponierbare Hernie"]},{t:"🟢 Normal",i:["Schmerzen NRS 4–6","Fieber ohne Begleitzeichen","Kleine Wunden","Erbrechen ohne Dehydration","Hautausschlag stabil"]},{t:"📊 Vitalzeichen",i:["AF: 12–20/min","SpO₂: > 95% (COPD > 92%)","HF: 60–100/min","RR syst: 100–140","Temp: 36,0–37,5°C","GCS: 15 = normal"]},{t:"⏱ FAST-Test",i:["Face — Gesicht hängt?","Arms — Arm sinkt?","Speech — Sprache verwaschen?","Time — Beginn wann?","→ Orange-Stufe","Lyse < 4,5 h"]},{t:"💊 Schmerzskala",i:["0 = schmerzfrei","1–3 = leicht","4–6 = mäßig","7–9 = stark","10 = maximal","Kinder: Gesichterskala"]},{t:"🧒 Pädiatrie",i:["Neugeborene + Fieber → Orange","Fontanelle vorgewölbt?","Trinkschwäche = Alarm","Petechien + Fieber → Meningo?","Tachypnoe altersabhängig","Eltern-Intuition beachten"]}];
+let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),notes=JSON.parse(localStorage.getItem('mts_n')||'[]'),selP=3,aCat='';
+function toggleTheme(){document.body.classList.toggle('dark');const dk=document.body.classList.contains('dark');localStorage.setItem('mts_theme',dk?'dark':'light');document.getElementById('themeBtn').textContent=dk?'☀️':'🌙'}
+(function(){if(localStorage.getItem('mts_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️'}})();
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));const id='panel-'+t.dataset.tab;document.getElementById(id).classList.add('active');if(t.dataset.tab==='bodymap')initBM();if(t.dataset.tab==='diagrams')rDiag();if(t.dataset.tab==='notes')initN();if(t.dataset.tab==='levels')rLvl();if(t.dataset.tab==='cheatsheet')rCS();if(t.dataset.tab==='history')rHist()}));
+
+// SEARCH
+const SI_=document.getElementById('SI');
+SI_.addEventListener('input',debounce(()=>{const q=SI_.value.trim().toLowerCase(),sB=document.getElementById('sBar'),sC=document.getElementById('sCount'),sH=document.getElementById('sHint'),sR=document.getElementById('sRes');if(q.length<2){sR.innerHTML='';sB.style.display='none';sH.style.display='block';return}sH.style.display='none';const ts=q.split(/[\s,;]+/).filter(t=>t.length>=2);let sc=D.map(d=>{let s=0,m=[];if(d.name.toLowerCase().includes(q)){s+=25;m.push(q)}if(d.d.toLowerCase().includes(q)){s+=12;m.push(q)}d.kw.forEach(k=>{if(k.includes(q)||q.includes(k)){s+=20;m.push(q)}});ts.forEach(t=>{d.kw.forEach(k=>{if(k===t)s+=12;else if(k.includes(t)){s+=8;m.push(t)}});if(d.name.toLowerCase().includes(t)){s+=10;m.push(t)}if(d.d.toLowerCase().includes(t)){s+=4;m.push(t)}});if(ts.length>1&&ts.every(t=>d.kw.some(k=>k.includes(t))||d.name.toLowerCase().includes(t)||d.d.toLowerCase().includes(t)))s+=18;return{...d,score:s,mt:[...new Set(m)]}}).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);sB.style.display='flex';sC.innerHTML=`<b>${sc.length}</b> Ergebnis${sc.length!==1?'se':''}`;if(!sc.length){sR.innerHTML='<div class="empty">Keine Treffer.</div>';return}sR.innerHTML=sc.slice(0,15).map(x=>`<div class="card" onclick="shD(${x.id})"><div class="ch"><span class="ct">${hl(x.name,ts)}</span><span class="tb tb-${cl(x.c)}"><span class="td td-${cl(x.c)}"></span>${x.c}</span></div><div class="cs">${hl(x.d,ts)}</div><div class="tags">${x.kw.filter(k=>x.mt.some(m=>k.includes(m))).slice(0,5).map(k=>`<span class="tag m">${k}</span>`).join('')}${x.kw.filter(k=>!x.mt.some(m=>k.includes(m))).slice(0,3).map(k=>`<span class="tag">${k}</span>`).join('')}</div></div>`).join('')},150));
+function hl(t,ts){let r=t;ts.forEach(x=>{r=r.replace(new RegExp(`(${esc(x)})`,'gi'),'<mark style="background:var(--mark-bg);color:var(--mark-color);border-radius:2px;padding:0 1px">$1</mark>')});return r}
+function cl(c){return{Kardiologisch:2,Neurologisch:2,Respiratorisch:2,Trauma:3,Abdominell:3,Chirurgisch:3,Pädiatrisch:3,Psychiatrisch:3,Toxikologisch:2,Internistisch:3,Gynäkologisch:3,Urologisch:3,Allgemein:4,'HNO / Sinnesorgane':4,Dermatologisch:4,Orthopädisch:4,Spezial:2}[c]||3}
+
+// BODYMAP
+function initBM(){document.getElementById('bmSvg').innerHTML=bSVG();document.getElementById('bmContent').innerHTML='<div class="bm-hint">👆 Klicke auf eine Körperregion</div>';document.querySelectorAll('.bz').forEach(z=>{z.addEventListener('click',()=>{document.querySelectorAll('.bz').forEach(x=>x.classList.remove('on'));z.classList.add('on');shReg(z.dataset.r)});z.addEventListener('mouseenter',()=>{if(!z.classList.contains('on'))z.style.fill='var(--body-hover)'});z.addEventListener('mouseleave',()=>{if(!z.classList.contains('on'))z.style.fill=''})})}
+function shReg(k){const r=BR.find(x=>x.k===k);if(!r)return;const ds=[...new Set(r.ids)].map(id=>D.find(x=>x.id===id)).filter(Boolean);document.getElementById('bmContent').innerHTML=`<div class="bm-right"><h3>${r.n}</h3><div class="sub">${ds.length} Diagramme</div>${ds.map(d=>`<div class="bm-item" onclick="shD(${d.id})"><strong>${d.name}</strong><span>${d.d}</span></div>`).join('')}</div>`}
+function bSVG(){return`<svg viewBox="0 0 240 520" xmlns="http://www.w3.org/2000/svg">
+<ellipse class="bz" data-r="head" cx="120" cy="50" rx="33" ry="40"/>
+<text class="bl" x="120" y="54" text-anchor="middle" font-size="10">Kopf</text>
+<rect class="bz" data-r="head" x="109" y="88" width="22" height="16" rx="6"/>
+<path class="bz" data-r="chest" d="M78,104 Q70,106 66,126 L62,192 Q62,196 68,198 L172,198 Q178,196 178,192 L174,126 Q170,106 162,104 Z"/>
+<text class="bl" x="120" y="155" text-anchor="middle" font-size="10">Thorax</text>
+<path class="bz" data-r="abdomen" d="M68,198 L66,272 Q66,276 72,278 L168,278 Q174,276 174,272 L172,198 Z"/>
+<text class="bl" x="120" y="242" text-anchor="middle" font-size="10">Abdomen</text>
+<path class="bz" data-r="pelvis" d="M72,278 L66,316 Q80,342 120,342 Q160,342 174,316 L168,278 Z"/>
+<text class="bl" x="120" y="314" text-anchor="middle" font-size="9">Becken</text>
+<path class="bz" data-r="arm_l" d="M66,112 L40,124 Q30,128 26,144 L12,246 Q8,260 14,264 L20,264 Q26,260 28,246 L42,182 L60,196 L62,192 Z"/>
+<text class="bl" x="28" y="195" text-anchor="middle" font-size="8">L.Arm</text>
+<path class="bz" data-r="arm_r" d="M174,112 L200,124 Q210,128 214,144 L228,246 Q232,260 226,264 L220,264 Q214,260 212,246 L198,182 L180,196 L178,192 Z"/>
+<text class="bl" x="212" y="195" text-anchor="middle" font-size="8">R.Arm</text>
+<path class="bz" data-r="leg_l" d="M84,338 Q78,342 76,356 L66,456 Q64,474 70,478 L82,478 Q86,474 84,456 L92,376 L108,342 Q98,342 90,338 Z"/>
+<text class="bl" x="76" y="418" text-anchor="middle" font-size="8">L.Bein</text>
+<path class="bz" data-r="leg_r" d="M156,338 Q162,342 164,356 L174,456 Q176,474 170,478 L158,478 Q154,474 156,456 L148,376 L132,342 Q142,342 150,338 Z"/>
+<text class="bl" x="164" y="418" text-anchor="middle" font-size="8">R.Bein</text>
+<rect class="bz" data-r="skin" x="2" y="490" width="112" height="24" rx="8"/>
+<text class="bl" x="58" y="506" text-anchor="middle" font-size="8">🩹 Haut / Allgemein</text>
+<rect class="bz" data-r="psych" x="126" y="490" width="112" height="24" rx="8"/>
+<text class="bl" x="182" y="506" text-anchor="middle" font-size="8">🧩 Psych / Päd</text>
+</svg>`}
+
+// DIAGRAMS
+const dF_=document.getElementById('dF');
+function rDiag(){document.getElementById('cF').innerHTML=`<button class="fb ${aCat===''?'a':''}" onclick="fC('')">Alle</button>${CATS.map(c=>`<button class="fb ${aCat===c?'a':''}" onclick="fC('${c}')">${c}</button>`).join('')}`;fR()}
+function fC(c){aCat=c;rDiag()}
+dF_.addEventListener('input',debounce(fR,150));
+function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||d.d.toLowerCase().includes(q)||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> / ${D.length}`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="cs">${d.d}</div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
+
+// NOTES
+function initN(){const s=document.getElementById('nDiag');if(s.options.length<=1)D.forEach(d=>{const o=document.createElement('option');o.value=d.id;o.textContent=`${d.id}. ${d.name}`;s.appendChild(o)});const pc=document.getElementById('nPrio');const cols=['var(--red)','var(--orange)','var(--yellow)','var(--green)','var(--blue)'];pc.innerHTML=cols.map((c,i)=>`<div class="nc ${selP===i+1?'on':''}" style="background:${c}" onclick="selP=${i+1};initN()" title="${LV[i].n}"></div>`).join('');rN()}
+function saveNote(){const p=document.getElementById('nPat').value.trim(),dg=document.getElementById('nDiag').value,tx=document.getElementById('nText').value.trim();if(!p&&!tx){alert('Bitte ausfüllen.');return}const dd=dg?D.find(x=>x.id==+dg):null;notes.unshift({p,dg:dd?dd.name:'',di:dg?+dg:0,pr:selP,tx,ts:new Date().toISOString()});localStorage.setItem('mts_n',JSON.stringify(notes));document.getElementById('nPat').value='';document.getElementById('nDiag').value='';document.getElementById('nText').value='';selP=3;initN()}
+function rN(){document.getElementById('nBadge').textContent=notes.length;const nl=document.getElementById('nList');if(!notes.length){nl.innerHTML='<div class="empty">Keine Patienten.</div>';return}nl.innerHTML=notes.map((n,i)=>{const d=new Date(n.ts);return`<div class="nc2 nb${n.pr}"><div class="h"><span class="nm">${n.p||'—'}</span><span class="ti">${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} · ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}</span></div>${n.dg?`<div class="dg">📋 ${n.dg}</div>`:''}${n.tx?`<div class="tx">${n.tx.replace(/\n/g,'<br>')}</div>`:''}<span class="pr"><span class="tb tb-${n.pr}"><span class="td td-${n.pr}"></span>${LV[n.pr-1].n}</span></span><button class="dl" onclick="dN(${i})">✕</button></div>`}).join('')}
+function dN(i){notes.splice(i,1);localStorage.setItem('mts_n',JSON.stringify(notes));rN();document.getElementById('nBadge').textContent=notes.length}
+
+// DETAIL
+function shD(id){const d=D.find(x=>x.id===id);if(!d)return;const rl=D.filter(x=>x.c===d.c&&x.id!==d.id);document.getElementById('oC').innerHTML=`<button class="ox" onclick="clO()">✕</button><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span><h2 style="font-size:1.25rem;font-weight:700;margin-top:8px">${d.name}</h2><p style="font-size:.82rem;color:var(--text2);margin:3px 0 12px">Nr. ${d.id}</p><p style="color:var(--text2);font-size:.88rem;line-height:1.6;margin-bottom:12px">${d.d}</p><h4 style="font-size:.82rem;font-weight:600;margin-bottom:5px">Keywords</h4><div class="tags" style="margin-bottom:14px">${d.kw.map(k=>`<span class="tag">${k}</span>`).join('')}</div><div style="background:var(--bg3);border-radius:var(--radius-sm);padding:13px;margin-bottom:14px"><div style="font-weight:600;font-size:.84rem;margin-bottom:5px">📋 Nächste Schritte</div><div style="font-size:.82rem;color:var(--text2);line-height:1.7">1. Diagramm <b>„${d.name}"</b> im MTS-Handbuch<br>2. Indikatoren rot → blau durcharbeiten<br>3. Erster Treffer = Dringlichkeitsstufe<br>4. Unsicher? → höhere Stufe</div></div>${rl.length?`<h4 style="font-size:.82rem;font-weight:600;margin-bottom:5px">Verwandt</h4>${rl.map(r=>`<div style="padding:6px 0;border-bottom:1px solid var(--bg4);cursor:pointer;display:flex;justify-content:space-between" onclick="shD(${r.id})"><span style="font-size:.85rem;color:var(--accent);font-weight:500">${r.name}</span><span style="font-size:.74rem;color:var(--text3)">Nr.${r.id}</span></div>`).join('')}`:''}<div style="margin-top:14px;display:flex;gap:7px;flex-wrap:wrap"><button class="rbtn" onclick="addH(D.find(x=>x.id===${d.id}));clO()" style="background:var(--accent-bg);color:var(--accent)">✓ Speichern</button><button class="rbtn" onclick="clO()">Schließen</button></div>`;document.getElementById('detO').classList.add('open')}
+function clO(){document.getElementById('detO').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')clO()});
+
+// LEVELS + CHEAT
+function rLvl(){document.getElementById('lvl').innerHTML=LV.map(l=>`<div class="lc lc-${l.l}"><h3>${EM[l.l-1]} Stufe ${l.l} — ${l.n}</h3><div class="tm">Max: <b>${l.t}</b> · Kontrolle: <b>${l.r}</b></div><div class="ds">${l.d}</div></div>`).join('')}
+function rCS(){document.getElementById('cht').innerHTML=CS.map(c=>`<div class="cc"><h4>${c.t}</h4><ul>${c.i.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}
 
-  {id:2,name:"Allergie",category:"Allgemein",
-   keywords:["allergie","allergische reaktion","anaphylaxie","anaphylaktisch","urtikaria","quincke","quincke-ödem","nesselsucht","angioödem","schwellung gesicht","schwellung lippe","schwellung zunge","schwellung rachen","allergischer schock","hautausschlag akut","juckreiz plötzlich","atemnot allergie","wespenallergie","nussallergie","medikamentenallergie","kontrastallergie","latexallergie","stridor allergie","zungenschwellung","lippenschwellung","gesichtsschwellung allergisch","globusgefühl allergie"],
-   desc:"Allergische Reaktion von mild bis anaphylaktisch"},
-
-  {id:3,name:"Asthma / Atemnot bei Erwachsenen",category:"Respiratorisch",
-   keywords:["atemnot","dyspnoe","asthma","kurzatmigkeit","giemen","pfeifen","atemgeräusch","atemprobleme","luftnot","atemschwierigkeiten","bronchospasmus","copd","copd exazerbation","exazerbation","peak flow","sauerstoffsättigung niedrig","spo2 niedrig","zyanose","tachypnoe","orthopnoe","kann nicht flach liegen","nachts atemnot","belastungsdyspnoe","atemhilfsmuskulatur","einziehungen","lungenödem","rasselgeräusche","spastik","obstruktion"],
-   desc:"Atembeschwerden und Asthma bei erwachsenen Patienten"},
-
-  {id:4,name:"Atemnot bei Kindern",category:"Pädiatrisch",
-   keywords:["atemnot kind","krupp","stridor","pseudokrupp","epiglottitis","kind atmet schlecht","kind pfeift","bronchiolitis","kind hustet bellend","bellender husten","kind blaue lippen","kind nasenflügeln","einziehungen kind","tachypnoe kind","kind giemen","kind spo2","kind sauerstoff","kind atemgeräusch","inspiratorischer stridor","exspiratorisches giemen kind"],
-   desc:"Atemprobleme im Kindesalter inkl. Krupp, Epiglottitis"},
-
-  {id:5,name:"Augenprobleme",category:"HNO / Sinnesorgane",
-   keywords:["auge","sehstörung","augenrötung","augenschmerz","fremdkörper auge","augenverätzung","konjunktivitis","sehverlust","sehverlust plötzlich","doppelbilder","augentrauma","lichtblitze","mouches volantes","glaskörpertrübung","amaurosis fugax","augendruck","glaukom","grüner star","augenverletzung","verätzung auge","schweißblende","hornhaut","hornhauterosion","hyposphagma","bindehaut","augenlid","lidverletzung","pupillendifferenz","geschwollenes auge","auge geschwollen","auge verklebt","auge tränt"],
-   desc:"Akute Beschwerden der Augen und Sehstörungen"},
-
-  {id:6,name:"Bauchschmerzen bei Erwachsenen",category:"Abdominell",
-   keywords:["bauchschmerzen","abdominalschmerz","übelkeit","kolik","brechreiz","magenschmerzen","oberbauchschmerzen","unterbauchschmerzen","rechter unterbauch","linker unterbauch","appendizitis","peritonismus","druckschmerz bauch","défense","abwehrspannung","loslaßschmerz","loslassschmerz","blähbauch","ileus","darmverschluss","gallenkolik","pankreatitis","gürtelförmig","epigastrisch","nabel","aortenaneurysma","mesenterialischämie","divertikulitis","flanke","sigmaschmerz","subhepatisch"],
-   desc:"Abdominelle Beschwerden bei Erwachsenen"},
-
-  {id:7,name:"Bauchschmerzen bei Kindern",category:"Pädiatrisch",
-   keywords:["bauchschmerzen kind","kind erbricht","kind übelkeit","kindliche kolik","invagination","kind bauch","kind weint beim drücken","kind bauchschmerz","dreimonatskolik","säuglingskolik","kind magenschmerzen","kind nabel","kind erbricht grün"],
-   desc:"Abdominelle Beschwerden im Kindesalter"},
-
-  {id:8,name:"Besorgte Eltern",category:"Pädiatrisch",
-   keywords:["besorgte eltern","kind auffällig","kind anders als sonst","eltern beunruhigt","kind weint viel","kind trinkt nicht","kind schläft nur","säugling auffällig","kind verändert","eltern sorgen","kind nicht wie immer","kind lethargisch","kind reagiert weniger","eltern angst"],
-   desc:"Eltern sorgen sich um ihr Kind ohne klares Leitsymptom"},
-
-  {id:9,name:"Bewusstlosigkeit / Synkope",category:"Neurologisch",
-   keywords:["bewusstlosigkeit","synkope","ohnmacht","kollaps","umgefallen","kreislaufkollaps","bewusstlos","nicht ansprechbar","zusammengebrochen","blackout","kurz weg gewesen","gcs","koma","somnolenz","sopor","bewusstseinsstörung","eintrübung","bewusstseinseintrübung","sturzfolge ohnmacht","orthostatisch","vasovagal","präsynkope","schwindel mit ohnmacht"],
-   desc:"Vorübergehender oder anhaltender Bewusstseinsverlust"},
-
-  {id:10,name:"Bisse und Stiche",category:"Trauma",
-   keywords:["biss","stich","tierbiss","insektenstich","zeckenbiss","schlangenbiss","hundebiss","katzenbiss","wespenstich","bienenstich","spinnenbiss","menschenbiss","rattenbiss","pferdebiss","bisswunde","stichverletzung tier","allergische reaktion stich","schwellung stich","rötung stich","quaddel","mehrfach stiche"],
-   desc:"Verletzungen durch Tier- oder Insektenbisse/-stiche"},
-
-  {id:11,name:"Diabetes / Hyperglykämie",category:"Internistisch",
-   keywords:["diabetes","blutzucker hoch","hyperglykämie","ketoazidose","dka","zucker entgleist","polyurie","polydipsie","acetongeruch","diabetisches koma","blutzucker niedrig","hypoglykämie","unterzucker","zuckerschock","bz hoch","bz niedrig","hba1c","insulinpumpe","insulin vergessen","kussmaul","metabolische azidose","diabetische notfall"],
-   desc:"Diabetische Stoffwechselentgleisung und Blutzuckernotfälle"},
-
-  {id:12,name:"Durchfall und Erbrechen",category:"Abdominell",
-   keywords:["durchfall","erbrechen","gastroenteritis","diarrhoe","brechdurchfall","dehydration","exsikkose","flüssigkeitsverlust","norovirus","rotavirus","magen darm","magen-darm","wässriger stuhl","blutig erbrechen","hämatochezie","kaffeesatzerbrechen","hämatemesis","brechreiz","würgen","elektrolyte","austrocknung","stehende hautfalte","trockene schleimhäute"],
-   desc:"Akuter Brechdurchfall und Flüssigkeitsverlust"},
-
-  {id:13,name:"Extremitätenprobleme",category:"Trauma",
-   keywords:["arm schmerzen","bein schmerzen","extremität","gelenkschmerzen","schwellung extremität","fehlstellung","fraktur verdacht","knochenbruch","gelenk geschwollen","gliedmaßen","knöchel","sprunggelenk","knie","schulter","ellenbogen","handgelenk","finger","zeh","fuß","oberschenkel","unterschenkel","oberarm","unterarm","luxation","verrenkung","verstauchung","distorsion","prellung extremität","hämatom arm","hämatom bein","schiene","gips","durchblutung gestört","sensibilität gestört","motorik gestört","dms","puls peripher","kompartment","thrombose bein","schwellung bein einseitig","wadenschmerz","achillessehne","bänderriss","kreuzbandriss","meniskus"],
-   desc:"Schmerzen, Schwellungen oder Funktionseinschränkung an Armen/Beinen"},
-
-  {id:14,name:"Fremdkörper",category:"Allgemein",
-   keywords:["fremdkörper","verschluckt","eingeatmet","aspiration","fremdkörper nase","fremdkörper ohr","fremdkörper auge","kind hat etwas verschluckt","bolus","münze verschluckt","batterie verschluckt","knopfzelle","fischgräte","gräte","knochen verschluckt","erstickungsgefahr","obstruktion atemweg","fremdkörper atemweg","fremdkörper rachen","fremdkörper vaginal","fremdkörper rektal"],
-   desc:"Fremdkörper in Atemwegen, GI-Trakt oder anderen Körperöffnungen"},
-
-  {id:15,name:"Gesichtsprobleme",category:"HNO / Sinnesorgane",
-   keywords:["gesichtsschwellung","gesichtsschmerz","kieferschmerz","kiefer","unterkiefer","oberkiefer","parotis","parotitis","speicheldrüse","speicheldrüsenentzündung","fazialisparese","gesicht schief","mundsperre","kieferklemme","schwellung kiefer","schwellung unterkiefer","schwellung oberkiefer","schwellung wange","wange geschwollen","wange dick","kiefer geschwollen","gesicht geschwollen","kinn geschwollen","jochbein","jochbeinprellung","mundöffnung eingeschränkt","kauschmerz","gesichtstrauma","schwellung submandibulär","lymphknoten kiefer","lymphknoten hals","lymphknotenschwellung gesicht","gesichtsnerv","trigeminusneuralgie","gesichtslähmung einseitig","schwellung gesicht einseitig","mundbodenabszess","angina ludwig","schwellung kinn","schwellung hals seitlich","dicke backe","schwellung mandibulär"],
-   desc:"Schwellungen, Schmerzen oder Funktionsstörungen im Gesichtsbereich"},
-
-  {id:16,name:"Halsschmerzen",category:"HNO / Sinnesorgane",
-   keywords:["halsschmerzen","schluckbeschwerden","angina","tonsillitis","pharyngitis","peritonsillarabszess","hals geschwollen","mandeln","epiglottitis erwachsen","heiser","heiserkeit","laryngitis","rachenrötung","exsudat","rachenentzündung","halsentzündung","schluckschmerzen","kloß im hals","globusgefühl","uvula","gaumenmandeln","streptokokken","scharlach hals","diphtherie","hals kratzt","tonsillen","schlucken tut weh","dysphagie","odynophagie"],
-   desc:"Schmerzen im Rachenbereich mit Schluckbeschwerden"},
-
-  {id:17,name:"Hautausschlag",category:"Dermatologisch",
-   keywords:["hautausschlag","exanthem","petechien","purpura","bläschen","rash","masern","windpocken","scharlach","urtikaria","erythem","ekzem akut","hautveränderung","makulopapulös","vesikulär","pustel","papel","erythema","erythema migrans","zeckenbiss ring","gürtelrose","herpes zoster","dermatitis","kontaktdermatitis","arzneimittelexanthem","stevens-johnson","lyell","meningokokken petechien","glastest","haut rot fleckig","quaddeln","juckreiz"],
-   desc:"Akute Hautveränderungen, Exantheme, Petechien"},
-
-  {id:18,name:"Herzklopfen",category:"Kardiologisch",
-   keywords:["herzklopfen","palpitation","herzrasen","tachykardie","arrhythmie","herzstolpern","vorhofflimmern","unregelmäßiger puls","herzrhythmusstörung","svt","supraventrikuläre tachykardie","ventrikuläre tachykardie","bradykardie","herzfrequenz hoch","puls schnell","puls unregelmäßig","extrasystolen","herzaussetzer","flattern","herzflattern","kammerflimmern","schrittmacher","defi","icd","defibrillator"],
-   desc:"Wahrgenommene Herzrhythmusstörungen und Palpitationen"},
-
-  {id:19,name:"Hodenschmerzen",category:"Urologisch",
-   keywords:["hodenschmerzen","hodenschwellung","hodentorsion","hoden verdreht","skrotum","nebenhodenentzündung","epididymitis","orchitis","hoden geschwollen","hoden akut","hoden hart","hydrozele","varikozele","hoden blau","leiste schmerzen hoden","hoden tastbar","hoden eingezogen"],
-   desc:"Akute Schmerzen oder Schwellung im Hodenbereich"},
-
-  {id:20,name:"Irritiertes Kind / Schreiendes Baby",category:"Pädiatrisch",
-   keywords:["schreiendes baby","kind schreit","kind nicht zu beruhigen","irritiertes kind","kind unruhig","säugling schreit","baby schreit","kind untröstlich","fontanelle vorgewölbt","säugling weint","baby untröstlich","schreien ohne pause","kind überstreckt","kind berührungsempfindlich","kind will nicht auf arm"],
-   desc:"Untröstliches Kind oder Säugling ohne klare Ursache"},
-
-  {id:21,name:"Katastrophe / Massenanfall",category:"Spezial",
-   keywords:["massenanfall","katastrophe","manv","großschadenslage","mehrere verletzte","terror","explosion","massenunfall","zugunglück","busunglück","flugzeug","großereignis","sichtung","triagierung manv"],
-   desc:"Sichtung bei Massenanfall von Verletzten (MANV)"},
-
-  {id:22,name:"Kopfschmerzen",category:"Neurologisch",
-   keywords:["kopfschmerzen","migräne","cephalgie","donnerschlagkopfschmerz","kopfschmerz akut","stirnkopfschmerz","nackensteife","meningismus","subarachnoidalblutung","kopfschmerz stärkster","kopfschmerz so schlimm wie nie","spannungskopfschmerz","clusterkopfschmerz","schläfe","hinterkopfschmerz","kopfschmerz mit erbrechen","kopfschmerz mit fieber","meningitis verdacht","kopfschmerz mit sehstörung","kopfschmerz nach belastung","kopfschmerz mit nackensteife","temporal","arteriitis temporalis","stirn","schläfenkopfschmerz"],
-   desc:"Akute Kopfschmerzen verschiedener Ätiologie"},
-
-  {id:23,name:"Kopfverletzung",category:"Trauma",
-   keywords:["kopfverletzung","schädel-hirn-trauma","sht","sturz auf kopf","kopfplatzwunde","commotio","bewusstlosigkeit nach sturz","kopf gestoßen","schädelfraktur","amnesie nach unfall","kopf trauma","platzwunde kopf","blutet am kopf","beule kopf","prellmarke kopf","hämatom kopf","brillenhämatom","austritt liquor","ohrenbluten nach trauma","nasenbluten nach trauma","kopfverletzung kind","erbrechen nach kopftrauma","kopfschmerz nach trauma","pupillendifferenz nach trauma"],
-   desc:"Traumatische Verletzung des Kopfes/Schädels"},
-
-  {id:24,name:"Krampfanfall",category:"Neurologisch",
-   keywords:["krampfanfall","epilepsie","anfall","konvulsion","status epilepticus","tonisch-klonisch","tonisch klonisch","grand mal","krampfen","fieberkrampf","zucken","epileptischer anfall","absence","petit mal","postiktal","zungenbiss","einnässen anfall","schaum vor mund","anfall mit bewusstlosigkeit","anfall kind","erstanfall","krampfanfall wiederholt","anfallsleiden","aura epileptisch"],
-   desc:"Epileptische Anfälle und Krampfgeschehen"},
-
-  {id:25,name:"Nasenbluten",category:"HNO / Sinnesorgane",
-   keywords:["nasenbluten","epistaxis","nase blutet","nasenbluten stark","blutung nase","tamponade nase","nasenbluten stillen","nasenbluten marcumar","nasenbluten antikoagulation","nasenbluten kind","rezidivierendes nasenbluten","nase trauma blut"],
-   desc:"Akute Blutung aus der Nase"},
-
-  {id:26,name:"Nackenschmerzen",category:"Trauma",
-   keywords:["nackenschmerzen","hws","halswirbelsäule","nackensteife","torticollis","genickschmerzen","nackenverletzung","hws distorsion","schleudertrauma","hws fraktur","nackenschmerz nach unfall","nacken steif","genicksteife","hws syndrom","zervikalsyndrom","nackenverspannung akut","schmerzen nacken","schulter-nacken","nacken eingeschränkt","hws trauma"],
-   desc:"Schmerzen oder Verletzungen der Halswirbelsäule"},
-
-  {id:27,name:"Ohrenprobleme",category:"HNO / Sinnesorgane",
-   keywords:["ohrenschmerzen","otitis","otitis media","otitis externa","hörsturz","schwerhörigkeit plötzlich","ohr läuft","trommelfell","ohr fremdkörper","tinnitus akut","schwindel ohr","ohr zu","ohr druck","ohr verstopft","cerumen","ohrgeräusche","drehschwindel","morbus menière","ohr eiter","ohrbluten","ohrschmerzen kind","ohrschmerzen fliegen","mastoiditis","ohrschwellung","ohr rot","ohr geschwollen"],
-   desc:"Akute Beschwerden der Ohren inkl. Hörsturz, Otitis"},
-
-  {id:28,name:"Psychiatrische Vorstellung",category:"Psychiatrisch",
-   keywords:["psychiatrisch","suizidgedanken","suizidal","suizidversuch","psychose","verwirrt","agitiert","halluzination","wahnhaft","selbstverletzung","erregungszustand","angststörung akut","panikattacke","panik","depressiv akut","depression notfall","wahnvorstellung","stimmenhören","derealisation","depersonalisation","katatonie","medikamenten entzug","entzug","alkoholentzug","delirium tremens","delir","psychiatrische krise"],
-   desc:"Psychiatrische Notfälle inkl. Suizidalität, Psychosen"},
-
-  {id:29,name:"PV-Blutung (Vaginale Blutung)",category:"Gynäkologisch",
-   keywords:["vaginale blutung","pv blutung","unterleibsblutung","periodenblutung stark","zwischenblutung","postmenopausal blutung","blutung schwangerschaft","abort","fehlgeburt","menorrhagie","metrorrhagie","hypermenorrhoe","blutung nach geschlechtsverkehr","kontaktblutung","schmierblutung","blutklumpen vaginal","tampon durchgeblutet","starke regelblutung"],
-   desc:"Vaginale Blutung verschiedener Ursachen"},
-
-  {id:30,name:"Rückenschmerzen",category:"Orthopädisch",
-   keywords:["rückenschmerzen","lumbago","hexenschuss","ischias","bandscheibe","bandscheibenvorfall","rückenschmerz akut","lws","reithosenanästhesie","cauda equina","kreuzschmerzen","lumbalgie","radikulopathie","ischiasschmerz","ausstrahlung bein","taubheit bein","kribbeln bein","rücken blockiert","kann nicht aufstehen","rücken eingeschossen","bws schmerzen","lendenwirbelschmerzen","blasenstörung rücken","mastdarmstörung"],
-   desc:"Akute und chronische Rückenschmerzen"},
-
-  {id:31,name:"Schwangerschaftsprobleme",category:"Gynäkologisch",
-   keywords:["schwangerschaft","schwanger","wehen","vorzeitige wehen","präeklampsie","eklampsie","hellp","blutung schwanger","fruchtwasserabgang","schwangerschaftskomplikation","eileiterschwangerschaft","extrauteringravidität","eug","hyperemesis gravidarum","schwangerschaftserbrechen","plazenta","vorzeitige plazentalösung","nabelschnurvorfall","schwanger blutdruck hoch","schwanger krämpfe","schwanger sehstörung","schwanger ödeme","geburt","presswehen","kind kommt","sturzgeburt"],
-   desc:"Komplikationen und Beschwerden in der Schwangerschaft"},
-
-  {id:32,name:"Sexuell übertragbare Infektionen",category:"Allgemein",
-   keywords:["sti","sexuell übertragbar","geschlechtskrankheit","gonorrhoe","chlamydien","syphilis","genitalulkus","ausfluss genital","kondylome","herpes genitalis","genitalherpes","hiv exposition","pep","nadelstichverletzung","tripper","genital bläschen","genital schmerz","genital juckreiz","genital rötung","fluor vaginalis"],
-   desc:"Beschwerden im Zusammenhang mit sexuell übertragbaren Erkrankungen"},
-
-  {id:33,name:"Stürze",category:"Trauma",
-   keywords:["sturz","gestürzt","gefallen","sturzfolge","prellung","kontusion","alter mensch gestürzt","sturz von leiter","sturz aus höhe","treppensturz","sturztrauma","gestolpert","umgeknickt","sport gefallen","fahrrad gestürzt","synkope sturz","sturz älterer patient","sturzneigung","hämatom sturz","prellmarke"],
-   desc:"Verletzungen nach Stürzen verschiedener Mechanismen"},
-
-  {id:34,name:"Thoraxschmerz",category:"Kardiologisch",
-   keywords:["brustschmerzen","thoraxschmerz","engegefühl brust","retrosternal","herzinfarkt","herzinfarkt verdacht","acs","akutes koronarsyndrom","angina pectoris","brustdruck","brustenge","nitro","stechend brust","druckgefühl brust","brust links","ausstrahlung arm","ausstrahlung kiefer","ausstrahlung rücken","kaltschweißig","vernichtungsschmerz","brustschmerz bei belastung","brust brennen","interkostalneuralgie","pleuritisch","pleuritis","brustschmerz atemabhängig","brustwandschmerz","sternum","sternalschmerz","aortendissektion","reißender schmerz","lungenembolie","plötzlich atemnot brustschmerz"],
-   desc:"Schmerzen im Brustbereich — kardial, pulmonal, muskuloskelettal"},
-
-  {id:35,name:"Überdosierung / Vergiftung",category:"Toxikologisch",
-   keywords:["vergiftung","überdosis","intoxikation","suizidversuch medikamente","drogenintoxikation","pilzvergiftung","alkoholintoxikation","tabletteneinnahme","giftstoff","verätzung oral","paracetamol","medikamentenüberdosis","drogen","opiat","opiatintoxikation","benzodiazepine","kokain","amphetamin","giftnotruf","pflanzenvergiftung","kohlenmonoxid","co vergiftung","rauchgas","lebensmittelvergiftung","methanol","ethylenglykol"],
-   desc:"Aufnahme toxischer Substanzen oder Medikamentenüberdosierung"},
-
-  {id:36,name:"Unwohlsein bei Erwachsenen",category:"Allgemein",
-   keywords:["unwohlsein","allgemeinzustand verschlechtert","schwäche","schlapp","kraftlos","malaise","erschöpfung","abgeschlagenheit","fatigue","reduzierter az","bettlägerig","krankheitsgefühl","fühlt sich schlecht","geht es nicht gut","schwindel allgemein","appetitlos","antriebslos","müde","müdigkeit extrem","dehydriert","trinkt wenig","isst nicht","gewichtsverlust","blass","weiß im gesicht","zittrig"],
-   desc:"Allgemeines Krankheitsgefühl und Schwächezustände"},
-
-  {id:37,name:"Unwohlsein bei Kindern",category:"Pädiatrisch",
-   keywords:["kind krank","kind schlapp","kind fiebert","kind trinkt schlecht","kind isst nicht","säugling auffällig","kind reduzierter az","kind müde","kind blass","kind weinerlich","kind apathisch","kind spiellt nicht","kind lustlos","kind will nicht trinken","säugling trinkt nicht","kind dehydriert","kind trockene windeln"],
-   desc:"Allgemeines Krankheitsgefühl bei Kindern und Säuglingen"},
-
-  {id:38,name:"Urologische Probleme",category:"Urologisch",
-   keywords:["harnverhalt","dysurie","hämaturie","blut im urin","harnwegsinfektion","harnwegsinfekt","hwi","nierenkolik","nierensteine","flankenschmerz","harnleiterstein","pollakisurie","algurie","brennen beim wasserlassen","häufiges wasserlassen","harnröhre","phimose","paraphimose","vorhautverengung","katheter","dauerkatheter","suprapubischer katheter","priapismus","harnverhalt akut","prostata","prostatitis","nierenbeckenentzündung","pyelonephritis","makrohämaturie","urin rot","urin braun","urin trüb"],
-   desc:"Beschwerden des Harntraktes und der Nieren"},
-
-  {id:39,name:"Verbrennung / Verbrühung",category:"Trauma",
-   keywords:["verbrennung","verbrühung","brandwunde","verätzung","hitzeschaden","verbrennung kind","verbrennung gesicht","inhalationstrauma","verbrühung heißes wasser","verbrennung hand","grad 1","grad 2","grad 3","blasenbildung verbrennung","kba","verbrannte körperoberfläche","neunerregel","flammenverbrennung","kontaktverbrennung","fettverbrennung","dampfverbrennung","sonnenbrand schwer"],
-   desc:"Thermische und chemische Hautschädigungen"},
-
-  {id:40,name:"Verhaltensauffälligkeiten",category:"Psychiatrisch",
-   keywords:["aggressiv","verhaltensauffällig","randaliert","gewalttätig","fremdgefährdung","impulskontrolle","intoxikation aggressiv","tobsucht","eigen- und fremdgefährdung","bedrohlich","schreit","unkooperativ","weglaufgefahr","fixierung","zwangseinweisung","psych kg","unterbringung","gewalttätig patient","handgreiflich","drohend","tobt"],
-   desc:"Aggressives oder gefährdendes Verhalten"},
-
-  {id:41,name:"Wunden",category:"Chirurgisch",
-   keywords:["wunde","schnittwunde","platzwunde","risswunde","stichwunde","bisswunde","offene wunde","blutend","verletzung haut","wundversorgung","naht erforderlich","klammern","pflaster","tetanus","tiefe wunde","sehnenverletzung","nervenverletzung","glasschnitt","messerwunde","schürfwunde","abschürfung","décollement","skalpierung","amputationsverletzung","fingerkuppe","nagelverletzung"],
-   desc:"Offene Verletzungen der Haut und Weichteile"},
-
-  {id:42,name:"Zahnschmerzen",category:"HNO / Sinnesorgane",
-   keywords:["zahnschmerzen","zahnschmerz","zahnentzündung","zahnfleisch","abszess zahn","zahntrauma","zahn abgebrochen","kieferschmerz dental","dentogen","zahnfleischbluten","lockerer zahn","zahn ausgeschlagen","avulsion","zahnwurzel","pulpitis","karies","zahnschmerz nachts","wange geschwollen zahnschmerz","kiefer dick zahnschmerz"],
-   desc:"Schmerzen im Bereich der Zähne und des Kiefers"},
-
-  {id:43,name:"Fieber bei Erwachsenen",category:"Allgemein",
-   keywords:["fieber","temperatur erhöht","schüttelfrost","fieber erwachsen","sepsis verdacht","sepsis","fieberursache","fieberschub","hochfiebrig","pyrexie","fieber über 39","fieber über 40","fieber und schüttelfrost","fieber unklarer genese","neutropenes fieber","immunsupprimiert fieber","fieber nach reise","tropenfieber","malaria verdacht","fieber mit hautausschlag","fieber mit nackensteife"],
-   desc:"Erhöhte Körpertemperatur beim erwachsenen Patienten"},
-
-  {id:44,name:"Fieber bei Kindern",category:"Pädiatrisch",
-   keywords:["fieber kind","kind fieber","fieberkrampf","kind heiß","säugling fieber","fieber neugeborenes","fieber neugeboren","kind fieber über 40","kind glüht","kind schüttelfrost","dreitage fieber","kind fiebersaft","kind fieberzäpfchen","kind exanthem fieber","kind petechien fieber"],
-   desc:"Erhöhte Körpertemperatur im Kindesalter"},
-
-  {id:45,name:"Schlaganfall / Fokale Neurologie",category:"Neurologisch",
-   keywords:["schlaganfall","apoplex","hemiparese","halbseitenlähmung","sprachstörung","aphasie","dysarthrie","gesichtslähmung","arm schwäche plötzlich","bein schwäche plötzlich","tia","fast test","sehstörung plötzlich einseitig","doppelbilder plötzlich","neglect","hängender mundwinkel","verwaschen sprechen","wortfindungsstörung","arm heben nicht möglich","gesicht hängt","arm fällt ab","plötzlich schwäche einseitig","plötzlich gefühlsstörung einseitig","plötzlich sehstörung","schlaganfall symptome","lyse","thrombektomie","stroke","hirnblutung"],
-   desc:"Akute neurologische Ausfälle — Verdacht auf Schlaganfall"},
-
-  {id:46,name:"Blutung / Nachblutung",category:"Chirurgisch",
-   keywords:["blutung","nachblutung","wundblutung","blutung op","blutung nach eingriff","blutung stillen","starke blutung","hämorrhagie","blutung nicht zu stoppen","tonsillektomie blutung","zahnextraktion blutung","nachblutung nach op","arteriell spritzend","venös sickernd","druckverband","tourniquet","blutung antikoagulation","marcumar blutung","bluter","gerinnungsstörung blutung"],
-   desc:"Aktive oder rezidivierende Blutung aus Wunden oder nach Eingriffen"},
-
-  {id:47,name:"Chemische Exposition",category:"Toxikologisch",
-   keywords:["chemie","verätzung","chemische exposition","gefahrstoff","säure","lauge","chemische verbrennung","augenverätzung","hautverätzung","gasinhalation","reizgas","chlorgas","ammoniak","flusssäure","arbeitsunfall chemie","dekontamination","abc","gefahrgut","industrieunfall"],
-   desc:"Kontakt mit chemischen Gefahrstoffen"},
-
-  {id:48,name:"Elektrische Verletzung",category:"Trauma",
-   keywords:["stromunfall","stromschlag","elektrounfall","blitz","blitzschlag","elektroverbrennung","hochspannung","niederspannung","elektrizität","steckdose kind","starkstrom","lichtbogen","ekg nach stromschlag","herzrhythmusstörung strom"],
-   desc:"Verletzungen durch elektrischen Strom oder Blitzschlag"},
-
-  {id:49,name:"Ertrinken / Beinahe-Ertrinken",category:"Trauma",
-   keywords:["ertrinken","beinahe ertrinken","beinahe-ertrinken","submersion","aspiration wasser","wasserunfall","bewusstlos wasser","unterkühlung wasser","kind pool","kind badewanne","kind teich","kind wasser","schwimmbad notfall","taucher","tauchunfall"],
-   desc:"Zwischenfall durch Untertauchen/Aspiration von Wasser"},
-
-  {id:50,name:"Hypothermie / Unterkühlung",category:"Allgemein",
-   keywords:["unterkühlung","hypothermie","erfrierung","kälteschaden","frieren stark","kerntemperatur niedrig","obdachlos kalt","lawinenverschüttung","kältezittern","verwirrt kälte","bradykardie kälte","periphere erfrierung","akren kalt","finger blau kälte","zehen blau kälte","frostbeule"],
-   desc:"Absenkung der Körperkerntemperatur"},
-
-  {id:51,name:"Thoraxverletzung",category:"Trauma",
-   keywords:["thoraxtrauma","rippenfraktur","rippenprellung","pneumothorax","hämatothorax","brustkorbverletzung","thoraxprellung","instabiler thorax","spannungspneumothorax","hautemphysem","thorax stich","thorax schuss","flail chest","sternum fraktur","brustbeinprellung","brustbein fraktur","mediastinalemphysem","atemabhängiger schmerz rippe"],
-   desc:"Traumatische Verletzung des Brustkorbs"},
-
-  {id:52,name:"Bauchverletzung",category:"Trauma",
-   keywords:["bauchtrauma","abdominaltrauma","stichverletzung bauch","bauchprellung","milzruptur","leberruptur","penetrierendes bauchtrauma","stumpfes bauchtrauma","lenkradtrauma","gurtprellung","hohlorganperforation","bauch nach unfall","freie flüssigkeit","fast sonographie"],
-   desc:"Traumatische Verletzung des Abdomens"}
-];
-
-// Categories
-const CATEGORIES=[...new Set(DIAGRAMS.map(d=>d.category))].sort();
-
-// Triage Levels
-const LEVELS=[
-  {level:1,name:"Sofort",color:"red",time:"0 Min",reeval:"-",desc:"Unmittelbare Lebensgefahr. Sofortige ärztliche Behandlung erforderlich. Beispiel: Herzstillstand, schwerste Atemnot, Bewusstlosigkeit mit fehlendem Schutzreflex."},
-  {level:2,name:"Sehr dringend",color:"orange",time:"≤ 10 Min",reeval:"10 Min",desc:"Potenziell lebensbedrohlich. Arztkontakt innerhalb von 10 Minuten. Beispiel: Starke Brustschmerzen, akute Atemnot, schwere allergische Reaktion, akuter Schlaganfall."},
-  {level:3,name:"Dringend",color:"yellow",time:"≤ 30 Min",reeval:"30 Min",desc:"Dringend behandlungsbedürftig. Arztkontakt innerhalb von 30 Minuten. Beispiel: Starke Schmerzen, hohes Fieber mit Allgemeinsymptomen, akute psychiatrische Krise."},
-  {level:4,name:"Normal",color:"green",time:"≤ 90 Min",reeval:"60 Min",desc:"Standard-Notfall. Arztkontakt innerhalb von 90 Minuten. Beispiel: Mäßige Schmerzen, leichtes Fieber, kleine Wunde, Erbrechen ohne Alarmsymptome."},
-  {level:5,name:"Nicht dringend",color:"blue",time:"≤ 120 Min",reeval:"120 Min",desc:"Keine akute Gefährdung. Arztkontakt innerhalb von 120 Minuten. Beispiel: Chronische Beschwerden, Bagatelleverletzung, Rezeptanfrage."}
-];
-
-// Body Regions for Guided Triage
-const BODY_REGIONS=[
-  {name:"Kopf / Neurologie",icon:"🧠",diagrams:[5,9,15,22,23,24,25,27,42,45]},
-  {name:"Thorax / Herz / Lunge",icon:"🫁",diagrams:[3,18,34,51]},
-  {name:"Abdomen / GI-Trakt",icon:"🫃",diagrams:[6,7,12,52]},
-  {name:"Urogenital",icon:"🩺",diagrams:[19,29,31,32,38]},
-  {name:"Extremitäten / Rücken",icon:"🦴",diagrams:[13,26,30,33]},
-  {name:"Haut / Wunden",icon:"🩹",diagrams:[1,10,17,39,41,46]},
-  {name:"Allgemein / Systemisch",icon:"🌡️",diagrams:[2,11,14,35,36,43,47,48,49,50]},
-  {name:"Pädiatrie",icon:"👶",diagrams:[4,7,8,20,37,44]},
-  {name:"Psychiatrie",icon:"🧩",diagrams:[28,40]},
-  {name:"Spezial",icon:"🚨",diagrams:[16,21]}
-];
-
-// Cheatsheet
-const CHEATSHEET=[
-  {title:"🔴 Sofort — Red Flags",items:["Atemstillstand / Schnappatmung","Kreislaufstillstand / Pulslosigkeit","Bewusstlosigkeit ohne Schutzreflexe","Massive arterielle Blutung","Anaphylaktischer Schock","Status epilepticus"]},
-  {title:"🟠 Sehr dringend — Warnsignale",items:["Akute schwere Atemnot / SpO₂ < 92%","Schwere Thoraxschmerzen (ACS-Verdacht)","Akutes fokalneurologisches Defizit","GCS ≤ 12","Schwere allergische Reaktion","Starke unkontrollierbare Blutung","Akutes Abdomen mit Abwehrspannung"]},
-  {title:"🟡 Dringend — Typische Zeichen",items:["Fieber > 39°C + AZ-Minderung","Starke Schmerzen (NRS 7–10)","Mäßige Atemnot mit Nebengeräuschen","Akutes Erbrechen mit Dehydratationszeichen","Akute Verwirrtheit / Agitation","Nicht reponierbare Hernie"]},
-  {title:"🟢 Normal — Standard",items:["Mäßige Schmerzen (NRS 4–6)","Fieber ohne Begleitsymptome","Kleine Wunden ohne starke Blutung","Erbrechen/Durchfall ohne Dehydration","Akuter Harnverhalt (schmerzarm)","Hautausschlag ohne Allgemeinsymptome"]},
-  {title:"📊 Vitalzeichen-Richtwerte",items:["Atemfrequenz: 12–20/min (Erwachsene)","SpO₂: > 95% (> 92% bei COPD)","HF: 60–100/min","RR systolisch: 100–140 mmHg","Temperatur: 36,0–37,5°C","GCS: 15 (max. = unauffällig)"]},
-  {title:"⏱️ FAST-Test (Schlaganfall)",items:["Face — Gesichtslähmung?","Arms — Arm-Halteversuch: Absinken?","Speech — Sprachstörung?","Time — Zeitpunkt des Symptombeginns!","→ Bei Verdacht: sofort Stufe Orange","Lyse-Zeitfenster beachten (< 4,5 h)"]},
-  {title:"💊 Schmerzskala NRS",items:["0 = kein Schmerz","1–3 = leichter Schmerz → Grün/Blau","4–6 = mäßiger Schmerz → Gelb/Grün","7–9 = starker Schmerz → Gelb/Orange","10 = stärkster vorstellbar → Orange","Kinder: Gesichterskala verwenden"]},
-  {title:"🧒 Pädiatrische Besonderheiten",items:["Neugeborene mit Fieber → immer Orange","Fontanelle: vorgewölbt = Hirndruck?","Trinkschwäche = Alarmsignal","Petechien + Fieber → Meningokokken?","Tachypnoe altersabhängig bewerten","Eltern-Intuition ernst nehmen"]}
-];
-
-// ============================================================
-// STATE
-// ============================================================
-let history=JSON.parse(localStorage.getItem('mts_history')||'[]');
-let activeTab='search';
-let guidedState={step:'region',region:null,diagram:null};
-let activeCategory='';
-
-// ============================================================
-// THEME
-// ============================================================
-function toggleTheme(){
-  document.body.classList.toggle('dark');
-  const isDark=document.body.classList.contains('dark');
-  localStorage.setItem('mts_theme',isDark?'dark':'light');
-  document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
-}
-// Load saved preference (default = light)
-(function(){
-  const saved=localStorage.getItem('mts_theme');
-  if(saved==='dark'){
-    document.body.classList.add('dark');
-    document.getElementById('themeBtn').textContent='☀️';
-  }
-})();
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-document.querySelectorAll('.nav-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    const target=tab.dataset.tab;
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('panel-'+target).classList.add('active');
-    activeTab=target;
-    if(target==='guided')initGuided();
-    if(target==='diagrams')renderDiagrams();
-    if(target==='levels')renderLevels();
-    if(target==='cheatsheet')renderCheatsheet();
-    if(target==='history')renderHistory();
-  });
-});
-
-// ============================================================
-// SYMPTOM SEARCH — improved scoring with body-part awareness
-// ============================================================
-const searchInput=document.getElementById('symptomSearch');
-const searchResults=document.getElementById('searchResults');
-const resultsBar=document.getElementById('resultsBar');
-const resultsCount=document.getElementById('resultsCount');
-const searchHint=document.getElementById('searchHint');
-
-searchInput.addEventListener('input',debounce(()=>{
-  const q=searchInput.value.trim().toLowerCase();
-  if(q.length<2){
-    searchResults.innerHTML='';
-    resultsBar.style.display='none';
-    searchHint.style.display='block';
-    return;
-  }
-  searchHint.style.display='none';
-  const terms=q.split(/[\s,;]+/).filter(t=>t.length>=2);
-  const fullQuery=q; // keep full query for phrase matching
-
-  let scored=DIAGRAMS.map(d=>{
-    let score=0;
-    let matched=[];
-
-    // PHASE 1: Full query phrase match (highest priority)
-    const nameLower=d.name.toLowerCase();
-    const descLower=d.desc.toLowerCase();
-    if(nameLower.includes(fullQuery)){score+=25;matched.push(fullQuery)}
-    if(descLower.includes(fullQuery)){score+=15;matched.push(fullQuery)}
-    d.keywords.forEach(kw=>{
-      if(kw.includes(fullQuery)||fullQuery.includes(kw)){score+=20;if(!matched.includes(fullQuery))matched.push(fullQuery)}
-    });
-
-    // PHASE 2: Individual term matching
-    terms.forEach(term=>{
-      // Exact keyword match (strongest)
-      d.keywords.forEach(kw=>{
-        if(kw===term){score+=12;matched.push(term)}
-        else if(kw.includes(term)){score+=8;matched.push(term)}
-        else if(term.length>=4&&kw.startsWith(term.substring(0,4))){score+=2} // fuzzy prefix
-      });
-      // Name match
-      if(nameLower.includes(term)){score+=10;matched.push(term)}
-      // Description match
-      if(descLower.includes(term)){score+=4;matched.push(term)}
-    });
-
-    // PHASE 3: Multi-term bonus — if ALL terms match, big bonus
-    const allTermsMatch=terms.every(term=>
-      d.keywords.some(kw=>kw.includes(term))||nameLower.includes(term)||descLower.includes(term)
-    );
-    if(allTermsMatch&&terms.length>1){score+=15}
-
-    return {...d,score,matched:[...new Set(matched)]};
-  }).filter(d=>d.score>0).sort((a,b)=>b.score-a.score);
-
-  resultsBar.style.display='flex';
-  resultsCount.innerHTML=`<strong>${scored.length}</strong> Diagramm${scored.length!==1?'e':''} gefunden`;
-  
-  if(scored.length===0){
-    searchResults.innerHTML=`<div class="empty-state"><p>Keine passenden Diagramme gefunden. Versuche andere Begriffe.</p></div>`;
-    return;
-  }
-
-  searchResults.innerHTML=scored.slice(0,15).map(d=>`
-    <div class="card" onclick="showDetail(${d.id})">
-      <div class="card-header">
-        <span class="card-title">${highlightMatch(d.name,terms)}</span>
-        <span class="triage-badge triage-${getCategoryLevel(d.category)}">
-          <span class="triage-dot dot-${getCategoryLevel(d.category)}"></span>
-          ${d.category}
-        </span>
-      </div>
-      <div class="card-subtitle">${highlightMatch(d.desc,terms)}</div>
-      <div class="tags">
-        ${d.keywords.filter(kw=>d.matched.some(m=>kw.includes(m))).slice(0,6).map(kw=>`<span class="tag matched">${kw}</span>`).join('')}
-        ${d.keywords.filter(kw=>!d.matched.some(m=>kw.includes(m))).slice(0,4).map(kw=>`<span class="tag">${kw}</span>`).join('')}
-      </div>
-    </div>
-  `).join('');
-},150));
-
-function highlightMatch(text,terms){
-  let result=text;
-  terms.forEach(term=>{
-    const regex=new RegExp(`(${escapeRegex(term)})`,'gi');
-    result=result.replace(regex,'<mark style="background:var(--mark-bg);color:var(--mark-color);border-radius:2px;padding:0 2px">$1</mark>');
-  });
-  return result;
-}
-
-function getCategoryLevel(cat){
-  const map={'Kardiologisch':2,'Neurologisch':2,'Respiratorisch':2,'Trauma':3,'Abdominell':3,'Chirurgisch':3,'Pädiatrisch':3,'Psychiatrisch':3,'Toxikologisch':2,'Internistisch':3,'Gynäkologisch':3,'Urologisch':3,'Allgemein':4,'HNO / Sinnesorgane':4,'Dermatologisch':4,'Orthopädisch':4,'Spezial':2};
-  return map[cat]||3;
-}
-
-// ============================================================
-// GUIDED TRIAGE
-// ============================================================
-function initGuided(){guidedState={step:'region',region:null,diagram:null};renderGuidedStep()}
-
-function renderGuidedStep(){
-  const bc=document.getElementById('guidedBreadcrumb');
-  const content=document.getElementById('guidedContent');
-
-  if(guidedState.step==='region'){
-    bc.innerHTML='<strong>Schritt 1:</strong> Körperregion / Bereich wählen';
-    content.innerHTML=`<div class="guided-step"><h3>Welche Körperregion oder welcher Bereich ist betroffen?</h3><div class="option-grid">${BODY_REGIONS.map((r,i)=>`<button class="option-btn" onclick="selectRegion(${i})"><span style="font-size:1.3rem">${r.icon}</span> ${r.name}<div style="font-size:.75rem;color:var(--text3);margin-top:2px">${r.diagrams.length} Diagramme</div></button>`).join('')}</div></div>`;
-  } else if(guidedState.step==='diagram'){
-    const region=BODY_REGIONS[guidedState.region];
-    const diagrams=region.diagrams.map(id=>DIAGRAMS.find(d=>d.id===id));
-    bc.innerHTML=`<span onclick="initGuided()">Start</span> › <strong>${region.icon} ${region.name}</strong>`;
-    content.innerHTML=`<div class="guided-step"><h3>Welches Beschwerdebild passt am besten?</h3><div class="option-grid">${diagrams.map(d=>`<button class="option-btn" onclick="selectDiagram(${d.id})"><strong>${d.name}</strong><div style="font-size:.78rem;color:var(--text2);margin-top:4px">${d.desc}</div></button>`).join('')}</div></div>`;
-  } else if(guidedState.step==='result'){
-    const d=DIAGRAMS.find(x=>x.id===guidedState.diagram);
-    const region=BODY_REGIONS[guidedState.region];
-    bc.innerHTML=`<span onclick="initGuided()">Start</span> › <span onclick="guidedState.step='diagram';renderGuidedStep()">${region.icon} ${region.name}</span> › <strong>${d.name}</strong>`;
-    addToHistory(d);
-    content.innerHTML=`
-      <div class="result-display">
-        <div class="big-badge triage-${getCategoryLevel(d.category)}"><span class="triage-dot dot-${getCategoryLevel(d.category)}" style="width:12px;height:12px"></span>${d.name}</div>
-        <div class="diagram-name">Präsentationsdiagramm Nr. ${d.id}</div>
-        <div class="diagram-desc">${d.desc}</div>
-        <div class="tags" style="justify-content:center;margin-bottom:16px">${d.keywords.slice(0,10).map(kw=>`<span class="tag">${kw}</span>`).join('')}</div>
-        <div style="background:var(--bg3);border-radius:var(--radius-sm);padding:16px;margin:16px 0;text-align:left">
-          <div style="font-weight:600;font-size:.88rem;margin-bottom:8px">📌 Nächste Schritte:</div>
-          <div style="font-size:.85rem;color:var(--text2);line-height:1.8">
-            1. Öffne das Diagramm <strong>„${d.name}"</strong> im MTS-Handbuch<br>
-            2. Arbeite die Indikatoren von oben (rot) nach unten (blau) durch<br>
-            3. Der erste zutreffende Indikator bestimmt die Dringlichkeitsstufe<br>
-            4. Dokumentiere Diagramm, Indikator und Dringlichkeitsstufe
-          </div>
-        </div>
-        <button class="restart-btn" onclick="initGuided()">↩ Neue Zuordnung starten</button>
-      </div>`;
-  }
-}
-
-function selectRegion(i){guidedState.region=i;guidedState.step='diagram';renderGuidedStep()}
-function selectDiagram(id){guidedState.diagram=id;guidedState.step='result';renderGuidedStep()}
-
-// ============================================================
-// ALL DIAGRAMS
-// ============================================================
-const diagramFilter=document.getElementById('diagramFilter');
-const diagramList=document.getElementById('diagramList');
-const diagramCountEl=document.getElementById('diagramCount');
-const categoryFiltersEl=document.getElementById('categoryFilters');
-
-function renderDiagrams(){
-  categoryFiltersEl.innerHTML=`<button class="filter-btn ${activeCategory===''?'active':''}" onclick="filterCategory('')">Alle</button>${CATEGORIES.map(c=>`<button class="filter-btn ${activeCategory===c?'active':''}" onclick="filterCategory('${c}')">${c}</button>`).join('')}`;
-  filterAndRender();
-}
-
-function filterCategory(cat){activeCategory=cat;renderDiagrams()}
-
-diagramFilter.addEventListener('input',debounce(filterAndRender,150));
-
-function filterAndRender(){
-  const q=diagramFilter.value.trim().toLowerCase();
-  let filtered=DIAGRAMS;
-  if(activeCategory)filtered=filtered.filter(d=>d.category===activeCategory);
-  if(q.length>=2)filtered=filtered.filter(d=>d.name.toLowerCase().includes(q)||d.desc.toLowerCase().includes(q)||d.keywords.some(kw=>kw.includes(q)));
-  diagramCountEl.innerHTML=`<strong>${filtered.length}</strong> von ${DIAGRAMS.length} Diagrammen`;
-  diagramList.innerHTML=filtered.map(d=>`
-    <div class="card" onclick="showDetail(${d.id})">
-      <div class="card-header">
-        <span class="card-title">${d.id}. ${d.name}</span>
-        <span class="triage-badge triage-${getCategoryLevel(d.category)}"><span class="triage-dot dot-${getCategoryLevel(d.category)}"></span>${d.category}</span>
-      </div>
-      <div class="card-subtitle">${d.desc}</div>
-      <div class="tags">${d.keywords.slice(0,6).map(kw=>`<span class="tag">${kw}</span>`).join('')}${d.keywords.length>6?`<span class="tag" style="opacity:.5">+${d.keywords.length-6}</span>`:''}</div>
-    </div>`).join('');
-}
-
-// ============================================================
-// DETAIL OVERLAY
-// ============================================================
-function showDetail(id){
-  const d=DIAGRAMS.find(x=>x.id===id);if(!d)return;
-  const related=DIAGRAMS.filter(x=>x.category===d.category&&x.id!==d.id);
-  document.getElementById('overlayContent').innerHTML=`
-    <button class="overlay-close" onclick="closeOverlay()">✕</button>
-    <div style="margin-bottom:16px">
-      <span class="triage-badge triage-${getCategoryLevel(d.category)}" style="margin-bottom:8px"><span class="triage-dot dot-${getCategoryLevel(d.category)}"></span>${d.category}</span>
-      <h2 style="font-size:1.35rem;font-weight:700;margin-top:8px">${d.name}</h2>
-      <p style="font-size:.88rem;color:var(--text2);margin-top:4px">Präsentationsdiagramm Nr. ${d.id}</p>
-    </div>
-    <p style="color:var(--text2);font-size:.92rem;line-height:1.6;margin-bottom:16px">${d.desc}</p>
-    <div style="margin-bottom:16px"><h4 style="font-size:.88rem;font-weight:600;margin-bottom:8px">Zugehörige Symptome / Keywords</h4><div class="tags">${d.keywords.map(kw=>`<span class="tag">${kw}</span>`).join('')}</div></div>
-    <div style="background:var(--bg3);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px">
-      <h4 style="font-size:.88rem;font-weight:600;margin-bottom:8px">📋 Anwendungshinweis</h4>
-      <div style="font-size:.85rem;color:var(--text2);line-height:1.8">
-        Nachdem dieses Diagramm als passend identifiziert wurde:<br><br>
-        <strong>1.</strong> Indikatoren im Diagramm von der höchsten Dringlichkeit (rot) abwärts durchgehen<br>
-        <strong>2.</strong> Beim ersten zutreffenden Indikator stoppen<br>
-        <strong>3.</strong> Die zugehörige Dringlichkeitsstufe ist das Ergebnis<br>
-        <strong>4.</strong> Bei Unsicherheit: höhere Stufe wählen
-      </div>
-    </div>
-    ${related.length?`<div><h4 style="font-size:.88rem;font-weight:600;margin-bottom:8px">Verwandte Diagramme (${d.category})</h4>${related.map(r=>`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bg4);cursor:pointer" onclick="showDetail(${r.id})"><span style="font-size:.88rem;font-weight:500;color:var(--accent)">${r.name}</span><span style="font-size:.78rem;color:var(--text3);margin-left:auto">Nr. ${r.id}</span></div>`).join('')}</div>`:''}
-    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="restart-btn" onclick="addToHistory(DIAGRAMS.find(x=>x.id===${d.id}));closeOverlay();" style="background:var(--accent-bg);border-color:rgba(79,70,229,.2);color:var(--accent)">✓ Als Zuordnung speichern</button>
-      <button class="restart-btn" onclick="closeOverlay()">Schließen</button>
-    </div>`;
-  document.getElementById('detailOverlay').classList.add('open');
-}
-
-function closeOverlay(){document.getElementById('detailOverlay').classList.remove('open')}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
-
-// ============================================================
-// TRIAGE LEVELS
-// ============================================================
-function renderLevels(){
-  document.getElementById('levelsContent').innerHTML=LEVELS.map(l=>`
-    <div class="level-card lc-${l.level}">
-      <h3>${['🔴','🟠','🟡','🟢','🔵'][l.level-1]} Stufe ${l.level} — ${l.name}</h3>
-      <div class="time">Max. Wartezeit: <strong>${l.time}</strong> · Kontrolleinschätzung: <strong>${l.reeval}</strong></div>
-      <div class="desc">${l.desc}</div>
-    </div>`).join('');
-}
-
-// ============================================================
-// CHEATSHEET
-// ============================================================
-function renderCheatsheet(){
-  document.getElementById('cheatContent').innerHTML=CHEATSHEET.map(c=>`
-    <div class="cheat-card"><h4>${c.title}</h4><ul>${c.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('');
-}
-
-// ============================================================
 // HISTORY
-// ============================================================
-function addToHistory(d){
-  history.unshift({id:d.id,name:d.name,category:d.category,timestamp:new Date().toISOString()});
-  if(history.length>200)history=history.slice(0,200);
-  localStorage.setItem('mts_history',JSON.stringify(history));
-}
-
-function renderHistory(){
-  const statsRow=document.getElementById('statsRow');
-  const total=history.length;
-  const today=history.filter(h=>new Date(h.timestamp).toDateString()===new Date().toDateString()).length;
-  const catCount={};history.forEach(h=>{catCount[h.category]=(catCount[h.category]||0)+1});
-  const topCat=Object.entries(catCount).sort((a,b)=>b[1]-a[1])[0];
-  statsRow.innerHTML=`
-    <div class="stat-box"><div class="num">${total}</div><div class="label">Gesamt</div></div>
-    <div class="stat-box"><div class="num">${today}</div><div class="label">Heute</div></div>
-    <div class="stat-box"><div class="num">${Object.keys(catCount).length}</div><div class="label">Kategorien</div></div>
-    <div class="stat-box"><div class="num" style="font-size:1rem">${topCat?topCat[0]:'—'}</div><div class="label">Häufigste</div></div>`;
-  const list=document.getElementById('historyList');
-  if(!history.length){list.innerHTML='<div class="empty-state"><p>Noch keine Zuordnungen gespeichert.</p></div>';return}
-  list.innerHTML=history.slice(0,50).map((h,i)=>{
-    const d=new Date(h.timestamp);
-    return `<div class="history-item"><div class="info"><div class="symptom">${h.name}</div><div class="meta">${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} · ${h.category} · Nr. ${h.id}</div></div><div class="actions"><button class="icon-btn" onclick="showDetail(${h.id})" title="Details">📋</button><button class="icon-btn" onclick="removeHistory(${i})" title="Löschen">✕</button></div></div>`;
-  }).join('');
-}
-
-function removeHistory(i){history.splice(i,1);localStorage.setItem('mts_history',JSON.stringify(history));renderHistory()}
-function clearHistory(){if(!confirm('Gesamten Verlauf wirklich löschen?'))return;history=[];localStorage.setItem('mts_history',JSON.stringify(history));renderHistory()}
-
-// ============================================================
-// EXPORT / IMPORT
-// ============================================================
-function exportJSON(){
-  const blob=new Blob([JSON.stringify({version:1,exported:new Date().toISOString(),entries:history},null,2)],{type:'application/json'});
-  dl(blob,'mts-verlauf-'+ds()+'.json');
-}
-function exportCSV(){
-  let csv='Datum;Uhrzeit;Diagramm-Nr;Diagramm;Kategorie\n';
-  history.forEach(h=>{const d=new Date(h.timestamp);csv+=`${d.toLocaleDateString('de-DE')};${d.toLocaleTimeString('de-DE')};${h.id};${h.name};${h.category}\n`});
-  dl(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'mts-verlauf-'+ds()+'.csv');
-}
-function importData(){document.getElementById('importFile').click()}
-function handleImport(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=function(ev){
-    try{const data=JSON.parse(ev.target.result);
-      if(data.entries&&Array.isArray(data.entries)){
-        if(confirm(`${data.entries.length} Einträge importieren?`)){
-          history=[...data.entries,...history];localStorage.setItem('mts_history',JSON.stringify(history));renderHistory();
-        }
-      }else alert('Ungültiges Format.')
-    }catch(err){alert('Fehler beim Lesen.')}
-  };reader.readAsText(file);e.target.value='';
-}
-function dl(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u)}
+function addH(d){hist.unshift({id:d.id,name:d.name,c:d.c,ts:new Date().toISOString()});if(hist.length>200)hist=hist.slice(0,200);localStorage.setItem('mts_h',JSON.stringify(hist))}
+function rHist(){const t=hist.length,td=hist.filter(h=>new Date(h.ts).toDateString()===new Date().toDateString()).length,cc={};hist.forEach(h=>{cc[h.c]=(cc[h.c]||0)+1});const tp=Object.entries(cc).sort((a,b)=>b[1]-a[1])[0];document.getElementById('stR').innerHTML=`<div class="sx"><div class="n">${t}</div><div class="l">Gesamt</div></div><div class="sx"><div class="n">${td}</div><div class="l">Heute</div></div><div class="sx"><div class="n">${Object.keys(cc).length}</div><div class="l">Kategorien</div></div><div class="sx"><div class="n" style="font-size:.9rem">${tp?tp[0]:'—'}</div><div class="l">Top</div></div>`;const hl_=document.getElementById('hList');if(!hist.length){hl_.innerHTML='<div class="empty">Keine Zuordnungen.</div>';return}hl_.innerHTML=hist.slice(0,50).map((h,i)=>{const d=new Date(h.ts);return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met">${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} · ${h.c} · Nr.${h.id}</div></div><div class="act"><button class="ib" onclick="shD(${h.id})">📋</button><button class="ib" onclick="rmH(${i})">✕</button></div></div>`}).join('')}
+function rmH(i){hist.splice(i,1);localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
+function clrH(){if(!confirm('Verlauf löschen?'))return;hist=[];localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
+function expJ(){dl(new Blob([JSON.stringify({v:2,ts:new Date().toISOString(),hist,notes},null,2)],{type:'application/json'}),'mts-backup-'+ds()+'.json')}
+function expC(){let c='Datum;Uhrzeit;Nr;Diagramm;Kategorie\n';hist.forEach(h=>{const d=new Date(h.ts);c+=`${d.toLocaleDateString('de-DE')};${d.toLocaleTimeString('de-DE')};${h.id};${h.name};${h.c}\n`});dl(new Blob(['\ufeff'+c],{type:'text/csv;charset=utf-8'}),'mts-verlauf-'+ds()+'.csv')}
+function impD(){document.getElementById('impF').click()}
+function hImp(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.hist){hist=[...d.hist,...hist];localStorage.setItem('mts_h',JSON.stringify(hist))}if(d.notes){notes=[...d.notes,...notes];localStorage.setItem('mts_n',JSON.stringify(notes))}alert('Import OK!');rHist()}catch{alert('Fehler.')}};r.readAsText(f);e.target.value=''}
+function dl(b,n){const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u)}
 function ds(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-
-// ============================================================
-// UTILITIES
-// ============================================================
 function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
-function escapeRegex(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-
-// Init
-renderLevels();renderCheatsheet();searchInput.focus();
+function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+rLvl();rCS();SI_.focus();
 </script>
 </body>
 </html>
