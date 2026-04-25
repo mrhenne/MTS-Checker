@@ -84,20 +84,20 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
 
-.app { max-width: 1000px; margin: 0 auto; padding: 20px }
-header { text-align: center; padding: 30px 16px 20px; position: relative; }
-header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 4px; }
+.app { max-width: 1000px; margin: 0 auto; padding: 20px; transition: padding 0.2s; }
+header { text-align: center; padding: 30px 16px 20px; position: relative; transition: all 0.2s; }
+header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 4px; transition: all 0.2s; }
 header h1 .hl { background: linear-gradient(135deg, var(--accent), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); display: block; -webkit-text-fill-color: var(--text3); background: none; }
-.hr { position: absolute; top: 16px; right: 16px; }
+header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); display: block; -webkit-text-fill-color: var(--text3); background: none; transition: all 0.2s; }
+.hr { position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; transition: all 0.2s; }
 .hb { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--bg2); color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s; box-shadow: var(--shadow-sm); }
 .hb:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
 
-.disc { background: var(--orange-bg); border: 1px solid var(--orange-border); border-radius: var(--radius-sm); padding: 12px 16px; margin: 16px auto 0; max-width: 680px; font-size: 0.8rem; color: var(--orange); text-align: center; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.disc { background: var(--orange-bg); border: 1px solid var(--orange-border); border-radius: var(--radius-sm); padding: 12px 16px; margin: 16px auto 0; max-width: 680px; font-size: 0.8rem; color: var(--orange); text-align: center; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
 .disc i { font-size: 1.2rem; }
 
 /* Modern Tabs */
-.nav-tabs { display: flex; gap: 6px; padding: 6px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-lg); margin: 24px 0; overflow-x: auto; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 50; }
+.nav-tabs { display: flex; gap: 6px; padding: 6px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-lg); margin: 24px 0; overflow-x: auto; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 50; transition: all 0.2s; }
 .nav-tabs::-webkit-scrollbar { display: none; }
 .nt { flex: 1 0 auto; padding: 10px 16px; border: none; background: transparent; color: var(--text2); font-family: var(--font); font-size: 0.85rem; font-weight: 600; border-radius: 100px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .nt i { font-size: 1.1rem; }
@@ -181,7 +181,7 @@ header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); displ
 .ind-head { padding: 8px 14px; font-weight: 800; font-size: 0.85rem; color: #fff; margin-top: 12px; border-radius: var(--radius-xs); display: flex; align-items: center; gap: 8px; }
 
 /* Dynamische Vitals */
-.vitals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.vitals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-bottom: 20px; transition: all 0.2s; }
 .vital-input-box { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 10px; text-align: center; box-shadow: var(--shadow-sm); transition: all 0.2s; }
 .vital-input-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
 .vital-input-box label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -189,18 +189,18 @@ header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); displ
 
 /* ===== BODYMAP ===== */
 .bm-page { display: flex; flex-direction: column; align-items: center; }
-.bm-hint { text-align: center; color: var(--text); font-size: 0.9rem; margin-bottom: 20px; font-weight: 700; }
+.bm-hint { text-align: center; color: var(--text); font-size: 0.9rem; margin-bottom: 20px; font-weight: 700; transition: all 0.2s; }
 .bm-hint span { color: var(--text3); font-weight: 500; font-size: 0.8rem; display: block; margin-top: 4px; }
-.bm-main { display: flex; gap: 30px; align-items: flex-start; width: 100%; }
-.bm-figs { flex: 0 0 auto; display: flex; gap: 12px; position: sticky; top: 20px; }
-.bm-fig { width: 180px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px 10px 12px; box-shadow: var(--shadow); text-align: center; }
+.bm-main { display: flex; gap: 30px; align-items: flex-start; width: 100%; transition: all 0.2s; }
+.bm-figs { flex: 0 0 auto; display: flex; gap: 12px; position: sticky; top: 20px; transition: all 0.2s; }
+.bm-fig { width: 180px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px 10px 12px; box-shadow: var(--shadow); text-align: center; transition: all 0.2s; }
 .bm-fig svg { width: 100%; height: auto; display: block; }
-.bm-fig svg .bz { fill: var(--bz-fill); stroke: var(--bz-stroke); stroke-width: 1; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); stroke-linejoin: round; stroke-linecap: round; }
+.bm-fig svg .bz { fill: var(--bz-fill); stroke: var(--bz-stroke); stroke-width: 2; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); stroke-linejoin: round; stroke-linecap: round; }
 .bm-fig svg .bz:hover { fill: var(--bz-hover); stroke: var(--text3); }
-.bm-fig svg .bz.on { fill: var(--bz-on); stroke: var(--bz-on-s); stroke-width: 2; filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.3)); }
+.bm-fig svg .bz.on { fill: var(--bz-on); stroke: var(--bz-on-s); stroke-width: 3; filter: drop-shadow(0 4px 10px rgba(79, 70, 229, 0.3)); }
 .bm-fig svg .bl { fill: var(--text3); font-family: var(--font); font-weight: 700; pointer-events: none; user-select: none; }
 .bm-fig-lbl { font-size: 0.75rem; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 10px; }
-.bm-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 16px; max-width: 380px; }
+.bm-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 16px; max-width: 380px; transition: all 0.2s; }
 .bm-pill { padding: 8px 16px; border: 1px solid var(--card-border); background: var(--bg2); color: var(--text2); font-family: var(--font); font-size: 0.8rem; font-weight: 600; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 6px; }
 .bm-pill i { font-size: 1.1rem; }
 .bm-pill:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
@@ -299,7 +299,23 @@ header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); displ
 .trn-next { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .trn-next:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 
-@media(max-width:768px){.bm-main{flex-direction:column;align-items:center}.bm-figs{position:static}.bm-fig{width:150px}}
+/* === ZNA FOCUS MODE === */
+body.focus-mode header { padding: 16px 12px 10px; text-align: left; display: flex; align-items: center; justify-content: space-between; }
+body.focus-mode header h1 { font-size: 1.4rem; margin: 0; }
+body.focus-mode header h1 .sub { display: none; }
+body.focus-mode .disc { display: none; }
+body.focus-mode .hr { position: static; margin-left: 16px; }
+body.focus-mode .app { padding: 8px; }
+body.focus-mode .nav-tabs { margin: 12px 0; }
+body.focus-mode .card { padding: 12px; margin-bottom: 8px; }
+body.focus-mode .card .ct { font-size: 0.95rem; }
+body.focus-mode .bm-hint { display: none; }
+body.focus-mode .bm-fig { width: 120px; padding: 10px 4px; }
+body.focus-mode .bm-main { gap: 10px; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+body.focus-mode .vitals-grid { gap: 6px; }
+body.focus-mode .vital-input-box { padding: 6px; }
+
+@media(max-width:768px){.bm-main{flex-direction:column;align-items:center}.bm-figs{position:static}.bm-fig{width:150px} body.focus-mode .bm-main { flex-direction: column; align-items: center; }}
 @media(max-width:640px){html{font-size:15px}.app{padding:12px}header h1{font-size:1.5rem}.nt{padding:8px 12px;font-size:0.8rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}.bm-fig{width:130px}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
 @media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.hr,.ov{display:none!important}}
@@ -308,8 +324,13 @@ header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); displ
 <body>
 <div class="app">
   <header>
-    <div class="hr"><button class="hb" onclick="toggleTheme()" id="themeBtn" title="Dark/Light Mode"><i class="fa-solid fa-moon"></i></button></div>
-    <h1><span class="hl">TriageAssist</span><span class="sub">Ersteinschätzung nach MTS</span></h1>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
+      <h1 style="text-align:left; margin:0;"><span class="hl">TriageAssist</span><span class="sub">Ersteinschätzung nach MTS</span></h1>
+      <div class="hr">
+        <button class="hb" onclick="toggleFocus()" id="focusBtn" title="Kompaktmodus an/aus"><i class="fa-solid fa-compress"></i></button>
+        <button class="hb" onclick="toggleTheme()" id="themeBtn" title="Dark/Light Mode"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </div>
     <div class="disc"><i class="fa-solid fa-circle-exclamation"></i> <span>Entscheidungshilfe. Ersetzt nicht MTS Schulung oder klinisches Urteil.</span></div>
   </header>
   
@@ -494,7 +515,18 @@ function toggleTheme(){
   localStorage.setItem('mts_theme',dk?'dark':'light');
   document.getElementById('themeBtn').innerHTML=dk?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';
 }
-(function(){if(localStorage.getItem('mts_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').innerHTML='<i class="fa-solid fa-sun"></i>'}})();
+
+function toggleFocus(){
+  document.body.classList.toggle('focus-mode');
+  const fm=document.body.classList.contains('focus-mode');
+  localStorage.setItem('mts_focus',fm?'on':'off');
+  document.getElementById('focusBtn').innerHTML=fm?'<i class="fa-solid fa-expand"></i>':'<i class="fa-solid fa-compress"></i>';
+}
+
+(function(){
+  if(localStorage.getItem('mts_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').innerHTML='<i class="fa-solid fa-sun"></i>'}
+  if(localStorage.getItem('mts_focus')==='on'){document.body.classList.add('focus-mode');document.getElementById('focusBtn').innerHTML='<i class="fa-solid fa-expand"></i>'}
+})();
 
 document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.nt').forEach(x=>x.classList.remove('on'));
@@ -559,7 +591,7 @@ const dF_=document.getElementById('dF');
 function rDiag(){document.getElementById('cF').innerHTML=`<button class="fb ${aCat===''?'a':''}" onclick="fC('')">Alle</button>${CATS.map(c=>`<button class="fb ${aCat===c?'a':''}" onclick="fC('${c}')">${c}</button>`).join('')}`;fR()}
 function fC(c){aCat=c;rDiag()}
 dF_.addEventListener('input',debounce(fR,150));
-function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> Diagramme`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
+function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> Diagramme`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="cs">Diagramm Nr. ${x.id}</div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
 
 function getActions(lvl, diag) {
   let a = [];
@@ -807,7 +839,7 @@ function rGCS(){
   
   document.getElementById('gcsC').innerHTML = `
     <button class="ox" onclick="clGCS()"><i class="fa-solid fa-xmark"></i></button>
-    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px;color:var(--text)"><i class="fa-solid fa-calculator"></i> GCS und qSOFA Rechner</h2>
+    <h2 style="font-size:1.3rem;font-weight:800;margin:16px 0 16px;color:var(--text)"><i class="fa-solid fa-calculator"></i> GCS und qSOFA Rechner</h2>
     
     <div class="gcs-grid">
       <div class="gcs-row">
@@ -1046,7 +1078,4 @@ rLvl();rCS();SI_.focus();
 </script>
 </body>
 </html>
-
-
-
 
