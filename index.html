@@ -3,270 +3,369 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TriageAssist — MTS Ersteinschätzung</title>
+<title>TriageAssist | MTS Ersteinschätzung</title>
 <!-- PWA Manifest -->
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22TriageAssist%22%2C%22short_name%22%3A%22TriageAssist%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f3f5f9%22%2C%22theme_color%22%3A%22%234338ca%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%253E%253Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%234338ca%27%2F%253E%253Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2730%27%20fill%3D%27white%27%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22TriageAssist%22%2C%22short_name%22%3A%22TriageAssist%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%253E%253Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%234f46e5%27%2F%253E%253Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2730%27%20fill%3D%27white%27%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+<!-- Fonts & FontAwesome Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f3f5f9;--bg2:#ffffff;--bg3:#eaeff5;--bg4:#d2d9e5;
-  --text:#141c2e;--text2:#485168;--text3:#7a8498;
-  --red:#dc2626;--red-bg:rgba(220,38,38,.07);--red-border:rgba(220,38,38,.22);
-  --orange:#ea580c;--orange-bg:rgba(234,88,12,.07);--orange-border:rgba(234,88,12,.22);
-  --yellow:#b45309;--yellow-bg:rgba(180,83,9,.07);--yellow-border:rgba(180,83,9,.22);
-  --green:#16a34a;--green-bg:rgba(22,163,74,.07);--green-border:rgba(22,163,74,.22);
-  --blue:#2563eb;--blue-bg:rgba(37,99,235,.07);--blue-border:rgba(37,99,235,.22);
-  --accent:#4338ca;--accent-bg:rgba(67,56,202,.06);--accent-light:#6366f1;
-  --card-border:rgba(0,0,0,.07);
-  --radius:14px;--radius-sm:10px;--radius-xs:6px;
-  --shadow:0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.08);
-  --font:'DM Sans',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
-  --mark-bg:rgba(67,56,202,.1);--mark-color:var(--accent);
-  --bz-fill:#dce4f0;--bz-stroke:#a8b8d0;--bz-hover:#c8d4e8;--bz-on:rgba(67,56,202,.2);--bz-on-s:var(--accent);
-  --bz-grad1:#cdd8eb;--bz-grad2:#e4eaf4;
+:root {
+  --bg: #f8fafc;
+  --bg2: #ffffff;
+  --bg3: #f1f5f9;
+  --bg4: #e2e8f0;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #64748b;
+  
+  /* Modern Colors */
+  --red: #ef4444; --red-bg: #fef2f2; --red-border: #fca5a5;
+  --orange: #f97316; --orange-bg: #fff7ed; --orange-border: #fdba74;
+  --yellow: #eab308; --yellow-bg: #fefce8; --yellow-border: #fde047;
+  --green: #22c55e; --green-bg: #f0fdf4; --green-border: #86efac;
+  --blue: #3b82f6; --blue-bg: #eff6ff; --blue-border: #93c5fd;
+  
+  --accent: #4f46e5;
+  --accent-bg: #e0e7ff;
+  --accent-hover: #4338ca;
+  
+  --card-border: #e2e8f0;
+  --radius-lg: 24px;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.02);
+  --shadow-float: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+  
+  --font: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  
+  --bz-fill: #e2e8f0; --bz-stroke: #cbd5e1; --bz-hover: #cbd5e1; --bz-on: #e0e7ff; --bz-on-s: var(--accent);
+  --bz-grad1: #f1f5f9; --bz-grad2: #ffffff;
 }
-.dark{
-  --bg:#0b0f1a;--bg2:#141b2d;--bg3:#1c2640;--bg4:#2c3a56;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --red:#ef4444;--red-bg:rgba(239,68,68,.1);--red-border:rgba(239,68,68,.28);
-  --orange:#f97316;--orange-bg:rgba(249,115,22,.1);--orange-border:rgba(249,115,22,.28);
-  --yellow:#eab308;--yellow-bg:rgba(234,179,8,.1);--yellow-border:rgba(234,179,8,.28);
-  --green:#22c55e;--green-bg:rgba(34,197,94,.1);--green-border:rgba(34,197,94,.28);
-  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.1);--blue-border:rgba(59,130,246,.28);
-  --accent:#818cf8;--accent-bg:rgba(129,140,248,.08);--accent-light:#a5b4fc;
-  --card-border:rgba(255,255,255,.06);
-  --shadow:0 4px 24px rgba(0,0,0,.25);--shadow-lg:0 12px 48px rgba(0,0,0,.35);
-  --mark-bg:rgba(129,140,248,.18);--mark-color:var(--accent-light);
-  --bz-fill:#1e2d48;--bz-stroke:#3a5070;--bz-hover:#283c5a;--bz-on:rgba(129,140,248,.22);--bz-on-s:var(--accent);
-  --bz-grad1:#1e2d48;--bz-grad2:#253654;
+
+.dark {
+  --bg: #0f172a;
+  --bg2: #1e293b;
+  --bg3: #334155;
+  --bg4: #475569;
+  --text: #f8fafc;
+  --text2: #cbd5e1;
+  --text3: #94a3b8;
+  
+  --red: #f87171; --red-bg: rgba(239,68,68,0.15); --red-border: rgba(239,68,68,0.3);
+  --orange: #fb923c; --orange-bg: rgba(249,115,22,0.15); --orange-border: rgba(249,115,22,0.3);
+  --yellow: #facc15; --yellow-bg: rgba(234,179,8,0.15); --yellow-border: rgba(234,179,8,0.3);
+  --green: #4ade80; --green-bg: rgba(34,197,94,0.15); --green-border: rgba(34,197,94,0.3);
+  --blue: #60a5fa; --blue-bg: rgba(59,130,246,0.15); --blue-border: rgba(59,130,246,0.3);
+  
+  --accent: #818cf8;
+  --accent-bg: rgba(99,102,241,0.15);
+  --accent-hover: #a5b4fc;
+  
+  --card-border: #334155;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+  --shadow-float: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  
+  --bz-fill: #1e293b; --bz-stroke: #334155; --bz-hover: #475569; --bz-on: rgba(99,102,241,0.2); --bz-on-s: var(--accent);
+  --bz-grad1: #0f172a; --bz-grad2: #1e293b;
 }
-html{font-size:16.5px;scroll-behavior:smooth}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
-.app{max-width:1200px;margin:0 auto;padding:16px 20px}
-header{text-align:center;padding:24px 16px 14px;position:relative}
-header h1{font-size:1.7rem;font-weight:700;letter-spacing:-.03em}
-header h1 .hl{background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-header h1 .sub{font-weight:400;font-size:.85rem;color:var(--text3);display:block;margin-top:1px;letter-spacing:0;-webkit-text-fill-color:var(--text3);background:none}
-.hr{position:absolute;top:12px;right:8px}
-.hb{width:36px;height:36px;border-radius:var(--radius-xs);border:1px solid var(--bg4);background:var(--bg2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .15s}
-.hb:hover{border-color:var(--accent);color:var(--accent)}
-.disc{background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--radius-sm);padding:8px 12px;margin:10px auto 0;max-width:680px;font-size:.74rem;color:var(--orange);text-align:left;line-height:1.5}
-.disc b{font-weight:600}
-.nav-tabs{display:flex;gap:3px;padding:5px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);margin:14px 0;overflow-x:auto;box-shadow:var(--shadow)}
-.nav-tabs::-webkit-scrollbar{display:none}
-.nt{flex-shrink:0;padding:8px 14px;border:none;background:transparent;color:var(--text2);font-family:var(--font);font-size:.82rem;font-weight:500;border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;white-space:nowrap}
-.nt:hover{color:var(--text);background:var(--bg3)}
-.nt.on{color:#fff;background:var(--accent);box-shadow:0 2px 8px rgba(67,56,202,.18)}
-.dark .nt.on{box-shadow:0 2px 8px rgba(129,140,248,.18)}
-.pnl{display:none;animation:fu .3s ease}.pnl.on{display:block}
-@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-/* Search */
-.sb{position:relative;margin-bottom:14px}
-.sb input{width:100%;padding:12px 14px 12px 42px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:.98rem;outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:var(--shadow)}
-.sb input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
-.sb input::placeholder{color:var(--text3)}
-.sb svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);width:17px;height:17px;pointer-events:none}
-.hint{font-size:.76rem;color:var(--text3);margin-top:3px;padding-left:3px}
-.card{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:13px 15px;margin-bottom:8px;transition:all .18s;cursor:pointer;box-shadow:var(--shadow)}
-.card:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateY(-1px)}
-.ch{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px;flex-wrap:wrap}
-.ct{font-weight:600;font-size:.95rem}.cs{font-size:.82rem;color:var(--text2);line-height:1.5}
-.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
-.tag{font-size:.7rem;padding:2px 7px;border-radius:14px;font-weight:500;background:var(--bg3);color:var(--text3)}
-.tag.m{background:var(--accent-bg);color:var(--accent)}
-.tb{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:14px;font-size:.72rem;font-weight:600;white-space:nowrap}
-.tb-1{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
-.tb-2{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
-.tb-3{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
-.tb-4{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.tb-5{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
-.td{width:6px;height:6px;border-radius:50%;display:inline-block}.td-1{background:var(--red)}.td-2{background:var(--orange)}.td-3{background:var(--yellow)}.td-4{background:var(--green)}.td-5{background:var(--blue)}
-.rbar{display:flex;align-items:center;margin-bottom:8px;font-size:.82rem;color:var(--text2)}.rbar b{color:var(--text);margin-right:3px}
-.frow{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
-.fb{padding:4px 11px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-family:var(--font);font-size:.74rem;font-weight:500;border-radius:14px;cursor:pointer;transition:all .15s}
-.fb:hover{border-color:var(--text3)}.fb.a{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.18)}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+.app { max-width: 1000px; margin: 0 auto; padding: 20px }
+header { text-align: center; padding: 30px 16px 20px; position: relative; }
+header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 4px; }
+header h1 .hl { background: linear-gradient(135deg, var(--accent), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); display: block; -webkit-text-fill-color: var(--text3); background: none; }
+.hr { position: absolute; top: 16px; right: 16px; }
+.hb { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--bg2); color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+.hb:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+
+.disc { background: var(--orange-bg); border: 1px solid var(--orange-border); border-radius: var(--radius-sm); padding: 12px 16px; margin: 16px auto 0; max-width: 680px; font-size: 0.8rem; color: var(--orange); text-align: center; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.disc i { font-size: 1.2rem; }
+
+/* Modern Tabs */
+.nav-tabs { display: flex; gap: 6px; padding: 6px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-lg); margin: 24px 0; overflow-x: auto; box-shadow: var(--shadow); }
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nt { flex: 1 0 auto; padding: 10px 16px; border: none; background: transparent; color: var(--text2); font-family: var(--font); font-size: 0.85rem; font-weight: 600; border-radius: 100px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.nt i { font-size: 1.1rem; }
+.nt:hover { color: var(--text); background: var(--bg3); }
+.nt.on { color: #fff; background: var(--accent); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
+
+.pnl { display: none; animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(10px); }
+.pnl.on { display: block; }
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+/* Search & Inputs */
+.sb { position: relative; margin-bottom: 16px; }
+.sb input { width: 100%; padding: 14px 16px 14px 44px; background: var(--bg2); border: 2px solid var(--card-border); border-radius: var(--radius); color: var(--text); font-family: var(--font); font-size: 1rem; font-weight: 500; outline: none; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+.sb input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-bg); }
+.sb input::placeholder { color: var(--text3); font-weight: 400; }
+.sb i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 1.2rem; pointer-events: none; }
+.hint { font-size: 0.8rem; color: var(--text3); margin-top: 4px; padding-left: 4px; font-weight: 500; }
+
+/* Cards */
+.card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 12px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.card:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: transparent; transition: background 0.2s; }
+.card:hover::after { background: var(--accent); }
+
+.ch { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.ct { font-weight: 700; font-size: 1.05rem; color: var(--text); }
+.cs { font-size: 0.85rem; color: var(--text2); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag { font-size: 0.7rem; padding: 4px 10px; border-radius: 100px; font-weight: 600; background: var(--bg3); color: var(--text2); border: 1px solid var(--card-border); }
+.tag.m { background: var(--accent-bg); color: var(--accent); border-color: transparent; }
+
+.tb { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
+.tb-1 { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.tb-2 { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); }
+.tb-3 { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-border); }
+.tb-4 { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.tb-5 { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.td { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); }
+.td-1 { background: var(--red); } .td-2 { background: var(--orange); } .td-3 { background: var(--yellow); } .td-4 { background: var(--green); } .td-5 { background: var(--blue); }
+
+.rbar { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.85rem; color: var(--text2); font-weight: 500; }
+.rbar b { color: var(--text); margin-right: 4px; font-weight: 700; }
+.frow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.fb { padding: 6px 14px; border: 1px solid var(--card-border); background: var(--bg2); color: var(--text2); font-family: var(--font); font-size: 0.8rem; font-weight: 600; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+.fb:hover { border-color: var(--text3); color: var(--text); }
+.fb.a { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2); }
 
 /* Levels */
-.lc{border-radius:var(--radius);padding:14px 15px;margin-bottom:8px}
-.lc h3{font-size:1.02rem;font-weight:700;margin-bottom:2px}.lc .tm{font-size:.82rem;opacity:.85;margin-bottom:4px}.lc .ds{font-size:.82rem;opacity:.9;line-height:1.6}
-.lc-1{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
-.lc-2{background:var(--orange-bg);border:1px solid var(--orange-border);color:var(--orange)}
-.lc-3{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
-.lc-4{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
-.lc-5{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue)}
+.lc { border-radius: var(--radius); padding: 20px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.lc h3 { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.lc .tm { font-size: 0.85rem; font-weight: 600; font-family: var(--mono); }
+.lc .ds { font-size: 0.9rem; line-height: 1.6; opacity: 0.9; }
+.lc::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+.lc-1 { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); } .lc-1::before { background: var(--red); }
+.lc-2 { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); } .lc-2::before { background: var(--orange); }
+.lc-3 { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow-border); } .lc-3::before { background: var(--yellow); }
+.lc-4 { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); } .lc-4::before { background: var(--green); }
+.lc-5 { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); } .lc-5::before { background: var(--blue); }
 
 /* Overlay Elements */
-.triage-banner{padding:14px 18px;border-radius:var(--radius);margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:1.15rem;transition:all .3s ease;box-shadow:var(--shadow)}
-.triage-banner .t-time{font-size:.8rem;opacity:.8;font-weight:500;font-family:var(--mono)}
-.t-b-1{background:var(--red-bg);color:var(--red);border:2px solid var(--red)}
-.t-b-2{background:var(--orange-bg);color:var(--orange);border:2px solid var(--orange)}
-.t-b-3{background:var(--yellow-bg);color:var(--yellow);border:2px solid var(--yellow)}
-.t-b-4{background:var(--green-bg);color:var(--green);border:2px solid var(--green)}
-.t-b-5{background:var(--blue-bg);color:var(--blue);border:2px solid var(--blue)}
+.triage-banner { padding: 16px 20px; border-radius: var(--radius); margin: 16px 0 20px; display: flex; align-items: center; justify-content: space-between; font-weight: 800; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: var(--shadow); }
+.triage-banner .t-time { font-size: 0.85rem; opacity: 0.9; font-weight: 700; font-family: var(--mono); background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 100px; }
+.t-b-1{background:var(--red);color:#fff;}
+.t-b-2{background:var(--orange);color:#fff;}
+.t-b-3{background:var(--yellow);color:#000;}
+.t-b-4{background:var(--green);color:#fff;}
+.t-b-5{background:var(--blue);color:#fff;}
 
-.rule-box{background:var(--bg3);padding:12px 14px;border-radius:var(--radius-sm);margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:all .2s;border:1px solid transparent}
-.rule-box:hover{background:var(--bg4);border-color:var(--card-border)}
-.rule-box.active{background:var(--accent-bg);border-color:var(--accent);box-shadow:0 2px 8px rgba(67,56,202,.1)}
-.rule-box input{margin-top:4px;transform:scale(1.3);accent-color:var(--accent);pointer-events:none}
-.rule-txt{font-size:.9rem;font-weight:600;color:var(--text);line-height:1.3}
-.rule-sub{font-size:.78rem;color:var(--text3);display:block;margin-top:3px;font-weight:400}
+.rule-box { background: var(--bg3); padding: 14px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; transition: all 0.2s; border: 1px solid var(--card-border); }
+.rule-box:hover { background: var(--bg4); }
+.rule-box.active { background: var(--accent-bg); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.rule-box input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); pointer-events: none; }
+.rule-txt { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+.rule-sub { font-size: 0.8rem; color: var(--text3); display: block; margin-top: 4px; font-weight: 500; }
 
-.ind-row{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-bottom:1px solid var(--card-border);cursor:pointer;transition:background .2s}
-.ind-row:hover{background:var(--bg3)}
-.ind-row input{margin-top:3px;transform:scale(1.2);accent-color:var(--accent);pointer-events:none}
-.ind-txt{font-size:.85rem;color:var(--text)}
-.ind-head{padding:6px 12px;font-weight:700;font-size:.8rem;color:#fff;margin-top:8px;border-radius:var(--radius-xs)}
+.ind-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--card-border); cursor: pointer; transition: background 0.2s; border-radius: var(--radius-xs); }
+.ind-row:hover { background: var(--bg3); }
+.ind-row input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--accent); pointer-events: none; }
+.ind-txt { font-size: 0.9rem; color: var(--text); line-height: 1.4; }
+.ind-head { padding: 8px 14px; font-weight: 800; font-size: 0.85rem; color: #fff; margin-top: 12px; border-radius: var(--radius-xs); display: flex; align-items: center; gap: 8px; }
 
 /* Dynamische Vitals */
-.vitals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:6px;margin-bottom:14px}
-.vital-input-box{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:8px;text-align:center}
-.vital-input-box label{display:block;font-size:.7rem;font-weight:600;color:var(--text3);margin-bottom:4px}
-.vital-input-box input{width:100%;text-align:center;font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--text);border:1px solid var(--bg4);border-radius:4px;padding:4px;outline:none}
-.vital-input-box input:focus{border-color:var(--accent)}
+.vitals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.vital-input-box { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 10px; text-align: center; box-shadow: var(--shadow-sm); transition: all 0.2s; }
+.vital-input-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+.vital-input-box label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.vital-input-box input { width: 100%; text-align: center; font-family: var(--mono); font-size: 1.1rem; font-weight: 700; color: var(--text); border: none; background: transparent; padding: 4px; outline: none; }
 
 /* ===== BODYMAP ===== */
-.bm-page{display:flex;flex-direction:column;align-items:center}
-.bm-hint{text-align:center;color:var(--text2);font-size:.86rem;margin-bottom:12px;font-weight:500}
-.bm-hint span{color:var(--text3);font-weight:400;font-size:.78rem;display:block;margin-top:2px}
-.bm-main{display:flex;gap:20px;align-items:flex-start;width:100%}
-.bm-figs{flex:0 0 auto;display:flex;gap:8px;position:sticky;top:16px}
-.bm-fig{width:170px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:10px 6px 8px;box-shadow:var(--shadow);text-align:center}
-.bm-fig svg{width:100%;height:auto;display:block}
-.bm-fig svg .bz{fill:var(--bz-fill);stroke:var(--bz-stroke);stroke-width:1;cursor:pointer;transition:fill .18s,stroke .18s,filter .18s;stroke-linejoin:round;stroke-linecap:round}
-.bm-fig svg .bz:hover{fill:var(--bz-hover);stroke:var(--text3)}
-.bm-fig svg .bz.on{fill:var(--bz-on);stroke:var(--bz-on-s);stroke-width:1.8;filter:drop-shadow(0 0 5px rgba(67,56,202,.15))}
-.dark .bm-fig svg .bz.on{filter:drop-shadow(0 0 7px rgba(129,140,248,.2))}
-.bm-fig svg .bl{fill:var(--text3);font-family:var(--font);font-weight:600;pointer-events:none;user-select:none}
-.bm-fig-lbl{font-size:.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
-.bm-pills{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:10px;max-width:360px}
-.bm-pill{padding:5px 12px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-family:var(--font);font-size:.74rem;font-weight:500;border-radius:14px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow)}
-.bm-pill:hover{border-color:var(--accent);color:var(--accent)}
-.bm-pill.on{background:var(--accent-bg);color:var(--accent);border-color:rgba(67,56,202,.2)}
-.bm-side{flex:1;min-width:0}
-.bm-side h3{font-size:1.02rem;font-weight:600;margin-bottom:2px}
-.bm-side .sub{font-size:.8rem;color:var(--text2);margin-bottom:10px}
-.bm-di{padding:11px 13px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;box-shadow:var(--shadow);margin-bottom:7px}
-.bm-di:hover{border-color:var(--accent);transform:translateX(3px);box-shadow:var(--shadow-lg)}
-.bm-di strong{font-size:.88rem;display:block;margin-bottom:1px}.bm-di span{font-size:.76rem;color:var(--text2)}
-.bm-empty{color:var(--text3);font-size:.86rem;padding:24px 12px;text-align:center}
+.bm-page { display: flex; flex-direction: column; align-items: center; }
+.bm-hint { text-align: center; color: var(--text); font-size: 0.9rem; margin-bottom: 20px; font-weight: 700; }
+.bm-hint span { color: var(--text3); font-weight: 500; font-size: 0.8rem; display: block; margin-top: 4px; }
+.bm-main { display: flex; gap: 30px; align-items: flex-start; width: 100%; }
+.bm-figs { flex: 0 0 auto; display: flex; gap: 12px; position: sticky; top: 20px; }
+.bm-fig { width: 180px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px 10px 12px; box-shadow: var(--shadow); text-align: center; }
+.bm-fig svg { width: 100%; height: auto; display: block; }
+.bm-fig svg .bz { fill: var(--bz-fill); stroke: var(--bz-stroke); stroke-width: 1; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); stroke-linejoin: round; stroke-linecap: round; }
+.bm-fig svg .bz:hover { fill: var(--bz-hover); stroke: var(--text3); }
+.bm-fig svg .bz.on { fill: var(--bz-on); stroke: var(--bz-on-s); stroke-width: 2; filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.3)); }
+.bm-fig svg .bl { fill: var(--text3); font-family: var(--font); font-weight: 700; pointer-events: none; user-select: none; }
+.bm-fig-lbl { font-size: 0.75rem; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 10px; }
+.bm-pills { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 16px; max-width: 380px; }
+.bm-pill { padding: 8px 16px; border: 1px solid var(--card-border); background: var(--bg2); color: var(--text2); font-family: var(--font); font-size: 0.8rem; font-weight: 600; border-radius: 100px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 6px; }
+.bm-pill i { font-size: 1.1rem; }
+.bm-pill:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.bm-pill.on { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
+.bm-side { flex: 1; min-width: 0; }
+.bm-side h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; color: var(--text); }
+.bm-side .sub { font-size: 0.85rem; color: var(--text3); margin-bottom: 16px; font-weight: 500; }
+.bm-di { padding: 14px 16px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: var(--shadow-sm); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+.bm-di:hover { border-color: var(--accent); transform: translateX(4px); box-shadow: var(--shadow); }
+.bm-di strong { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.bm-di span { font-size: 0.8rem; color: var(--text3); font-family: var(--mono); }
+.bm-empty { color: var(--text3); font-size: 0.9rem; padding: 40px 20px; text-align: center; font-weight: 500; background: var(--bg2); border: 1px dashed var(--card-border); border-radius: var(--radius); }
 
 /* Cheatsheet */
-.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
-.cc{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:13px;box-shadow:var(--shadow)}
-.cc h4{font-size:.86rem;font-weight:600;margin-bottom:6px}
-.cc ul{list-style:none}.cc li{font-size:.78rem;color:var(--text2);padding:2px 0 2px 14px;position:relative;line-height:1.45}
-.cc li::before{content:'›';position:absolute;left:2px;color:var(--text3);font-weight:700}
+.cg { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.cc { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); transition: transform 0.2s; }
+.cc:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.cc h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 10px; color: var(--text); border-bottom: 2px solid var(--bg3); padding-bottom: 8px; }
+.cc ul { list-style: none; }
+.cc li { font-size: 0.85rem; color: var(--text2); padding: 4px 0 4px 20px; position: relative; line-height: 1.5; font-weight: 500; }
+.cc li i { position: absolute; left: 0; top: 6px; color: var(--accent); font-size: 0.9rem; }
+
 /* Stats */
-.sr{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:14px}
-.sx{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:12px;text-align:center;box-shadow:var(--shadow)}
-.sx .n{font-size:1.4rem;font-weight:700;font-family:var(--mono);color:var(--accent)}
-.sx .l{font-size:.72rem;color:var(--text3);margin-top:1px}
-.hi{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);margin-bottom:5px;box-shadow:var(--shadow)}
-.hi .inf{flex:1}.hi .sym{font-weight:500;font-size:.86rem}.hi .met{font-size:.72rem;color:var(--text3);margin-top:1px}
-.ib{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid var(--card-border);background:var(--bg2);border-radius:var(--radius-xs);color:var(--text3);cursor:pointer;transition:all .15s;font-size:.78rem}.ib:hover{border-color:var(--red);color:var(--red)}
-.es{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
-.eb{padding:7px 14px;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.8rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;box-shadow:var(--shadow)}
-.eb:hover{border-color:var(--accent);background:var(--accent-bg)}
-.eb svg{width:13px;height:13px}
+.sr { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.sx { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+.sx .n { font-size: 1.8rem; font-weight: 800; font-family: var(--mono); color: var(--accent); line-height: 1; }
+.sx .l { font-size: 0.8rem; color: var(--text3); margin-top: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.hi { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-sm); margin-bottom: 8px; box-shadow: var(--shadow-sm); transition: all 0.2s; }
+.hi:hover { border-color: var(--text3); }
+.hi .inf { flex: 1; }
+.hi .sym { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+.hi .met { font-size: 0.8rem; color: var(--text3); margin-top: 4px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.ib { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); background: var(--bg3); border-radius: var(--radius-xs); color: var(--text2); cursor: pointer; transition: all 0.2s; font-size: 1rem; }
+.ib:hover { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+.ib.view:hover { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+.es { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.eb { padding: 10px 16px; background: var(--bg2); border: 1px solid var(--card-border); border-radius: 100px; color: var(--text); font-family: var(--font); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); }
+.eb i { font-size: 1.1rem; }
+.eb:hover { border-color: var(--accent); color: var(--accent); background: var(--bg3); }
+
 /* Overlay */
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
-.ov.open{display:flex}
-.oc{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);max-width:600px;width:100%;max-height:85vh;overflow-y:auto;padding:22px;position:relative;animation:su .25s ease;box-shadow:var(--shadow-lg)}
-@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.ox{position:absolute;top:10px;right:10px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid var(--card-border);background:var(--bg3);border-radius:var(--radius-xs);color:var(--text3);cursor:pointer;font-size:.9rem}.ox:hover{color:var(--text)}
-.rbtn{padding:8px 18px;background:var(--bg3);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:.82rem;cursor:pointer;transition:all .15s;font-weight:600}
-.rbtn:hover{border-color:var(--accent);background:var(--accent-bg)}
-.empty{text-align:center;padding:32px 14px;color:var(--text3);font-size:.86rem}
-@media(max-width:768px){.bm-main{flex-direction:column;align-items:center}.bm-figs{position:static}.bm-fig{width:140px}}
-@media(max-width:640px){html{font-size:15px}.app{padding:10px}header h1{font-size:1.35rem}.nt{padding:6px 10px;font-size:.76rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}.bm-fig{width:120px}}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.hr{display:none!important}}
+.ov { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+.ov.open { display: flex; }
+.oc { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-lg); max-width: 650px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 28px; position: relative; animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: var(--shadow-float); }
+@keyframes scaleUp { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.ox { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: none; background: var(--bg3); border-radius: 50%; color: var(--text2); cursor: pointer; font-size: 1.2rem; transition: all 0.2s; }
+.ox:hover { background: var(--red-bg); color: var(--red); transform: rotate(90deg); }
+.rbtn { padding: 12px 24px; background: var(--bg3); border: 1px solid var(--card-border); border-radius: 100px; color: var(--text); font-family: var(--font); font-size: 0.9rem; cursor: pointer; transition: all 0.2s; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
+.rbtn:hover { border-color: var(--text3); }
+.rbtn.primary { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+.rbtn.primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 0.95rem; font-weight: 500; background: var(--bg2); border-radius: var(--radius); border: 1px dashed var(--card-border); }
+
+/* === MODERN TRAINING UI === */
+.trn-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.trn-header h3 { font-size: 1.2rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.trn-stats { display: flex; gap: 12px; }
+.trn-stat { background: var(--bg2); padding: 6px 12px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; border: 1px solid var(--card-border); box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 6px; }
+.trn-stat i { color: var(--accent); font-size: 1.1rem; }
+.trn-progress { height: 8px; background: var(--bg3); border-radius: 100px; overflow: hidden; margin-bottom: 24px; }
+.trn-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--blue)); border-radius: 100px; transition: width 0.4s ease; }
+
+.trn-card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px; position: relative; }
+.trn-badge { position: absolute; top: -12px; left: 24px; background: var(--accent); color: white; padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3); }
+.trn-scenario { font-size: 1.15rem; font-weight: 600; line-height: 1.5; color: var(--text); margin-top: 8px; }
+
+.trn-q { font-size: 0.9rem; font-weight: 700; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.trn-opts { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 24px; }
+@media(min-width: 640px) { .trn-opts { grid-template-columns: 1fr 1fr; } }
+.trn-opt { background: var(--bg2); border: 2px solid var(--card-border); border-radius: var(--radius); padding: 16px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow-sm); }
+.trn-opt:hover { border-color: var(--accent); background: var(--accent-bg); transform: translateY(-2px); }
+.trn-opt.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }
+.trn-opt.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+.trn-opt.dimmed { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+
+.trn-lvl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.trn-lvl-btn { padding: 14px; border: 2px solid var(--card-border); border-radius: var(--radius-sm); font-weight: 700; background: var(--bg2); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
+.trn-lvl-btn:hover { border-color: var(--text3); background: var(--bg3); }
+.trn-lvl-btn.on { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+
+.trn-explain { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px; font-size: 0.95rem; color: #166534; line-height: 1.5; }
+.dark .trn-explain { color: #86efac; }
+.trn-explain b { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 1rem; }
+.trn-next { width: 100%; padding: 16px; background: var(--text); color: var(--bg); border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.trn-next:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+@media(max-width:768px){.bm-main{flex-direction:column;align-items:center}.bm-figs{position:static}.bm-fig{width:150px}}
+@media(max-width:640px){html{font-size:15px}.app{padding:12px}header h1{font-size:1.5rem}.nt{padding:8px 12px;font-size:0.8rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}.bm-fig{width:130px}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+@media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.hr,.ov{display:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <div class="hr"><button class="hb" onclick="toggleTheme()" id="themeBtn" title="Dark/Light">🌙</button></div>
-    <h1><span class="hl">TriageAssist</span><span class="sub">Ersteinschätzung nach dem Manchester Triage System</span></h1>
-    <div class="disc"><b>⚠</b> Entscheidungshilfe — ersetzt nicht MTS-Schulung oder klinisches Urteil. Verbindlich ist das offizielle MTS-Handbuch.</div>
+    <div class="hr"><button class="hb" onclick="toggleTheme()" id="themeBtn" title="Dark/Light Mode"><i class="fa-solid fa-moon"></i></button></div>
+    <h1><span class="hl">TriageAssist</span><span class="sub">Ersteinschätzung nach MTS</span></h1>
+    <div class="disc"><i class="fa-solid fa-circle-exclamation"></i> <span>Entscheidungshilfe. Ersetzt nicht MTS Schulung oder klinisches Urteil.</span></div>
   </header>
+  
   <nav class="nav-tabs">
-    <button class="nt on" data-t="search">🔍 Suche</button>
-    <button class="nt" data-t="body">🫀 Bodymap</button>
-    <button class="nt" data-t="diag">📋 Diagramme</button>
-    <button class="nt" data-t="lvl">🚦 Stufen</button>
-    <button class="nt" data-t="cs">📌 Cheatsheet</button>
-    <button class="nt" data-t="calc">🧮 Rechner</button>
-    <button class="nt" data-t="train">🎓 Training</button>
-    <button class="nt" data-t="hist">📊 Verlauf</button>
+    <button class="nt on" data-t="search"><i class="fa-solid fa-magnifying-glass"></i> Suche</button>
+    <button class="nt" data-t="body"><i class="fa-solid fa-person"></i> Bodymap</button>
+    <button class="nt" data-t="diag"><i class="fa-solid fa-sitemap"></i> Diagramme</button>
+    <button class="nt" data-t="lvl"><i class="fa-solid fa-traffic-light"></i> Stufen</button>
+    <button class="nt" data-t="cs"><i class="fa-solid fa-thumbtack"></i> Cheatsheet</button>
+    <button class="nt" data-t="train"><i class="fa-solid fa-graduation-cap"></i> Training</button>
+    <button class="nt" data-t="hist"><i class="fa-solid fa-clock-rotate-left"></i> Verlauf</button>
   </nav>
 
   <div class="pnl on" id="p-search">
-    <div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="SI" placeholder="Symptome eingeben z.B. Schwellung Unterkiefer, Atemnot, Fahrradsturz, TVT..." autocomplete="off"></div>
-    <div class="hint" id="sH">Mehrere Begriffe möglich — Ergebnisse sofort</div>
+    <div class="sb"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="SI" placeholder="Symptome eingeben z.B. Schwellung Unterkiefer, Atemnot, Fahrradsturz..." autocomplete="off"></div>
+    <div class="hint" id="sH">Mehrere Begriffe möglich, Ergebnisse erscheinen sofort</div>
     <div class="rbar" id="sB" style="display:none"><span id="sC"></span></div>
     <div id="sR"></div>
   </div>
 
   <div class="pnl" id="p-body">
     <div class="bm-page">
-      <div class="bm-hint">Wähle eine Körperregion<span>Klicke auf Vorder- oder Rückseite für passende Diagramme</span></div>
+      <div class="bm-hint">Körperregion auswählen<span>Vorderseite oder Rückseite für passende Diagramme anklicken</span></div>
       <div class="bm-main">
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <div class="bm-figs" id="bmC"></div>
           <div class="bm-pills" id="bmP"></div>
         </div>
-        <div class="bm-side" id="bmR"><div class="bm-empty">← Region auswählen</div></div>
+        <div class="bm-side" id="bmR"><div class="bm-empty"><i class="fa-solid fa-hand-pointer" style="font-size:2rem;margin-bottom:8px;display:block"></i> Region auswählen</div></div>
       </div>
     </div>
   </div>
 
   <div class="pnl" id="p-diag">
-    <div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="dF" placeholder="Filtern..." autocomplete="off"></div>
+    <div class="sb"><i class="fa-solid fa-filter"></i><input type="text" id="dF" placeholder="Diagramme filtern..." autocomplete="off"></div>
     <div class="frow" id="cF"></div><div class="rbar"><span id="dC"></span></div><div id="dL"></div>
   </div>
 
   <div class="pnl" id="p-lvl"><div id="lvl"></div></div>
   <div class="pnl" id="p-cs"><div class="cg" id="cht"></div></div>
 
-  <!-- RECHNER -->
-  <div class="pnl" id="p-calc">
-    <div class="calc-tabs" id="calcTabs"></div>
-    <div id="calcArea"></div>
-  </div>
-
-  <!-- TRAINING -->
   <div class="pnl" id="p-train">
     <div id="trainArea"></div>
   </div>
 
   <div class="pnl" id="p-hist">
     <div class="sr" id="stR"></div>
-    <h3 style="font-size:.98rem;margin-bottom:8px;font-weight:600">Letzte Zuordnungen</h3>
+    <h3 style="font-size:1.1rem;margin-bottom:12px;font-weight:800;color:var(--text)">Letzte Zuordnungen</h3>
     <div id="hL"></div>
     <div class="es">
-      <button class="eb" onclick="expJ()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0-3-3m3 3 3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/></svg>JSON</button>
-      <button class="eb" onclick="expC()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 10v6m0 0-3-3m3 3 3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/></svg>CSV</button>
-      <button class="eb" onclick="impD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V10m0 0l3 3m-3-3l-3 3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/></svg>Import</button>
-      <button class="eb" onclick="clrH()" style="color:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 7-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Löschen</button>
+      <button class="eb" onclick="expJ()"><i class="fa-solid fa-download"></i> JSON Backup</button>
+      <button class="eb" onclick="expC()"><i class="fa-solid fa-file-csv"></i> CSV Export</button>
+      <button class="eb" onclick="impD()"><i class="fa-solid fa-upload"></i> Import</button>
+      <button class="eb" onclick="clrH()" style="color:var(--red);border-color:var(--red-border);background:var(--red-bg)"><i class="fa-solid fa-trash"></i> Löschen</button>
     </div>
     <input type="file" id="impF" accept=".json" style="display:none" onchange="hImp(event)">
   </div>
 </div>
+
 <div class="ov" id="detO" onclick="if(event.target===this)clO()"><div class="oc" id="oC"></div></div>
 
 <script>
-// PWA Service Worker (Mini-Version inline zur reinen Caching-Unterstützung)
 if('serviceWorker' in navigator) {
   const swCode = `self.addEventListener('install',e=>e.waitUntil(caches.open('mts-v1').then(c=>c.addAll(['/']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;
   const blob = new Blob([swCode], {type:'application/javascript'});
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
 }
 
-// Generelle Indikatoren (gelten übergeordnet für alle Diagramme)
 const GI = {
   1: ["Atemweg verlegt", "Inadäquate Atmung", "Schock / Kreislaufkollaps", "Aktueller Krampfanfall", "Hypoglykämie"],
   2: ["Gefährdeter Atemweg", "Schwere Blutung", "Veränderter Bewusstseinszustand", "Temperatur > 41°C"],
@@ -275,16 +374,14 @@ const GI = {
   5: ["Leichte Schmerzen (NRS 1 bis 4)", "Keine akuten Symptome"]
 };
 
-// Peds Vitals
 const pedsV = {
-  '0': 'HF 100-160 | AF 30-60 | RR syst > 60',
-  '1': 'HF 90-150 | AF 24-40 | RR syst > 70',
-  '2': 'HF 80-140 | AF 22-34 | RR syst > 75',
-  '3': 'HF 70-120 | AF 18-30 | RR syst > 80',
-  '4': 'HF 60-100 | AF 12-20 | RR syst > 90'
+  '0': 'HF 100 bis 160 | AF 30 bis 60 | RR syst > 60',
+  '1': 'HF 90 bis 150 | AF 24 bis 40 | RR syst > 70',
+  '2': 'HF 80 bis 140 | AF 22 bis 34 | RR syst > 75',
+  '3': 'HF 70 bis 120 | AF 18 bis 30 | RR syst > 80',
+  '4': 'HF 60 bis 100 | AF 12 bis 20 | RR syst > 90'
 };
 
-// 55 Offizielle MTS Diagramme + SOP Rules + Massive Keywords
 const D=[
 {id:1, name:"Abdominelle Schmerzen bei Erwachsenen", c:"Abdominell", kw:["bauch", "magen", "kolik", "bauchschmerz", "appendizitis", "blinddarm", "gallenkolik", "divertikulitis", "ileus", "oberbauch", "unterbauch", "peritonismus", "abwehrspannung", "akutes abdomen"], i:{2:["Akutes Erbrechen von Blut", "Teerstuhl", "Verdacht auf Aortenaneurysma"], 3:["Schmerz strahlt in Rücken aus", "Gürtelförmiger Schmerz", "Anhaltendes Erbrechen"], 4:["Schmerz bei Bewegung"]}, b:5},
 {id:2, name:"Abdominelle Schmerzen bei Kindern", c:"Pädiatrisch", kw:["bauch kind", "erbrechen", "bauchweh", "invagination", "dreimonatskolik", "säugling bauch"], i:{2:["Gallenfarbiges Erbrechen", "Verdacht auf Invagination", "Rote Geleestühle"], 3:["Anhaltendes Erbrechen", "Trinkschwäche"]}, b:5},
@@ -320,14 +417,14 @@ const D=[
 {id:32, name:"Nackenschmerz", c:"Trauma", kw:["hws", "schleudertrauma", "nackensteife", "torticollis", "zervikalsyndrom", "blockade"], i:{2:["Meningismus", "Neues neurologisches Defizit"], 3:["Traumaanamnese", "Fieber"]}, b:5},
 {id:33, name:"Ohrenprobleme", c:"HNO / Sinnesorgane", kw:["otitis", "hörsturz", "tinnitus", "ohrenschmerz", "mittelohrentzündung", "mastoiditis", "schwindel"], i:{2:["Plötzlicher kompletter Hörverlust"], 3:["Schwellung hinter dem Ohr (Mastoiditis)"]}, b:5},
 {id:34, name:"Psychische Erkrankung", c:"Psychiatrisch", kw:["suizid", "psychose", "panik", "depression", "angst", "borderline", "schizophrenie", "schnittwunden"], i:{2:["Akute Suizidalität", "Eigen-/Fremdgefährdung"], 3:["Agitiertheit", "Schwere Depression"]}, b:5},
-{id:35, name:"Rückenschmerz", c:"Orthopädisch", kw:["lws", "bandscheibe", "ischias", "hexenschuss", "lumbago", "cauda equina", "rücken", "radikulär", "ausstrahlung"], i:{2:["Verdacht auf Aortenaneurysma", "Harnverhalt / Cauda Equina", "Neurologisches Defizit akut"], 3:["Fieber"]}, b:3, r:[{l:"Ausstrahlung ins Bein (< 24 Std)", v:2, t:"Neurologisches Defizit akut -> Orange"}, {l:"Ausstrahlung ins Bein (> 24 Std)", v:3, t:"Chronisch -> Gelb"}]},
+{id:35, name:"Rückenschmerz", c:"Orthopädisch", kw:["lws", "bandscheibe", "ischias", "hexenschuss", "lumbago", "cauda equina", "rücken", "radikulär", "ausstrahlung"], i:{2:["Verdacht auf Aortenaneurysma", "Harnverhalt / Cauda Equina", "Neurologisches Defizit akut"], 3:["Fieber"]}, b:3, r:[{l:"Ausstrahlung ins Bein (< 24 Std)", v:2, t:"Neurologisches Defizit akut auf Orange"}, {l:"Ausstrahlung ins Bein (> 24 Std)", v:3, t:"Chronisch auf Gelb"}]},
 {id:36, name:"Schreiendes Baby", c:"Pädiatrisch", kw:["baby schreit", "untröstlich", "schreibaby", "kolik"], i:{2:["Trinkt gar nicht", "Schlaff"], 3:["Fieber", "Vorgewölbte Fontanelle"]}, b:5},
 {id:37, name:"Schwangerschaftsproblem", c:"Gynäkologisch", kw:["wehen", "blutung schwanger", "eklampsie", "hellp", "präeklampsie", "blasensprung", "abort", "fehlgeburt"], i:{2:["Krämpfe", "Starke Blutung", "Kindsbewegungen fehlend"], 3:["Vorzeitige Wehen", "Blasensprung"]}, b:5},
-{id:38, name:"Schweres Trauma", c:"Trauma", kw:["polytrauma", "vu", "schwer verletzt", "einklemmung", "verkehrsunfall", "schockraum"], i:{1:["Massive Blutung", "Atemweg verlegt"], 2:["Penetrierende Verletzung Rumpf", "Einklemmung", "GCS < 15"]}, b:5, r:[{l:"Verkehrsunfall (mit RTW) - auffälliger Mechanismus", v:2, t:"Trauma -> Orange"}, {l:"Verkehrsunfall (mit RTW) - unpassend", v:3, t:"Trauma -> Gelb"}]},
+{id:38, name:"Schweres Trauma", c:"Trauma", kw:["polytrauma", "vu", "schwer verletzt", "einklemmung", "verkehrsunfall", "schockraum"], i:{1:["Massive Blutung", "Atemweg verlegt"], 2:["Penetrierende Verletzung Rumpf", "Einklemmung", "GCS < 15"]}, b:5, r:[{l:"Verkehrsunfall (mit RTW) unpassend", v:3, t:"Trauma auf Gelb"}]},
 {id:39, name:"Selbstverletzung", c:"Psychiatrisch", kw:["ritzen", "suizidversuch", "autoaggression", "tabletten"], i:{2:["Arterielle Blutung", "Toxische Einnahme", "GCS < 15"], 3:["Anhaltende Blutung", "Akute psychotische Krise"]}, b:5},
 {id:40, name:"Sexualinfektion", c:"Allgemein", kw:["sti", "tripper", "genital", "gonorrhoe", "chlamydien", "lues", "syphilis", "ausfluss", "herpes genitalis"], i:{3:["Akuter purulenter Ausfluss", "Fieber"]}, b:5},
-{id:41, name:"Stürze", c:"Trauma", kw:["gestürzt", "prellung", "sturz", "gefallen", "fahrradsturz", "e-scooter", "treppe", "leiter"], i:{2:["Veränderter GCS", "Fehlstellung große Knochen"], 3:["Frakturverdacht"]}, b:5, r:[{l:"Fahrradsturz", v:2, t:"Auffälliger Verletzungsmechanismus -> Orange!"}, {l:"Sturz aus eigener Körperhöhe", v:2, t:"Auffälliger Verletzungsmechanismus -> Orange!"}]},
-{id:42, name:"Thoraxschmerz", c:"Kardiologisch", kw:["brustschmerz", "acs", "infarkt", "stemi", "nstemi", "angina pectoris", "thoraxschmerz", "engegefühl", "brennen brust", "aorte"], i:{1:["Reißender Schmerz in den Rücken (Aorta)"], 2:["Kaltschweißigkeit", "Atemnot", "Ausstrahlung in Arm/Kiefer"], 3:["Atemabhängiger Schmerz", "Verdacht Lungenembolie"]}, b:5, r:[{l:"Thoraxschmerzen (AP)", v:2, t:"Immer Orange!"}]},
+{id:41, name:"Stürze", c:"Trauma", kw:["gestürzt", "prellung", "sturz", "gefallen", "fahrradsturz", "e-scooter", "treppe", "leiter"], i:{2:["Veränderter GCS", "Fehlstellung große Knochen"], 3:["Frakturverdacht"]}, b:5, r:[{l:"Fahrradsturz", v:2, t:"Auffälliger Verletzungsmechanismus auf Orange"}, {l:"Sturz aus eigener Körperhöhe", v:2, t:"Auffälliger Verletzungsmechanismus auf Orange"}]},
+{id:42, name:"Thoraxschmerz", c:"Kardiologisch", kw:["brustschmerz", "acs", "infarkt", "stemi", "nstemi", "angina pectoris", "thoraxschmerz", "engegefühl", "brennen brust", "aorte"], i:{1:["Reißender Schmerz in den Rücken (Aorta)"], 2:["Kaltschweißigkeit", "Atemnot", "Ausstrahlung in Arm/Kiefer"], 3:["Atemabhängiger Schmerz", "Verdacht Lungenembolie"]}, b:5, r:[{l:"Thoraxschmerzen (AP)", v:2, t:"Immer Orange"}]},
 {id:43, name:"Überdosierung und Vergiftung", c:"Toxikologisch", kw:["intoxikation", "drogen", "überdosis", "alkohol", "tabletten", "paracetamol", "opiate", "kokain", "gift"], i:{2:["GCS < 15", "Atemdepression", "Krampfanfall"], 3:["Gezielte suizidale Einnahme", "Gefährliche Substanz"]}, b:5},
 {id:44, name:"Unwohlsein bei Erwachsenen", c:"Allgemein", kw:["schwäche", "az verschlechterung", "schlapp", "unwohlsein", "fieber", "schwindel", "blass", "pflegefall"], i:{2:["Schockzeichen", "Veränderter Bewusstseinszustand"], 3:["Fieber bei Abwehrschwäche", "Petechien"]}, b:5},
 {id:45, name:"Unwohlsein bei Kindern", c:"Pädiatrisch", kw:["kind krank", "schlapp", "lethargisch", "apathisch", "trinkschwäche", "fieber kind"], i:{2:["Schlaff", "Nicht weckbar", "Petechien"], 3:["Fieber", "Trinkschwäche"]}, b:5},
@@ -344,39 +441,50 @@ const D=[
 ];
 
 const CATS=[...new Set(D.map(x=>x.c))].sort();
-const LV=[{l:1,n:"Sofort",t:"0 Min",r:"-",d:"Unmittelbare Lebensgefahr. Sofortige Behandlung."},{l:2,n:"Sehr dringend",t:"≤ 10 Min",r:"10 Min",d:"Potenziell lebensbedrohlich. ACS, Schlaganfall, Anaphylaxie."},{l:3,n:"Dringend",t:"≤ 30 Min",r:"30 Min",d:"Starke Schmerzen, hohes Fieber + AZ↓, psychiatrische Krise."},{l:4,n:"Normal",t:"≤ 90 Min",r:"60 Min",d:"Mäßige Schmerzen, leichtes Fieber, kleine Wunde."},{l:5,n:"Nicht dringend",t:"≤ 120 Min",r:"120 Min",d:"Chronische Beschwerden, Bagatelleverletzung."}];
-const EM=['🔴','🟠','🟡','🟢','🔵'];
+const LV=[{l:1,n:"Sofort",t:"0 Min",r:"Keine",d:"Unmittelbare Lebensgefahr. Sofortige Behandlung."},{l:2,n:"Sehr dringend",t:"≤ 10 Min",r:"10 Min",d:"Potenziell lebensbedrohlich. ACS, Schlaganfall, Anaphylaxie."},{l:3,n:"Dringend",t:"≤ 30 Min",r:"30 Min",d:"Starke Schmerzen, hohes Fieber und reduzierter Allgemeinzustand."},{l:4,n:"Normal",t:"≤ 90 Min",r:"60 Min",d:"Mäßige Schmerzen, leichtes Fieber, kleine Wunde."},{l:5,n:"Nicht dringend",t:"≤ 120 Min",r:"120 Min",d:"Chronische Beschwerden, Bagatelleverletzung."}];
 const BR=[
-  {k:'head',n:'Kopf / Neurologie',ids:[10,20,21,29,30,31,33,52,28]},
-  {k:'chest',n:'Thorax / Herz / Lunge',ids:[6,7,8,23,42]},
-  {k:'abdomen',n:'Abdomen / GI-Trakt',ids:[1,2,16,19]},
-  {k:'pelvis',n:'Urogenital / Gynäko',ids:[25,37,40,48,49]},
-  {k:'arm_l',n:'Linker Arm',ids:[17,24]},
-  {k:'arm_r',n:'Rechter Arm',ids:[17,24]},
-  {k:'leg_l',n:'Linkes Bein',ids:[17,24]},
-  {k:'leg_r',n:'Rechtes Bein',ids:[17,24]},
-  {k:'neck_back',n:'HWS / Nacken',ids:[32,35]},
-  {k:'back_upper',n:'Oberer Rücken / BWS',ids:[27,35]},
-  {k:'back_lower',n:'Unterer Rücken / LWS',ids:[27,35]},
-  {k:'skin',n:'Haut / Allgemein',ids:[3,4,13,14,22,50,51]},
-  {k:'psych',n:'Psych / Pädiatrie',ids:[9,11,12,26,34,36,39]}
+  {k:'head',n:'Kopf / Neurologie',icon:'fa-brain',ids:[10,20,21,29,30,31,33,52,28]},
+  {k:'chest',n:'Thorax / Lunge',icon:'fa-heart-pulse',ids:[6,7,8,23,42]},
+  {k:'abdomen',n:'Abdomen',icon:'fa-lungs',ids:[1,2,16,19]},
+  {k:'pelvis',n:'Becken / Uro',icon:'fa-restroom',ids:[25,37,40,48,49]},
+  {k:'arm_l',n:'Linker Arm',icon:'fa-hand',ids:[17,24]},
+  {k:'arm_r',n:'Rechter Arm',icon:'fa-hand',ids:[17,24]},
+  {k:'leg_l',n:'Linkes Bein',icon:'fa-shoe-prints',ids:[17,24]},
+  {k:'leg_r',n:'Rechtes Bein',icon:'fa-shoe-prints',ids:[17,24]},
+  {k:'neck_back',n:'HWS / Nacken',icon:'fa-wave-square',ids:[32,35]},
+  {k:'back_upper',n:'Oberer Rücken',icon:'fa-wave-square',ids:[27,35]},
+  {k:'back_lower',n:'Unterer Rücken',icon:'fa-wave-square',ids:[27,35]},
+  {k:'skin',n:'Haut / Wunden',icon:'fa-band-aid',ids:[3,4,13,14,22,50,51]},
+  {k:'psych',n:'Psych / Päd',icon:'fa-puzzle-piece',ids:[9,11,12,26,34,36,39]}
 ];
-const CS=[{t:"🔴 Sofort — Red Flags",i:["Atemstillstand","Kreislaufstillstand","Bewusstlosigkeit ohne Schutzreflexe","Massive arterielle Blutung","Anaphylaktischer Schock","Status epilepticus"]},{t:"🟠 Sehr dringend",i:["Schwere Atemnot / SpO₂ < 92%","Schwere Thoraxschmerzen (ACS)","Fokalneurologisches Defizit","GCS ≤ 12","Unkontrollierbare Blutung","Akutes Abdomen + Abwehrspannung"]},{t:"🟡 Dringend",i:["Fieber > 39°C + AZ↓","Starke Schmerzen NRS 7–10","Erbrechen + Dehydration","Akute Verwirrtheit","Nicht reponierbare Hernie"]},{t:"🟢 Normal",i:["Schmerzen NRS 4–6","Fieber ohne Begleitzeichen","Kleine Wunden","Erbrechen ohne Dehydration","Hautausschlag stabil"]},{t:"📊 Vitalzeichen",i:["AF: 12–20/min","SpO₂: > 95% (COPD > 92%)","HF: 60–100/min","RR syst: 100–140","Temp: 36,0–37,5°C","GCS: 15 = normal"]},{t:"⏱ FAST-Test",i:["Face — Gesicht hängt?","Arms — Arm sinkt?","Speech — Sprache verwaschen?","Time — Beginn wann?","→ Orange-Stufe","Lyse < 4,5 h"]},{t:"💊 Schmerzskala",i:["0 = schmerzfrei","1–3 = leicht","4–6 = mäßig","7–9 = stark","10 = maximal","Kinder: Gesichterskala"]},{t:"🧒 Pädiatrie",i:["Neugeborene + Fieber → Orange","Fontanelle vorgewölbt?","Trinkschwäche = Alarm","Petechien + Fieber → Meningo?","Tachypnoe altersabhängig","Eltern-Intuition beachten"]}];
+const CS=[{t:"Sofort: Red Flags",i:["Atemstillstand","Kreislaufstillstand","Bewusstlos ohne Schutzreflexe","Massive arterielle Blutung","Anaphylaktischer Schock","Status epilepticus"]},{t:"Sehr dringend",i:["Schwere Atemnot oder SpO₂ < 92%","Schwere Thoraxschmerzen (ACS)","Fokalneurologisches Defizit","GCS ≤ 12","Unkontrollierbare Blutung","Akutes Abdomen und Abwehrspannung"]},{t:"Dringend",i:["Fieber > 39°C und reduzierter AZ","Starke Schmerzen NRS 7 bis 10","Erbrechen und Dehydration","Akute Verwirrtheit","Nicht reponierbare Hernie"]},{t:"Normal",i:["Schmerzen NRS 4 bis 6","Fieber ohne Begleitzeichen","Kleine Wunden","Erbrechen ohne Dehydration","Hautausschlag stabil"]},{t:"Vitalzeichen",i:["AF: 12 bis 20/min","SpO₂: > 95% (COPD > 92%)","HF: 60 bis 100/min","RR syst: 100 bis 140","Temp: 36,0 bis 37,5°C","GCS: 15 ist normal"]},{t:"FAST Test",i:["Face: Gesicht hängt?","Arms: Arm sinkt?","Speech: Sprache verwaschen?","Time: Beginn wann?","Bedeutet Orange Stufe","Lyse in unter 4,5 h"]},{t:"Pädiatrie",i:["Neugeborene und Fieber bedeutet Orange","Fontanelle vorgewölbt?","Trinkschwäche ist ein Alarmzeichen","Petechien und Fieber prüfen","Tachypnoe altersabhängig betrachten","Eltern Intuition absolut beachten"]}];
 
 let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),aCat='';
 let curDiag=null,selR=[],selI=[];
-
-// State für Vitaleingaben
 let curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
-let curPed = '2'; // Default: 1-4 Jahre
+let curPed = '2'; 
 
-// Theme
-function toggleTheme(){document.body.classList.toggle('dark');const dk=document.body.classList.contains('dark');localStorage.setItem('mts_theme',dk?'dark':'light');document.getElementById('themeBtn').textContent=dk?'☀️':'🌙'}
-(function(){if(localStorage.getItem('mts_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').textContent='☀️'}})();
-// Nav
-document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.nt').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));document.getElementById('p-'+t.dataset.t).classList.add('on');if(t.dataset.t==='body')initBM();if(t.dataset.t==='diag')rDiag();if(t.dataset.t==='lvl')rLvl();if(t.dataset.t==='cs')rCS();if(t.dataset.t==='calc')initCalc();if(t.dataset.t==='train')initTrain();if(t.dataset.t==='hist')rHist()}));
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  const dk=document.body.classList.contains('dark');
+  localStorage.setItem('mts_theme',dk?'dark':'light');
+  document.getElementById('themeBtn').innerHTML=dk?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';
+}
+(function(){if(localStorage.getItem('mts_theme')==='dark'){document.body.classList.add('dark');document.getElementById('themeBtn').innerHTML='<i class="fa-solid fa-sun"></i>'}})();
 
-// Search
+document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.nt').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+t.dataset.t).classList.add('on');
+  if(t.dataset.t==='body')initBM();
+  if(t.dataset.t==='diag')rDiag();
+  if(t.dataset.t==='lvl')rLvl();
+  if(t.dataset.t==='cs')rCS();
+  if(t.dataset.t==='train')initTrain();
+  if(t.dataset.t==='hist')rHist();
+}));
+
 const SI_=document.getElementById('SI');
 SI_.addEventListener('input',debounce(()=>{
   const q=SI_.value.trim().toLowerCase(),sB=document.getElementById('sB'),sC=document.getElementById('sC'),sH=document.getElementById('sH'),sR=document.getElementById('sR');
@@ -397,19 +505,18 @@ SI_.addEventListener('input',debounce(()=>{
     if(ts.length>1&&ts.every(t=>d.kw.some(k=>k.includes(t))||d.name.toLowerCase().includes(t)||indText.includes(t)))s+=18;
     return{...d,score:s,mt:[...new Set(m)]}
   }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
-  sB.style.display='flex';sC.innerHTML=`<b>${sc.length}</b> Ergebnis${sc.length!==1?'se':''}`;
-  if(!sc.length){sR.innerHTML='<div class="empty">Keine Treffer.</div>';return}
-  sR.innerHTML=sc.slice(0,15).map(x=>`<div class="card" onclick="shD(${x.id})"><div class="ch"><span class="ct">${hl(x.name,ts)}</span><span class="tb tb-${cl(x.c)}"><span class="td td-${cl(x.c)}"></span>${x.c}</span></div><div class="cs">MTS Diagramm Nr. ${x.id}</div><div class="tags">${x.kw.filter(k=>x.mt.some(m=>k.includes(m))).slice(0,5).map(k=>`<span class="tag m">${k}</span>`).join('')}${x.kw.filter(k=>!x.mt.some(m=>k.includes(m))).slice(0,3).map(k=>`<span class="tag">${k}</span>`).join('')}</div></div>`).join('')
+  sB.style.display='flex';sC.innerHTML=`<b>${sc.length}</b> Treffer`;
+  if(!sc.length){sR.innerHTML='<div class="empty"><i class="fa-solid fa-magnifying-glass" style="font-size:2rem;margin-bottom:8px;display:block"></i>Keine Diagramme gefunden.</div>';return}
+  sR.innerHTML=sc.slice(0,15).map(x=>`<div class="card" onclick="shD(${x.id})"><div class="ch"><span class="ct">${hl(x.name,ts)}</span><span class="tb tb-${cl(x.c)}"><span class="td td-${cl(x.c)}"></span>${x.c}</span></div><div class="cs">Diagramm Nr. ${x.id}</div><div class="tags">${x.kw.filter(k=>x.mt.some(m=>k.includes(m))).slice(0,5).map(k=>`<span class="tag m">${k}</span>`).join('')}${x.kw.filter(k=>!x.mt.some(m=>k.includes(m))).slice(0,3).map(k=>`<span class="tag">${k}</span>`).join('')}</div></div>`).join('')
 },150));
 
-function hl(t,ts){let r=t;ts.forEach(x=>{r=r.replace(new RegExp(`(${esc(x)})`,'gi'),'<mark style="background:var(--mark-bg);color:var(--mark-color);border-radius:2px;padding:0 1px">$1</mark>')});return r}
+function hl(t,ts){let r=t;ts.forEach(x=>{r=r.replace(new RegExp(`(${esc(x)})`,'gi'),'<mark style="background:var(--mark-bg);color:var(--mark-color);border-radius:4px;padding:0 2px">$1</mark>')});return r}
 function cl(c){return{Kardiologisch:2,Neurologisch:2,Respiratorisch:2,Trauma:3,Abdominell:3,Chirurgisch:3,Pädiatrisch:3,Psychiatrisch:3,Toxikologisch:2,Internistisch:3,Gynäkologisch:3,Urologisch:3,Allgemein:4,'HNO / Sinnesorgane':4,Dermatologisch:4,Orthopädisch:4,Spezial:2}[c]||3}
 
-// BODYMAP
 function initBM(){
-  document.getElementById('bmC').innerHTML=`<div class="bm-fig">${svgF()}<div class="bm-fig-lbl">Vorderseite</div></div><div class="bm-fig">${svgB()}<div class="bm-fig-lbl">Rückseite</div></div>`;
-  document.getElementById('bmP').innerHTML=BR.filter(r=>r.k==='skin'||r.k==='psych').map(r=>`<button class="bm-pill" data-r="${r.k}">${r.k==='skin'?'🩹':'🧩'} ${r.n}</button>`).join('');
-  document.getElementById('bmR').innerHTML='<div class="bm-empty">← Region auswählen</div>';
+  document.getElementById('bmC').innerHTML=`<div class="bm-fig">${svgF()}<div class="bm-fig-lbl">Front</div></div><div class="bm-fig">${svgB()}<div class="bm-fig-lbl">Back</div></div>`;
+  document.getElementById('bmP').innerHTML=BR.filter(r=>r.k==='skin'||r.k==='psych').map(r=>`<button class="bm-pill" data-r="${r.k}"><i class="fa-solid ${r.icon}"></i> ${r.n}</button>`).join('');
+  document.getElementById('bmR').innerHTML='<div class="bm-empty"><i class="fa-solid fa-hand-pointer" style="font-size:2rem;margin-bottom:8px;display:block"></i> Region wählen</div>';
   document.querySelectorAll('.bz').forEach(z=>z.addEventListener('click',()=>bmS(z.dataset.r)));
   document.querySelectorAll('.bm-pill').forEach(p=>p.addEventListener('click',()=>bmS(p.dataset.r)));
 }
@@ -418,79 +525,26 @@ function bmS(key){
   document.querySelectorAll('.bm-pill').forEach(p=>p.classList.toggle('on',p.dataset.r===key));
   const rr=BR.find(x=>x.k===key);if(!rr)return;
   const ds=[...new Set(rr.ids)].map(id=>D.find(x=>x.id===id)).filter(Boolean);
-  document.getElementById('bmR').innerHTML=`<h3>${rr.n}</h3><div class="sub">${ds.length} Diagramme</div>${ds.map(d=>`<div class="bm-di" onclick="shD(${d.id})"><strong>${d.name}</strong><span>Nr. ${d.id}</span></div>`).join('')}`;
+  document.getElementById('bmR').innerHTML=`<h3 style="display:flex;align-items:center;gap:8px"><i class="fa-solid ${rr.icon}"></i> ${rr.n}</h3><div class="sub">${ds.length} verknüpfte Diagramme</div>${ds.map(d=>`<div class="bm-di" onclick="shD(${d.id})"><div><strong>${d.name}</strong><span>Nr. ${d.id}</span></div><i class="fa-solid fa-caret-right" style="color:var(--text3)"></i></div>`).join('')}`;
 }
-// SVG Helpers
-const _h='M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C97,100 94,98 92,96Z';
 const _n='M92,96 C92,102 93,108 94,112 L106,112 C107,108 108,102 108,96 C106,98 103,100 100,100 C97,100 94,98 92,96Z';
-function svgF(){return`<svg viewBox="0 0 200 560" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs>
-<path class="bz" data-r="head" d="M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C103,100 106,98 108,96 L108,88 C114,84 120,80 124,74 C130,66 134,56 133,42 C132,24 118,10 100,10Z" style="fill:url(#gf)"/>
-<text class="bl" x="100" y="52" text-anchor="middle" font-size="9">Kopf</text>
-<path class="bz" data-r="head" d="${_n}"/>
-<path class="bz" data-r="chest" d="M94,112 C86,114 74,118 66,122 C56,128 50,136 48,148 L44,190 C44,194 46,196 48,196 L152,196 C154,196 156,194 156,190 L152,148 C150,136 144,128 134,122 C126,118 114,114 106,112Z"/>
-<text class="bl" x="100" y="158" text-anchor="middle" font-size="9">Thorax</text>
-<path class="bz" data-r="abdomen" d="M48,196 L46,254 C46,262 50,270 56,276 L66,280 L134,280 L144,276 C150,270 154,262 154,254 L152,196Z"/>
-<text class="bl" x="100" y="240" text-anchor="middle" font-size="9">Abdomen</text>
-<path class="bz" data-r="pelvis" d="M66,280 L58,306 C58,314 62,324 72,332 C82,340 92,346 100,346 C108,346 118,340 128,332 C138,324 142,314 142,306 L134,280Z"/>
-<text class="bl" x="100" y="314" text-anchor="middle" font-size="8">Becken</text>
-<path class="bz" data-r="arm_r" d="M48,148 L42,140 C36,134 30,132 26,136 L20,142 C16,148 14,156 14,164 L10,224 C8,240 8,256 10,268 L12,286 Q12,298 18,304 L20,300 L24,286 L30,248 L36,210 L40,194 L44,190Z"/>
-<text class="bl" x="24" y="220" text-anchor="middle" font-size="6.5" transform="rotate(-6,24,220)">R.Arm</text>
-<path class="bz" data-r="arm_l" d="M152,148 L158,140 C164,134 170,132 174,136 L180,142 C184,148 186,156 186,164 L190,224 C192,240 192,256 190,268 L188,286 Q188,298 182,304 L180,300 L176,286 L170,248 L164,210 L160,194 L156,190Z"/>
-<text class="bl" x="176" y="220" text-anchor="middle" font-size="6.5" transform="rotate(6,176,220)">L.Arm</text>
-<path class="bz" data-r="arm_r" d="M12,286 C10,296 6,308 6,316 C6,322 8,325 12,325 L16,323 L18,314 L18,304Z" style="stroke-width:.8"/>
-<path class="bz" data-r="arm_l" d="M188,286 C190,296 194,308 194,316 C194,322 192,325 188,325 L184,323 L182,314 L182,304Z" style="stroke-width:.8"/>
-<path class="bz" data-r="leg_r" d="M72,332 C66,338 60,346 58,356 L52,420 C50,440 48,462 48,478 L46,518 C46,528 48,534 54,537 L60,538 C66,538 70,532 70,524 L74,486 L80,434 L86,392 L94,356 C88,350 80,340 74,334Z"/>
-<text class="bl" x="62" y="438" text-anchor="middle" font-size="6.5">R.Bein</text>
-<path class="bz" data-r="leg_l" d="M128,332 C134,338 140,346 142,356 L148,420 C150,440 152,462 152,478 L154,518 C154,528 152,534 146,537 L140,538 C134,538 130,532 130,524 L126,486 L120,434 L114,392 L106,356 C112,350 120,340 126,334Z"/>
-<text class="bl" x="138" y="438" text-anchor="middle" font-size="6.5">L.Bein</text>
-<path class="bz" data-r="leg_r" d="M46,518 L42,534 C40,542 42,550 48,552 L60,554 C66,554 70,548 70,542 L70,524Z" style="stroke-width:.8"/>
-<path class="bz" data-r="leg_l" d="M154,518 L158,534 C160,542 158,550 152,552 L140,554 C134,554 130,548 130,542 L130,524Z" style="stroke-width:.8"/>
-</svg>`}
-function svgB(){return`<svg viewBox="0 0 200 560" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs>
-<path class="bz" data-r="head" d="M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C103,100 106,98 108,96 L108,88 C114,84 120,80 124,74 C130,66 134,56 133,42 C132,24 118,10 100,10Z" style="fill:url(#gb)"/>
-<text class="bl" x="100" y="52" text-anchor="middle" font-size="9">Kopf</text>
-<path class="bz" data-r="neck_back" d="${_n}"/>
-<text class="bl" x="100" y="106" text-anchor="middle" font-size="5.5">HWS</text>
-<path class="bz" data-r="back_upper" d="M94,112 C86,114 74,118 66,122 C56,128 50,136 48,148 L44,190 C44,194 46,196 48,196 L152,196 C154,196 156,194 156,190 L152,148 C150,136 144,128 134,122 C126,118 114,114 106,112Z"/>
-<text class="bl" x="100" y="155" text-anchor="middle" font-size="8">Ob. Rücken</text>
-<text class="bl" x="100" y="167" text-anchor="middle" font-size="6" style="opacity:.6">BWS</text>
-<path class="bz" data-r="back_lower" d="M48,196 L46,254 C46,262 50,270 56,276 L66,280 L134,280 L144,276 C150,270 154,262 154,254 L152,196Z"/>
-<text class="bl" x="100" y="236" text-anchor="middle" font-size="8">Unt. Rücken</text>
-<text class="bl" x="100" y="248" text-anchor="middle" font-size="6" style="opacity:.6">LWS</text>
-<path class="bz" data-r="pelvis" d="M66,280 L58,306 C58,314 62,324 72,332 C82,340 92,346 100,346 C108,346 118,340 128,332 C138,324 142,314 142,306 L134,280Z"/>
-<text class="bl" x="100" y="314" text-anchor="middle" font-size="8">Gesäß</text>
-<path class="bz" data-r="arm_r" d="M48,148 L42,140 C36,134 30,132 26,136 L20,142 C16,148 14,156 14,164 L10,224 C8,240 8,256 10,268 L12,286 Q12,298 18,304 L20,300 L24,286 L30,248 L36,210 L40,194 L44,190Z"/>
-<text class="bl" x="24" y="220" text-anchor="middle" font-size="6.5" transform="rotate(-6,24,220)">R.Arm</text>
-<path class="bz" data-r="arm_l" d="M152,148 L158,140 C164,134 170,132 174,136 L180,142 C184,148 186,156 186,164 L190,224 C192,240 192,256 190,268 L188,286 Q188,298 182,304 L180,300 L176,286 L170,248 L164,210 L160,194 L156,190Z"/>
-<text class="bl" x="176" y="220" text-anchor="middle" font-size="6.5" transform="rotate(6,176,220)">L.Arm</text>
-<path class="bz" data-r="arm_r" d="M12,286 C10,296 6,308 6,316 C6,322 8,325 12,325 L16,323 L18,314 L18,304Z" style="stroke-width:.8"/>
-<path class="bz" data-r="arm_l" d="M188,286 C190,296 194,308 194,316 C194,322 192,325 188,325 L184,323 L182,314 L182,304Z" style="stroke-width:.8"/>
-<path class="bz" data-r="leg_r" d="M72,332 C66,338 60,346 58,356 L52,420 C50,440 48,462 48,478 L46,518 C46,528 48,534 54,537 L60,538 C66,538 70,532 70,524 L74,486 L80,434 L86,392 L94,356 C88,350 80,340 74,334Z"/>
-<text class="bl" x="62" y="438" text-anchor="middle" font-size="6.5">R.Bein</text>
-<path class="bz" data-r="leg_l" d="M128,332 C134,338 140,346 142,356 L148,420 C150,440 152,462 152,478 L154,518 C154,528 152,534 146,537 L140,538 C134,538 130,532 130,524 L126,486 L120,434 L114,392 L106,356 C112,350 120,340 126,334Z"/>
-<text class="bl" x="138" y="438" text-anchor="middle" font-size="6.5">L.Bein</text>
-<path class="bz" data-r="leg_r" d="M46,518 L42,534 C40,542 42,550 48,552 L60,554 C66,554 70,548 70,542 L70,524Z" style="stroke-width:.8"/>
-<path class="bz" data-r="leg_l" d="M154,518 L158,534 C160,542 158,550 152,552 L140,554 C134,554 130,548 130,542 L130,524Z" style="stroke-width:.8"/>
-</svg>`}
+function svgF(){return`<svg viewBox="0 0 200 560" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs><path class="bz" data-r="head" d="M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C103,100 106,98 108,96 L108,88 C114,84 120,80 124,74 C130,66 134,56 133,42 C132,24 118,10 100,10Z" style="fill:url(#gf)"/><text class="bl" x="100" y="52" text-anchor="middle" font-size="9">Kopf</text><path class="bz" data-r="head" d="${_n}"/><path class="bz" data-r="chest" d="M94,112 C86,114 74,118 66,122 C56,128 50,136 48,148 L44,190 C44,194 46,196 48,196 L152,196 C154,196 156,194 156,190 L152,148 C150,136 144,128 134,122 C126,118 114,114 106,112Z"/><text class="bl" x="100" y="158" text-anchor="middle" font-size="9">Thorax</text><path class="bz" data-r="abdomen" d="M48,196 L46,254 C46,262 50,270 56,276 L66,280 L134,280 L144,276 C150,270 154,262 154,254 L152,196Z"/><text class="bl" x="100" y="240" text-anchor="middle" font-size="9">Abdomen</text><path class="bz" data-r="pelvis" d="M66,280 L58,306 C58,314 62,324 72,332 C82,340 92,346 100,346 C108,346 118,340 128,332 C138,324 142,314 142,306 L134,280Z"/><text class="bl" x="100" y="314" text-anchor="middle" font-size="8">Becken</text><path class="bz" data-r="arm_r" d="M48,148 L42,140 C36,134 30,132 26,136 L20,142 C16,148 14,156 14,164 L10,224 C8,240 8,256 10,268 L12,286 Q12,298 18,304 L20,300 L24,286 L30,248 L36,210 L40,194 L44,190Z"/><text class="bl" x="24" y="220" text-anchor="middle" font-size="6.5" transform="rotate(-6,24,220)">R.Arm</text><path class="bz" data-r="arm_l" d="M152,148 L158,140 C164,134 170,132 174,136 L180,142 C184,148 186,156 186,164 L190,224 C192,240 192,256 190,268 L188,286 Q188,298 182,304 L180,300 L176,286 L170,248 L164,210 L160,194 L156,190Z"/><text class="bl" x="176" y="220" text-anchor="middle" font-size="6.5" transform="rotate(6,176,220)">L.Arm</text><path class="bz" data-r="arm_r" d="M12,286 C10,296 6,308 6,316 C6,322 8,325 12,325 L16,323 L18,314 L18,304Z" style="stroke-width:.8"/><path class="bz" data-r="arm_l" d="M188,286 C190,296 194,308 194,316 C194,322 192,325 188,325 L184,323 L182,314 L182,304Z" style="stroke-width:.8"/><path class="bz" data-r="leg_r" d="M72,332 C66,338 60,346 58,356 L52,420 C50,440 48,462 48,478 L46,518 C46,528 48,534 54,537 L60,538 C66,538 70,532 70,524 L74,486 L80,434 L86,392 L94,356 C88,350 80,340 74,334Z"/><text class="bl" x="62" y="438" text-anchor="middle" font-size="6.5">R.Bein</text><path class="bz" data-r="leg_l" d="M128,332 C134,338 140,346 142,356 L148,420 C150,440 152,462 152,478 L154,518 C154,528 152,534 146,537 L140,538 C134,538 130,532 130,524 L126,486 L120,434 L114,392 L106,356 C112,350 120,340 126,334Z"/><text class="bl" x="138" y="438" text-anchor="middle" font-size="6.5">L.Bein</text><path class="bz" data-r="leg_r" d="M46,518 L42,534 C40,542 42,550 48,552 L60,554 C66,554 70,548 70,542 L70,524Z" style="stroke-width:.8"/><path class="bz" data-r="leg_l" d="M154,518 L158,534 C160,542 158,550 152,552 L140,554 C134,554 130,548 130,542 L130,524Z" style="stroke-width:.8"/></svg>`}
+function svgB(){return`<svg viewBox="0 0 200 560" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs><path class="bz" data-r="head" d="M100,10 C82,10 68,24 67,42 C66,56 70,66 76,74 C80,80 86,84 92,88 L92,96 C94,98 97,100 100,100 C103,100 106,98 108,96 L108,88 C114,84 120,80 124,74 C130,66 134,56 133,42 C132,24 118,10 100,10Z" style="fill:url(#gb)"/><text class="bl" x="100" y="52" text-anchor="middle" font-size="9">Kopf</text><path class="bz" data-r="neck_back" d="${_n}"/><text class="bl" x="100" y="106" text-anchor="middle" font-size="5.5">HWS</text><path class="bz" data-r="back_upper" d="M94,112 C86,114 74,118 66,122 C56,128 50,136 48,148 L44,190 C44,194 46,196 48,196 L152,196 C154,196 156,194 156,190 L152,148 C150,136 144,128 134,122 C126,118 114,114 106,112Z"/><text class="bl" x="100" y="155" text-anchor="middle" font-size="8">Ob. Rücken</text><text class="bl" x="100" y="167" text-anchor="middle" font-size="6" style="opacity:.6">BWS</text><path class="bz" data-r="back_lower" d="M48,196 L46,254 C46,262 50,270 56,276 L66,280 L134,280 L144,276 C150,270 154,262 154,254 L152,196Z"/><text class="bl" x="100" y="236" text-anchor="middle" font-size="8">Unt. Rücken</text><text class="bl" x="100" y="248" text-anchor="middle" font-size="6" style="opacity:.6">LWS</text><path class="bz" data-r="pelvis" d="M66,280 L58,306 C58,314 62,324 72,332 C82,340 92,346 100,346 C108,346 118,340 128,332 C138,324 142,314 142,306 L134,280Z"/><text class="bl" x="100" y="314" text-anchor="middle" font-size="8">Gesäß</text><path class="bz" data-r="arm_r" d="M48,148 L42,140 C36,134 30,132 26,136 L20,142 C16,148 14,156 14,164 L10,224 C8,240 8,256 10,268 L12,286 Q12,298 18,304 L20,300 L24,286 L30,248 L36,210 L40,194 L44,190Z"/><text class="bl" x="24" y="220" text-anchor="middle" font-size="6.5" transform="rotate(-6,24,220)">R.Arm</text><path class="bz" data-r="arm_l" d="M152,148 L158,140 C164,134 170,132 174,136 L180,142 C184,148 186,156 186,164 L190,224 C192,240 192,256 190,268 L188,286 Q188,298 182,304 L180,300 L176,286 L170,248 L164,210 L160,194 L156,190Z"/><text class="bl" x="176" y="220" text-anchor="middle" font-size="6.5" transform="rotate(6,176,220)">L.Arm</text><path class="bz" data-r="arm_r" d="M12,286 C10,296 6,308 6,316 C6,322 8,325 12,325 L16,323 L18,314 L18,304Z" style="stroke-width:.8"/><path class="bz" data-r="arm_l" d="M188,286 C190,296 194,308 194,316 C194,322 192,325 188,325 L184,323 L182,314 L182,304Z" style="stroke-width:.8"/><path class="bz" data-r="leg_r" d="M72,332 C66,338 60,346 58,356 L52,420 C50,440 48,462 48,478 L46,518 C46,528 48,534 54,537 L60,538 C66,538 70,532 70,524 L74,486 L80,434 L86,392 L94,356 C88,350 80,340 74,334Z"/><text class="bl" x="62" y="438" text-anchor="middle" font-size="6.5">R.Bein</text><path class="bz" data-r="leg_l" d="M128,332 C134,338 140,346 142,356 L148,420 C150,440 152,462 152,478 L154,518 C154,528 152,534 146,537 L140,538 C134,538 130,532 130,524 L126,486 L120,434 L114,392 L106,356 C112,350 120,340 126,334Z"/><text class="bl" x="138" y="438" text-anchor="middle" font-size="6.5">L.Bein</text><path class="bz" data-r="leg_r" d="M46,518 L42,534 C40,542 42,550 48,552 L60,554 C66,554 70,548 70,542 L70,524Z" style="stroke-width:.8"/><path class="bz" data-r="leg_l" d="M154,518 L158,534 C160,542 158,550 152,552 L140,554 C134,554 130,548 130,542 L130,524Z" style="stroke-width:.8"/></svg>`}
 
-// DIAGRAMS
 const dF_=document.getElementById('dF');
 function rDiag(){document.getElementById('cF').innerHTML=`<button class="fb ${aCat===''?'a':''}" onclick="fC('')">Alle</button>${CATS.map(c=>`<button class="fb ${aCat===c?'a':''}" onclick="fC('${c}')">${c}</button>`).join('')}`;fR()}
 function fC(c){aCat=c;rDiag()}
 dF_.addEventListener('input',debounce(fR,150));
-function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> / ${D.length}`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
+function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> Diagramme`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
 
-// ACTION CHECKLIST GENERATOR
 function getActions(lvl, diag) {
   let a = [];
-  if (lvl === 1) a.push("Schockraum & Rea-Team alarmieren", "Monitoring & O₂ max. anlegen", "Atemwegsmanagement vorbereiten", "PVK/IO-Zugang legen");
+  if (lvl === 1) a.push("Schockraum & Rea Team alarmieren", "Monitoring & O₂ max. anlegen", "Atemwegsmanagement vorbereiten", "PVK/IO Zugang legen");
   if (lvl === 2) {
     a.push("Arztkontakt < 10 Min. zwingend");
-    if (diag.c === 'Kardiologisch') a.push("12-Kanal EKG (< 10 Min)", "PVK legen & Labor (Trop)", "Monitoring anlegen");
-    else if (diag.c === 'Neurologisch') a.push("FAST-Test Doku", "BZ sofort messen!", "PVK legen & Labor", "Lyse/Thrombektomie Zeitfenster prüfen");
-    else if (diag.c === 'Trauma') a.push("Trauma-Check", "Immobilisation HWS/Ganzkörper", "Blutungskontrolle");
+    if (diag.c === 'Kardiologisch') a.push("12 Kanal EKG (< 10 Min)", "PVK legen & Labor (Trop)", "Monitoring anlegen");
+    else if (diag.c === 'Neurologisch') a.push("FAST Test Doku", "BZ sofort messen", "PVK legen & Labor", "Lyse/Thrombektomie Zeitfenster prüfen");
+    else if (diag.c === 'Trauma') a.push("Trauma Check", "Immobilisation HWS/Ganzkörper", "Blutungskontrolle");
     else a.push("Monitoring anlegen", "PVK vorbereiten");
   }
   if (lvl === 3) {
@@ -500,13 +554,12 @@ function getActions(lvl, diag) {
     if (diag.c === 'Chirurgisch' || diag.c === 'Trauma') a.push("Röntgenanforderung prüfen");
   }
   if (lvl === 4 || lvl === 5) {
-    a.push("Normale Re-Evaluation im Verlauf");
+    a.push("Normale Re Evaluation im Verlauf");
     if (diag.c === 'Trauma') a.push("Ggf. kühlen/hochlagern");
   }
   return a;
 }
 
-// DETAIL & TRIAGE LOGIC
 function shD(id){
   curDiag=D.find(x=>x.id===id);
   selR=[]; selI=[];
@@ -529,37 +582,24 @@ function tgI(lvl, idx, isGen){
   rOvl();
 }
 
-function updV(key, val) {
-  curVit[key] = val;
-  rOvl();
-}
-
-function updPed(val) {
-  curPed = val;
-  rOvl();
-}
+function updV(key, val) { curVit[key] = val; rOvl(); }
+function updPed(val) { curPed = val; rOvl(); }
 
 function rOvl(){
   const d=curDiag;
   let lvl=d.b||5;
   
-  // Höchste Triage-Stufe aus Indikatoren
-  selI.forEach(k=>{
-    const l = parseInt(k.split('-')[0]);
-    if(l < lvl) lvl = l;
-  });
+  selI.forEach(k=>{ const l = parseInt(k.split('-')[0]); if(l < lvl) lvl = l; });
 
-  // Spezifische Red-Flags (Deine Regeln)
   if(d.r){
     d.r.forEach((r,i)=>{
       if(selR.includes(i)) {
         if(r.v < lvl) lvl = r.v;
-        if(r.v > lvl) lvl = r.v; // override für explizite Abstufungen
+        if(r.v > lvl) lvl = r.v; 
       }
     });
   }
 
-  // Dynamische Vitals Evaluation
   let vLvl = 5;
   if(curVit.gcs !== '') {
     const gcs = parseInt(curVit.gcs);
@@ -577,8 +617,8 @@ function rOvl(){
   }
   if(curVit.nrs !== '') {
     const nrs = parseInt(curVit.nrs);
-    if(nrs >= 8) vLvl = Math.min(vLvl, 3); // Starke Schmerzen
-    else if(nrs >= 5) vLvl = Math.min(vLvl, 4); // Mäßige Schmerzen
+    if(nrs >= 8) vLvl = Math.min(vLvl, 3); 
+    else if(nrs >= 5) vLvl = Math.min(vLvl, 4); 
   }
   lvl = Math.min(lvl, vLvl);
 
@@ -586,21 +626,20 @@ function rOvl(){
   const rl = D.filter(x=>x.c===d.c&&x.id!==d.id);
 
   let html = `
-    <button class="ox" onclick="clO()">✕</button>
+    <button class="ox" onclick="clO()"><i class="fa-solid fa-xmark"></i></button>
     <span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span>
-    <h2 style="font-size:1.2rem;font-weight:700;margin-top:8px">${d.id}. ${d.name}</h2>
+    <h2 style="font-size:1.3rem;font-weight:800;margin-top:12px;color:var(--text)">${d.id}. ${d.name}</h2>
     
     <div class="triage-banner t-b-${lvl}">
-      <div>${EM[lvl-1]} Stufe ${lvl} — ${lObj.n}</div>
+      <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-triangle-exclamation"></i> Stufe ${lvl} (${lObj.n})</div>
       <div class="t-time">Max: ${lObj.t}</div>
     </div>`;
 
-  // PÄDIATRIE SICHERHEITSNETZ
   if(d.c === 'Pädiatrisch'){
-    html += `<div style="background:var(--bg3);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;border:1px solid var(--card-border)">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <h4 style="font-size:.8rem;font-weight:700;color:var(--text)">👶 Päd. Normwerte prüfen</h4>
-        <select onchange="updPed(this.value)" style="padding:2px 6px;border-radius:4px;border:1px solid var(--card-border);font-family:var(--font);font-size:.75rem">
+    html += `<div style="background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;border:1px solid var(--card-border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:6px"><i class="fa-solid fa-baby"></i> Päd. Normwerte prüfen</h4>
+        <select onchange="updPed(this.value)" style="padding:4px 8px;border-radius:6px;border:1px solid var(--card-border);font-family:var(--font);font-size:0.8rem;background:var(--bg2);color:var(--text);outline:none">
           <option value="0" ${curPed==='0'?'selected':''}>< 1 Monat</option>
           <option value="1" ${curPed==='1'?'selected':''}>1-11 Monate</option>
           <option value="2" ${curPed==='2'?'selected':''}>1-4 Jahre</option>
@@ -608,14 +647,13 @@ function rOvl(){
           <option value="4" ${curPed==='4'?'selected':''}>> 12 Jahre</option>
         </select>
       </div>
-      <div style="font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--accent);text-align:center;padding:4px;background:var(--bg2);border-radius:4px">
+      <div style="font-family:var(--mono);font-size:0.85rem;font-weight:700;color:var(--accent);text-align:center;padding:8px;background:var(--bg2);border-radius:6px;box-shadow:var(--shadow-sm)">
         ${pedsV[curPed]}
       </div>
     </div>`;
   }
 
-  // DYNAMISCHE VITALPARAMETER
-  html += `<h4 style="font-size:.85rem;font-weight:600;margin-bottom:6px">📊 Dynamische Vitals (Trigger sofort)</h4>
+  html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--text)"><i class="fa-solid fa-heart-pulse"></i> Dynamische Vitals (Trigger sofort)</h4>
     <div class="vitals-grid">
       <div class="vital-input-box">
         <label>GCS (3-15)</label>
@@ -635,11 +673,10 @@ function rOvl(){
       </div>
     </div>`;
 
-  // DEINE SOPS GANZ NACH OBEN
   if(d.r && d.r.length > 0){
-    html += `<div style="margin-bottom:16px;background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--radius-sm);padding:12px;">
-      <h4 style="font-size:.85rem;font-weight:700;color:var(--orange);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">⚡ Deine Höherstufungen (Red Flags)</h4>
-      <div style="display:flex;flex-direction:column;gap:6px">`;
+    html += `<div style="margin-bottom:20px;background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--radius-sm);padding:16px;">
+      <h4 style="font-size:0.85rem;font-weight:800;color:var(--orange);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-bolt"></i> SOP Höherstufungen</h4>
+      <div style="display:flex;flex-direction:column;gap:8px">`;
     d.r.forEach((r,i)=>{
       const isSel = selR.includes(i);
       html += `<div class="rule-box ${isSel?'active':''}" onclick="tgR(${i})" style="margin:0;background:var(--bg2)">
@@ -650,59 +687,56 @@ function rOvl(){
     html += `</div></div>`;
   }
 
-  // AKTIONEN CHECKLISTE
   const act = getActions(lvl, d);
   if(act.length > 0) {
-    html += `<div style="margin-bottom:16px;background:var(--bg3);border-radius:var(--radius-sm);padding:12px">
-      <h4 style="font-size:.85rem;font-weight:700;margin-bottom:8px">📝 Action Checklist für Stufe ${lvl}</h4>
-      <div style="display:flex;flex-direction:column;gap:4px">
-        ${act.map(a => `<div class="rule-box" style="margin:0;padding:6px 10px" onclick="this.classList.toggle('active');this.querySelector('input').checked=!this.querySelector('input').checked">
+    html += `<div style="margin-bottom:20px;background:var(--bg3);border-radius:var(--radius-sm);padding:16px;border:1px solid var(--card-border)">
+      <h4 style="font-size:0.9rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-check-double"></i> Action Checklist für Stufe ${lvl}</h4>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        ${act.map(a => `<div class="rule-box" style="margin:0;padding:10px 12px" onclick="this.classList.toggle('active');this.querySelector('input').checked=!this.querySelector('input').checked">
           <input type="checkbox" style="margin-top:2px;transform:scale(1.1)">
-          <span style="font-size:.82rem;font-weight:500">${a}</span>
+          <span style="font-size:0.85rem;font-weight:600">${a}</span>
         </div>`).join('')}
       </div>
     </div>`;
   }
 
-  html += `<h4 style="font-size:.85rem;font-weight:600;margin-bottom:6px">📋 Manuelle Indikatoren</h4>
-           <div style="font-size:.76rem;color:var(--text3);margin-bottom:8px">Wähle zusätzlich zutreffende Indikatoren.</div>`;
+  html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:6px;color:var(--text)"><i class="fa-solid fa-list-check"></i> Manuelle Indikatoren</h4>
+           <div style="font-size:0.8rem;color:var(--text3);margin-bottom:12px;font-weight:500">Wähle alle zutreffenden Symptome von oben nach unten.</div>`;
   
   [1,2,3,4,5].forEach(l => {
     const genInds = GI[l] || [];
     const specInds = (d.i && d.i[l]) ? d.i[l] : [];
     if(genInds.length === 0 && specInds.length === 0) return;
     
-    html += `<div class="ind-head t-b-${l}">${EM[l-1]} Stufe ${l}</div>`;
+    html += `<div class="ind-head t-b-${l}"><i class="fa-solid fa-circle" style="font-size:0.8em"></i> Stufe ${l}</div>`;
     
-    // SPEZIFISCHE (FETTE) INDIKATOREN ZUERST
     specInds.forEach((ind, idx) => {
       const key = `${l}-${idx}-0`;
       const isSel = selI.includes(key);
       html += `<div class="ind-row" onclick="tgI(${l}, ${idx}, false)">
         <input type="checkbox" ${isSel?'checked':''}>
-        <div class="ind-txt" style="font-weight:600">${ind}</div>
+        <div class="ind-txt" style="font-weight:700">${ind}</div>
       </div>`;
     });
 
-    // GENERELLE INDIKATOREN DANACH
     genInds.forEach((ind, idx) => {
       const key = `${l}-${idx}-1`;
       const isSel = selI.includes(key);
       html += `<div class="ind-row" onclick="tgI(${l}, ${idx}, true)">
         <input type="checkbox" ${isSel?'checked':''}>
-        <div class="ind-txt">${ind} <span style="opacity:0.6;font-size:.7rem">(Generell)</span></div>
+        <div class="ind-txt">${ind} <span style="opacity:0.6;font-size:0.75rem;font-weight:500">(Generell)</span></div>
       </div>`;
     });
   });
 
   if(rl.length){
-    html += `<h4 style="font-size:.8rem;font-weight:600;margin:16px 0 6px">Weitere Diagramme aus „${d.c}" <span style="font-weight:400;color:var(--text3)">(${rl.length})</span></h4>
-    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">${rl.map(r=>`<div class="card" style="margin:0;padding:10px 12px" onclick="shD(${r.id})"><div class="ch" style="margin:0"><span class="ct" style="font-size:.86rem">${r.name}</span><span style="font-size:.72rem;color:var(--text3)">Nr.${r.id}</span></div></div>`).join('')}</div>`;
+    html += `<h4 style="font-size:0.85rem;font-weight:700;margin:24px 0 10px;color:var(--text)"><i class="fa-solid fa-folder-open"></i> Weitere Diagramme aus „${d.c}"</h4>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">${rl.map(r=>`<div class="card" style="margin:0;padding:12px 16px" onclick="shD(${r.id})"><div class="ch" style="margin:0"><span class="ct" style="font-size:0.9rem">${r.name}</span><span style="font-size:0.75rem;color:var(--text3);font-weight:600">Nr.${r.id}</span></div></div>`).join('')}</div>`;
   }
 
   html += `
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px">
-      <button class="rbtn" onclick="addH(${d.id}, ${lvl});clO()" style="background:var(--accent-bg);color:var(--accent)">✓ Speichern (${lObj.n})</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
+      <button class="rbtn primary" onclick="addH(${d.id}, ${lvl});clO()"><i class="fa-solid fa-check"></i> Speichern (${lObj.n})</button>
       <button class="rbtn" onclick="clO()">Abbrechen</button>
     </div>`;
     
@@ -712,11 +746,9 @@ function rOvl(){
 function clO(){document.getElementById('detO').classList.remove('open')}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')clO()});
 
-// LEVELS + CHEAT
-function rLvl(){document.getElementById('lvl').innerHTML=LV.map(l=>`<div class="lc lc-${l.l}"><h3>${EM[l.l-1]} Stufe ${l.l} — ${l.n}</h3><div class="tm">Max: <b>${l.t}</b> · Kontrolle: <b>${l.r}</b></div><div class="ds">${l.d}</div></div>`).join('')}
-function rCS(){document.getElementById('cht').innerHTML=CS.map(c=>`<div class="cc"><h4>${c.t}</h4><ul>${c.i.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}
+function rLvl(){document.getElementById('lvl').innerHTML=LV.map(l=>`<div class="lc lc-${l.l}"><h3><i class="fa-solid fa-circle"></i> Stufe ${l.l} (${l.n})</h3><div class="tm">Max: <b>${l.t}</b> · Kontrolle: <b>${l.r}</b></div><div class="ds">${l.d}</div></div>`).join('')}
+function rCS(){document.getElementById('cht').innerHTML=CS.map(c=>`<div class="cc"><h4>${c.t}</h4><ul>${c.i.map(x=>`<li><i class="fa-solid fa-caret-right"></i>${x}</li>`).join('')}</ul></div>`).join('')}
 
-// HISTORY
 function addH(id, lvl){
   const d=D.find(x=>x.id===id);
   hist.unshift({id:d.id,name:d.name,c:d.c,ts:new Date().toISOString(),l:lvl});
@@ -728,130 +760,105 @@ function rHist(){
   const t=hist.length,td=hist.filter(h=>new Date(h.ts).toDateString()===new Date().toDateString()).length,cc={};
   hist.forEach(h=>{cc[h.c]=(cc[h.c]||0)+1});
   const tp=Object.entries(cc).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('stR').innerHTML=`<div class="sx"><div class="n">${t}</div><div class="l">Gesamt</div></div><div class="sx"><div class="n">${td}</div><div class="l">Heute</div></div><div class="sx"><div class="n">${Object.keys(cc).length}</div><div class="l">Kategorien</div></div><div class="sx"><div class="n" style="font-size:.85rem">${tp?tp[0]:'—'}</div><div class="l">Top</div></div>`;
+  document.getElementById('stR').innerHTML=`<div class="sx"><div class="n">${t}</div><div class="l">Gesamt</div></div><div class="sx"><div class="n">${td}</div><div class="l">Heute</div></div><div class="sx"><div class="n">${Object.keys(cc).length}</div><div class="l">Kategorien</div></div><div class="sx"><div class="n" style="font-size:1rem;display:flex;align-items:center;justify-content:center;height:1.4rem;line-height:1.2">${tp?tp[0]:'Leer'}</div><div class="l">Top</div></div>`;
   const hl_=document.getElementById('hL');
-  if(!hist.length){hl_.innerHTML='<div class="empty">Keine Zuordnungen.</div>';return}
+  if(!hist.length){hl_.innerHTML='<div class="empty"><i class="fa-regular fa-clock" style="font-size:2rem;margin-bottom:8px;display:block"></i>Keine Zuordnungen bisher.</div>';return}
   hl_.innerHTML=hist.slice(0,50).map((h,i)=>{
     const d=new Date(h.ts);
-    const lvlDot = h.l ? `<span class="td td-${h.l}" style="margin-right:4px"></span>Stufe ${h.l}` : '';
-    return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met">${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} · ${h.c} · Nr.${h.id} <span style="margin-left:6px;font-weight:600">${lvlDot}</span></div></div><div class="act" style="display:flex;gap:3px"><button class="ib" onclick="shD(${h.id})">📋</button><button class="ib" onclick="rmH(${i})">✕</button></div></div>`
+    const lvlDot = h.l ? `<span class="td td-${h.l}" style="margin-right:6px"></span>Stufe ${h.l}` : '';
+    return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met"><i class="fa-regular fa-calendar"></i> ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} &bull; ${h.c} &bull; Nr.${h.id} <span style="margin-left:auto;font-weight:700;color:var(--text);display:flex;align-items:center">${lvlDot}</span></div></div><div class="act" style="display:flex;gap:6px;margin-left:12px"><button class="ib view" onclick="shD(${h.id})" title="Öffnen"><i class="fa-regular fa-eye"></i></button><button class="ib" onclick="rmH(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button></div></div>`
   }).join('')
 }
 function rmH(i){hist.splice(i,1);localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
-function clrH(){if(!confirm('Verlauf löschen?'))return;hist=[];localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
-function expJ(){dl(new Blob([JSON.stringify({v:5,ts:new Date().toISOString(),hist},null,2)],{type:'application/json'}),'triageassist-backup-'+ds()+'.json')}
+function clrH(){if(!confirm('Verlauf wirklich komplett löschen?'))return;hist=[];localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
+function expJ(){dl(new Blob([JSON.stringify({v:6,ts:new Date().toISOString(),hist},null,2)],{type:'application/json'}),'triageassist-backup-'+ds()+'.json')}
 function expC(){let c='Datum;Uhrzeit;Nr;Diagramm;Kategorie;Level\n';hist.forEach(h=>{const d=new Date(h.ts);c+=`${d.toLocaleDateString('de-DE')};${d.toLocaleTimeString('de-DE')};${h.id};${h.name};${h.c};${h.l||''}\n`});dl(new Blob(['\ufeff'+c],{type:'text/csv;charset=utf-8'}),'triageassist-verlauf-'+ds()+'.csv')}
 function impD(){document.getElementById('impF').click()}
-function hImp(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.hist){hist=[...d.hist,...hist];localStorage.setItem('mts_h',JSON.stringify(hist))}alert('Import OK!');rHist()}catch{alert('Fehler.')}};r.readAsText(f);e.target.value=''}
+function hImp(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.hist){hist=[...d.hist,...hist];localStorage.setItem('mts_h',JSON.stringify(hist))}alert('Import erfolgreich!');rHist()}catch{alert('Fehler beim Import.')}};r.readAsText(f);e.target.value=''}
 function dl(b,n){const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u)}
 function ds(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
 function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
 
-// ===== CALCULATOR =====
-let calcMode='gcs';
-function initCalc(){
-  const tabs=[{k:'gcs',n:'GCS'},{k:'news',n:'NEWS2'},{k:'nrs',n:'Schmerz NRS'},{k:'burn',n:'Verbrennung %'},{k:'kid',n:'Kinder-Gewicht'}];
-  document.getElementById('calcTabs').innerHTML=tabs.map(t=>`<button class="calc-tab ${calcMode===t.k?'on':''}" onclick="calcMode='${t.k}';initCalc()">${t.n}</button>`).join('');
-  const a=document.getElementById('calcArea');
-  if(calcMode==='gcs')a.innerHTML=rGCS();
-  else if(calcMode==='news')a.innerHTML=rNEWS();
-  else if(calcMode==='nrs')a.innerHTML=rNRS();
-  else if(calcMode==='burn')a.innerHTML=rBurn();
-  else if(calcMode==='kid')a.innerHTML=rKid();
-}
-let gcsE=4,gcsV=5,gcsM=6;
-function rGCS(){
-  const tot=gcsE+gcsV+gcsM;
-  const cls=tot<=8?'r1':tot<=12?'r2':tot<=14?'r3':'r4';
-  const lbl=tot<=8?'Schwer (Intubation erwägen)':tot<=12?'Mittelschwer':tot<=14?'Leicht':'Normal';
-  return`<div class="calc-box"><h3>Glasgow Coma Scale (GCS)</h3>
-  <div class="calc-row"><label>Augen (E)</label><div class="calc-opts">${[[1,'Keine'],[2,'Auf Schmerz'],[3,'Auf Ansprache'],[4,'Spontan']].map(([v,l])=>`<div class="calc-opt ${gcsE===v?'on':''}" onclick="gcsE=${v};initCalc()">${v} — ${l}</div>`).join('')}</div></div>
-  <div class="calc-row"><label>Verbal (V)</label><div class="calc-opts">${[[1,'Keine'],[2,'Unverständlich'],[3,'Inadäquat'],[4,'Verwirrt'],[5,'Orientiert']].map(([v,l])=>`<div class="calc-opt ${gcsV===v?'on':''}" onclick="gcsV=${v};initCalc()">${v} — ${l}</div>`).join('')}</div></div>
-  <div class="calc-row"><label>Motorik (M)</label><div class="calc-opts">${[[1,'Keine'],[2,'Strecksynergismen'],[3,'Beugesynergismen'],[4,'Ungezielte Abwehr'],[5,'Gezielte Abwehr'],[6,'Befolgt Aufforderung']].map(([v,l])=>`<div class="calc-opt ${gcsM===v?'on':''}" onclick="gcsM=${v};initCalc()">${v} — ${l}</div>`).join('')}</div></div>
-  <div class="calc-result ${cls}">GCS = ${tot} / 15 — ${lbl}</div></div>`;
-}
-let newsRR=0,newsSpO2=0,newsO2=0,newsT=0,newsSBP=0,newsHR=0,newsCNS=0;
-function rNEWS(){
-  const tot=newsRR+newsSpO2+newsO2+newsT+newsSBP+newsHR+newsCNS;
-  const cls=tot>=7?'r1':tot>=5?'r2':tot>=1?'r3':'r4';
-  const lbl=tot>=7?'Hohes Risiko — sofortige Eskalation':tot>=5?'Mittleres Risiko — dringende Bewertung':tot>=1?'Niedriges Risiko — Monitoring':'Sehr niedriges Risiko';
-  const param=(name,opts,val,fn)=>`<div class="calc-row"><label>${name}</label><div class="calc-opts">${opts.map(([v,l])=>`<div class="calc-opt ${val===v?'on':''}" onclick="${fn}=${v};initCalc()">${l} <b>(${v})</b></div>`).join('')}</div></div>`;
-  return`<div class="calc-box"><h3>NEWS2 Score</h3>
-  ${param('Atemfrequenz',[[3,'≤8'],[1,'9–11'],[0,'12–20'],[2,'21–24'],[3,'≥25']],newsRR,'newsRR')}
-  ${param('SpO₂',[[3,'≤91%'],[2,'92–93%'],[1,'94–95%'],[0,'≥96%']],newsSpO2,'newsSpO2')}
-  ${param('O₂-Gabe',[[0,'Nein'],[2,'Ja']],newsO2,'newsO2')}
-  ${param('Temperatur',[[3,'≤35,0'],[1,'35,1–36,0'],[0,'36,1–38,0'],[1,'38,1–39,0'],[2,'≥39,1']],newsT,'newsT')}
-  ${param('Syst. RR',[[3,'≤90'],[2,'91–100'],[1,'101–110'],[0,'111–219'],[3,'≥220']],newsSBP,'newsSBP')}
-  ${param('Herzfrequenz',[[3,'≤40'],[1,'41–50'],[0,'51–90'],[1,'91–110'],[2,'111–130'],[3,'≥131']],newsHR,'newsHR')}
-  ${param('Bewusstsein',[[0,'Wach (A)'],[3,'Nicht wach (V/P/U)']],newsCNS,'newsCNS')}
-  <div class="calc-result ${cls}">NEWS2 = ${tot} — ${lbl}</div></div>`;
-}
-let nrsVal=5;
-function rNRS(){
-  const cls=nrsVal===0?'r4':nrsVal<=3?'r4':nrsVal<=6?'r3':nrsVal<=9?'r2':'r1';
-  const lbl=nrsVal===0?'Schmerzfrei':nrsVal<=3?'Leichter Schmerz':nrsVal<=6?'Mäßiger Schmerz':nrsVal<=9?'Starker Schmerz':'Stärkster vorstellbarer Schmerz';
-  const faces=['😊','🙂','😐','😕','😟','😣','😖','😫','😩','🥺','😱'];
-  return`<div class="calc-box"><h3>Numerische Rating-Skala (NRS)</h3>
-  <div style="text-align:center;margin:16px 0"><span style="font-size:3rem">${faces[nrsVal]}</span></div>
-  <div class="calc-row" style="justify-content:center"><span style="font-size:.8rem;color:var(--text3)">0</span><input type="range" min="0" max="10" value="${nrsVal}" class="calc-slider" oninput="nrsVal=+this.value;initCalc()"><span style="font-size:.8rem;color:var(--text3)">10</span></div>
-  <div class="calc-result ${cls}">NRS = ${nrsVal} — ${lbl}</div>
-  <div style="font-size:.78rem;color:var(--text3);margin-top:8px;text-align:center">MTS: 0–4 → Grün/Blau · 5–7 → Gelb · 8–10 → Orange</div></div>`;
-}
-let burnSel={};
-function rBurn(){
-  const zones=[{k:'head',n:'Kopf',v:9},{k:'chest_f',n:'Thorax vorne',v:9},{k:'chest_b',n:'Thorax hinten',v:9},{k:'abd_f',n:'Abdomen vorne',v:9},{k:'abd_b',n:'Abdomen hinten',v:9},{k:'arm_l',n:'Arm links',v:9},{k:'arm_r',n:'Arm rechts',v:9},{k:'leg_lf',n:'Bein li. vorne',v:9},{k:'leg_lb',n:'Bein li. hinten',v:9},{k:'leg_rf',n:'Bein re. vorne',v:9},{k:'leg_rb',n:'Bein re. hinten',v:9},{k:'genital',n:'Genital',v:1}];
-  const total=zones.reduce((s,z)=>s+(burnSel[z.k]?z.v:0),0);
-  const cls=total>=30?'r1':total>=15?'r2':total>=10?'r3':'r4';
-  return`<div class="calc-box"><h3>Verbrennungsfläche — Neunerregel</h3>
-  <div class="calc-grid">${zones.map(z=>`<div class="calc-cell ${burnSel[z.k]?'on':''}" onclick="burnSel['${z.k}']=!burnSel['${z.k}'];initCalc()"><b>${z.v}%</b>${z.n}</div>`).join('')}</div>
-  <div class="calc-result ${cls}" style="margin-top:12px">KOF = ${total}%${total>=15?' — Schwerbrandverletzt':''}</div>
-  <div style="font-size:.78rem;color:var(--text3);margin-top:6px;text-align:center">Kinder: Kopf größer (18%), Beine kleiner (14% je). Ab 15% KOF → Verbrennungszentrum</div></div>`;
-}
-function rKid(){
-  const ages=[{a:'Neugeboren',kg:3.5},{a:'3 Monate',kg:6},{a:'6 Monate',kg:7.5},{a:'1 Jahr',kg:10},{a:'2 Jahre',kg:12},{a:'3 Jahre',kg:14},{a:'4 Jahre',kg:16},{a:'5 Jahre',kg:18},{a:'6 Jahre',kg:20},{a:'7 Jahre',kg:22},{a:'8 Jahre',kg:25},{a:'9 Jahre',kg:28},{a:'10 Jahre',kg:32},{a:'11 Jahre',kg:35},{a:'12 Jahre',kg:40}];
-  return`<div class="calc-box"><h3>Kinder-Gewichtsschätzung nach Alter</h3>
-  <div style="font-size:.8rem;color:var(--text2);margin-bottom:10px">Näherung: (Alter×2)+8 kg (1–12 J.) · Für Medikamentendosierung / Tubusgröße</div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px">${ages.map(a=>`<div style="padding:8px;background:var(--bg);border:1px solid var(--card-border);border-radius:var(--radius-xs);text-align:center"><div style="font-size:.74rem;color:var(--text3)">${a.a}</div><div style="font-size:1rem;font-weight:700;font-family:var(--mono);color:var(--accent)">${a.kg} kg</div></div>`).join('')}</div>
-  <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:var(--radius-sm);font-size:.78rem;color:var(--text2)"><b>Tubus (ohne Cuff):</b> Alter/4 + 4 mm ID · <b>Tubus (mit Cuff):</b> Alter/4 + 3,5 mm ID · <b>Tubus-Tiefe oral:</b> Alter/2 + 12 cm</div></div>`;
-}
-
-// ===== TRAINING =====
 const CASES=[
-{s:"58-jähriger Mann, akuter retrosternaler Druckschmerz seit 20 Min., Ausstrahlung linker Arm, kaltschweißig, blass.",diag:42,lvl:2,ex:"Typische ACS-Symptomatik → Thoraxschmerz. Kaltschweißig + retrosternal = Orange."},
-{s:"23-jährige Frau, Schwellung der Lippen und Zunge 10 Min. nach Restaurantbesuch. Atemnot, Urtikaria.",diag:4,lvl:2,ex:"Anaphylaktische Reaktion → Allergie. Atemwegsbeteiligung = Orange."},
-{s:"4-jähriger Junge, bellender Husten, inspiratorischer Stridor, leichtes Fieber.",diag:8,lvl:3,ex:"Pseudokrupp → Atemproblem bei Kindern. Stridor in Ruhe = Gelb bis Orange."},
-{s:"35-jähriger Mann, seit 3 Tagen Halsschmerzen, hohes Fieber, Schluckbeschwerden, kann Mund kaum öffnen.",diag:21,lvl:3,ex:"V.a. Peritonsillarabszess → Halsschmerzen. Kieferklemme + Fieber = Gelb."},
-{s:"80-jährige Patientin, gestürzt über Teppichkante, Schmerzen linke Hüfte, Bein verkürzt und außenrotiert.",diag:17,lvl:3,ex:"V.a. Schenkelhalsfraktur → Extremitätenprobleme. Fehlstellung = Gelb."},
-{s:"45-jähriger Mann, epigastrische Schmerzen, gürtelförmig in den Rücken ausstrahlend, Übelkeit, Erbrechen.",diag:1,lvl:3,ex:"V.a. Pankreatitis → Bauchschmerzen Erw. Gürtelförmiger Schmerz = Gelb."},
-{s:"19-jähriger Student, akute Hodenschmerzen links seit 2 Stunden, Hoden hochstehend, Übelkeit.",diag:25,lvl:2,ex:"V.a. Hodentorsion → Hodenschmerz. Zeitkritisch = Orange."},
-{s:"8 Monate alter Säugling, schreit untröstlich seit 4 Stunden, zieht Beine an, Erbrechen, rote Geleestühle.",diag:2,lvl:2,ex:"V.a. Invagination → Bauchschmerzen Kinder. Gelee-Stühle = Orange."},
-{s:"55-jähriger Mann, starker Kopfschmerz 'wie noch nie', plötzlich aufgetreten, Nackensteife, Übelkeit.",diag:29,lvl:2,ex:"V.a. Subarachnoidalblutung → Kopfschmerz. Donnerschlagkopfschmerz = Orange."},
-{s:"80-jähriger Mann, gestürzt auf Kopf, nimmt Marcumar, GCS 14, Amnesie für das Ereignis.",diag:30,lvl:2,ex:"SHT + Antikoagulation → Kopfverletzung. Marcumar + Amnesie = Orange."}
+{s:"58-jähriger Mann, akuter retrosternaler Druckschmerz seit 20 Min., Ausstrahlung in den linken Arm, kaltschweißig, blass.",diag:42,lvl:2,ex:"Typische ACS Symptomatik. Kaltschweißig und retrosternal bedeutet Sehr dringend."},
+{s:"23-jährige Frau, Schwellung der Lippen und Zunge 10 Min. nach Restaurantbesuch. Atemnot, generalisierte Urtikaria.",diag:4,lvl:2,ex:"Anaphylaktische Reaktion. Atemwegsbeteiligung bei Zunge und Lippen bedeutet Orange."},
+{s:"4-jähriger Junge, bellender Husten, inspiratorischer Stridor, leichtes Fieber 38,2°C.",diag:8,lvl:3,ex:"Verdacht auf Pseudokrupp. Stridor in Ruhe bedingt mindestens Gelb. Atemnot triggert gegebenenfalls Orange."},
+{s:"35-jähriger Mann, seit 3 Tagen zunehmende Halsschmerzen, Fieber 39,5°C, kann Mund kaum noch öffnen.",diag:21,lvl:3,ex:"Verdacht auf Peritonsillarabszess. Kieferklemme und Fieber bedeutet Dringend (Gelb)."},
+{s:"80-jährige Patientin, im Pflegeheim gestürzt, Schmerzen linke Hüfte, Bein verkürzt und außenrotiert.",diag:17,lvl:3,ex:"Verdacht auf Schenkelhalsfraktur. Fehlstellung großer Knochen bedeutet Gelb."},
+{s:"45-jähriger Mann, epigastrische Schmerzen, gürtelförmig in den Rücken ausstrahlend, Übelkeit.",diag:1,lvl:3,ex:"Verdacht auf akute Pankreatitis. Ausstrahlung in den Rücken bedeutet Gelb."},
+{s:"19-jähriger Student, akute Hodenschmerzen links seit 2 Stunden, Hoden hochstehend, starke Übelkeit.",diag:25,lvl:2,ex:"Verdacht auf Hodentorsion. Extrem zeitkritisch, Ausstrahlung und Verdacht bedeutet Orange."},
+{s:"8 Monate alter Säugling, schreit untröstlich seit 4 Stunden, Erbrechen, rote Geleestühle.",diag:2,lvl:2,ex:"Verdacht auf Invagination bei Säugling. Geleestühle bedeutet Orange."},
+{s:"55-jährige Frau, starker Kopfschmerz der extremsten Art, schlagartig aufgetreten, Nackensteife.",diag:29,lvl:2,ex:"Verdacht auf Subarachnoidalblutung (SAB). Donnerschlagkopfschmerz bedeutet Orange."},
+{s:"80-jähriger Mann, gestürzt auf Kopf, nimmt Apixaban (DOAK), GCS 14, Amnesie für das Ereignis.",diag:30,lvl:2,ex:"SHT und Antikoagulation. Auffälliger Mechanismus oder Amnesie bedeutet Orange."},
+{s:"75-jährige Frau, Hemiparese links seit 45 Min, GCS 14, keine Schmerzen.",diag:29,lvl:2,ex:"Verdacht auf Schlaganfall (FAST positiv). Neues neurologisches Defizit bedeutet Orange."},
+{s:"18-jähriger Mann, Suizidgedanken, superfizielle Schnittwunden am Unterarm, weint, kreislaufstabil.",diag:39,lvl:3,ex:"Verdacht auf psychotische Krise oder Agitiertheit ohne akute Lebensgefahr bedeutet Gelb."},
+{s:"3-jähriges Mädchen, fiebert seit heute 40,2°C, apathisch, Nackensteife, Eltern extrem besorgt.",diag:45,lvl:2,ex:"Verdacht auf Meningitis oder Sepsis. Apathisch und Nackensteife triggert Orange."},
+{s:"60-jähriger Mann, zweimaliges Kaffeesatzerbrechen, blass, HF 120, RR 90/60.",diag:19,lvl:2,ex:"Gastrointestinale Blutung. Kreislaufinstabilität und Schockzeichen bedeutet Orange."},
+{s:"25-jährige Frau, Sturz mit E-Scooter ohne Helm bei 20 km/h, Kopfschmerzen, GCS 15, keine Amnesie.",diag:41,lvl:2,ex:"Auffälliger Verletzungsmechanismus führt zur Aufwertung auf Orange."},
+{s:"40-jähriger Mann, Flankenschmerz rechts, schmerzgeplagt und extrem unruhig, NRS 9.",diag:48,lvl:3,ex:"Verdacht auf Nierenkolik. Starke Schmerzen bedeutet Gelb. Harnverhalt mit starken Schmerzen wäre Orange."},
+{s:"65-jähriger Mann, bekannte COPD, exazerbiert, SpO2 88% unter Raumluft, spricht in abgehackten Sätzen.",diag:6,lvl:2,ex:"COPD Exazerbation. SpO2 unter 92% oder Sprechunfähigkeit bedeutet Orange."},
+{s:"5-jähriger Junge, beim Nudelkochen mit Wasser verbrüht, Thorax vorne komplett betroffen mit Blasenbildung.",diag:50,lvl:2,ex:"KOF von ca. 18 Prozent bei Rumpf vorne Kind. Mehr als 15% KOF bedeutet Orange."},
+{s:"50-jähriger Mann, akuter Harnverhalt, extrem starke Schmerzen im Unterbauch, Anurie seit 12h.",diag:48,lvl:2,ex:"Akuter Harnverhalt mit starken Schmerzen ist hochgradig gefährdend und bedeutet Orange."},
+{s:"28-jährige Frau, umgeknickt beim Sport, Sprunggelenk geschwollen, Pulse tastbar, NRS 6.",diag:17,lvl:4,ex:"Keine Fehlstellung großer Knochen, Gelenk nicht blockiert, Schmerz NRS 6 bedeutet Normal (Grün)."},
+{s:"40-jährige Frau, plötzliche Luftnot seit 30 Min., nimmt Pille und raucht, atemabhängiger Schmerz rechtsseitig, SpO2 96%.",diag:7,lvl:3,ex:"Atemproblem Erwachsene. Atemabhängiger Schmerz ohne Zyanose oder starken SpO2 Abfall bedeutet Gelb (Verdacht auf Lungenembolie)."},
+{s:"65-jähriger Mann, Teerstuhl seit 2 Tagen, jetzt zuhause synkopiert, aktuell wach, HF 115.",diag:19,lvl:2,ex:"Gastrointestinale Blutung. Die begleitende Synkope weist auf eine Kreislaufinstabilität hin und triggert Orange."},
+{s:"22-jähriger Mann, in einen rostigen Nagel getreten, letzte Tetanusimpfung vor 15 Jahren, kleine Stichwunde, NRS 3.",diag:51,lvl:4,ex:"Wunden. Die Wunde ist klein, keine starke Blutung. Impfstatus ist relevant für Therapie, ändert aber MTS Stufe nicht direkt, daher Grün."},
+{s:"30-jährige Frau, Flankenschmerz links, Dysurie seit gestern, heute Fieber 39,2°C.",diag:48,lvl:3,ex:"Urologisches Problem. Flankenschmerz in Kombination mit Fieber bedeutet Dringend (Gelb)."},
+{s:"12-jähriger Junge, beim Fußball das Knie verdreht, Knie dick geschwollen, kann nicht auftreten, Schmerzen NRS 7.",diag:17,lvl:3,ex:"Extremitätenprobleme. Starke Schmerzen und das Unvermögen aufzutreten bedeuten Gelb."},
+{s:"80-jährige Frau, Bewohnerin Pflegeheim, zunehmend exsikkiert, GCS 12, Fieber 38,5°C.",diag:44,lvl:2,ex:"Unwohlsein bei Erwachsenen. Der veränderte Bewusstseinszustand (GCS unter 15) bedeutet Orange."},
+{s:"50-jähriger Mann, Blutzucker über 500 mg/dl gemessen, Kussmaul-Atmung, Patient wirkt somnolent.",diag:15,lvl:2,ex:"Diabetes. Die Kussmaul-Atmung und die starke Entgleisung mit Symptomatik bedeuten Orange."},
+{s:"7-jähriges Mädchen, Unterarmfraktur nach Sturz von Schaukel, deutliche Fehlstellung sichtbar.",diag:41,lvl:3,ex:"Stürze. Die offensichtliche Fehlstellung eines großen Knochens triggert Dringend (Gelb)."},
+{s:"45-jähriger Mann, bemerkt kreisrunden Haarausfall am Hinterkopf seit 3 Wochen, keine Schmerzen, vital stabil.",diag:22,lvl:5,ex:"Hautausschläge. Keine akuten Symptome und keine Schmerzen bedeuten Nicht dringend (Blau)."},
+{s:"19-jährige Frau, hyperventiliert nach Streit, Kribbeln in den Händen, weint stark, keine Vorerkrankungen.",diag:34,lvl:3,ex:"Psychische Erkrankung. Die starke Agitiertheit und Panik bedeuten Dringend (Gelb)."},
+{s:"30-jähriger Handwerker, ist mit Kreissäge abgerutscht, starke unstillbare arterielle Blutung am Daumen.",diag:51,lvl:2,ex:"Wunden. Eine arterielle, spritzende Blutung bedeutet sofortige Gefährdung und triggert Orange."},
+{s:"60-jähriger Mann, bekannte COPD, akute Dyspnoe, Sprechen ist nur noch in einzelnen Worten möglich.",diag:6,lvl:2,ex:"Asthma und COPD. Sprechunfähigkeit ist ein massives Warnsignal für Erschöpfung und bedeutet Orange."},
+{s:"2-jähriger Junge, Fieberkrampf, krampft aktuell bei Eintreffen in der ZNA seit 10 Minuten durchgehend.",diag:31,lvl:1,ex:"Krampfanfall. Ein Status epilepticus (Krampf über 5 Minuten) bedeutet unmittelbare Lebensgefahr und triggert Rot."},
+{s:"55-jährige Frau, Brustschmerz atemabhängig, NRS 5, leichter Reizhusten, kein Ausstrahlen.",diag:42,lvl:3,ex:"Thoraxschmerz. Ein atemabhängiger Schmerz ohne stärkste Begleitsymptome (Kaltschweiß) bedeutet Dringend (Gelb)."},
+{s:"28-jähriger Chemielaborant, hat sich Lauge ins Gesicht gespritzt, starke Schmerzen, linkes Auge brennt massiv.",diag:10,lvl:2,ex:"Augenprobleme. Eine chemische Verätzung des Auges ist potenziell sichtgefährdend und triggert Orange."},
+{s:"35-jährige Schwangere in der 32. SSW, plötzlich starke, kontinuierliche vaginale Blutung, kreislaufstabil.",diag:49,lvl:2,ex:"Vaginale Blutung. Eine starke unstillbare Blutung in der Schwangerschaft bedeutet Gefahr für Mutter und Kind und triggert Orange."},
+{s:"50-jähriger Mann, Wespenstich am Unterarm, nur lokale Rötung und Schwellung, kein Juckreiz am Körper, NRS 2.",diag:4,lvl:4,ex:"Allergie. Eine rein lokale Reaktion ohne systemische Zeichen bedeutet Normal (Grün)."},
+{s:"70-jähriger Mann, akute Harnverhaltung seit 24h, Blase tastbar, extreme Schmerzen NRS 8.",diag:48,lvl:2,ex:"Urologisches Problem. Ein akuter Harnverhalt gekoppelt mit starken Schmerzen triggert Orange."},
+{s:"15-jähriges Mädchen, Überdosis Paracetamol vor 3 Stunden aus Liebeskummer, suizidale Absicht geäußert, GCS 15.",diag:43,lvl:3,ex:"Überdosierung und Vergiftung. Eine gezielte suizidale Einnahme bei wachem Patienten bedeutet Dringend (Gelb)."},
+{s:"8-jähriger Junge, wurde von einem fremden Hund in die Wade gebissen, tiefe Wunde, blutet mäßig.",diag:13,lvl:3,ex:"Bisse und Stiche. Eine tiefe Bisswunde triggert Gelb, eine systemische allergische Reaktion läge bei Orange."},
+{s:"75-jährige Frau, Verwirrtheitszustand seit heute morgen, Urin riecht streng, fieberfrei, GCS 14.",diag:44,lvl:2,ex:"Unwohlsein bei Erwachsenen. Ein veränderter Bewusstseinszustand oder eine akute Verwirrtheit triggert Orange."},
+{s:"20-jähriger Mann, Schmerzen im rechten Unterbauch, Appendizitis-Zeichen positiv, verstärken sich beim Gehen, NRS 6.",diag:1,lvl:4,ex:"Abdominelle Schmerzen bei Erwachsenen. Schmerz bei Bewegung und NRS unter 7 bedeutet Normal (Grün)."},
+{s:"50-jähriger Mann, plötzlicher Sehverlust am rechten Auge, komplett schmerzlos.",diag:10,lvl:2,ex:"Augenprobleme. Ein akuter Visusverlust ist ein massives Warnsignal und bedeutet Orange."},
+{s:"60-jährige Frau, Verdacht auf tiefe Beinvenenthrombose, linkes Bein dick und gerötet, Schmerz NRS 4.",diag:17,lvl:4,ex:"Extremitätenprobleme. Keine Rot oder Orange Kriterien zutreffend, Schmerz mäßig, daher Normal (Grün)."},
+{s:"90-jähriger Mann, unter Reanimationsbedingungen (CPR) vom Rettungsdienst mit Lucas in den Schockraum gebracht.",diag:44,lvl:1,ex:"Generelle Indikatoren oder Unwohlsein. Kreislaufstillstand bedeutet absolute Lebensgefahr und triggert Sofort (Rot)."}
 ];
+
 let trnIdx=0,trnAns=null,trnScore=0,trnDone=0,trnOrder=[];
 function initTrain(){
   if(!trnOrder.length||trnDone>=trnOrder.length){trnOrder=shuffle([...Array(CASES.length).keys()]);trnIdx=0;trnAns=null;trnScore=0;trnDone=0;}
   rTrn();
 }
+
 function rTrn(){
   const ci=trnOrder[trnIdx];const c=CASES[ci];
   const diag=D.find(x=>x.id===c.diag);
   const opts=genOpts(c.diag);
   const pct=trnDone>0?Math.round(trnScore/trnDone*100):0;
+  
   document.getElementById('trainArea').innerHTML=`
     <div class="trn-header">
-      <h3>🎓 Fall ${trnDone+1} / ${CASES.length}</h3>
+      <h3><i class="fa-solid fa-user-graduate"></i> Fall ${trnDone+1} von ${CASES.length}</h3>
       <div class="trn-stats">
-        <div class="trn-stat">✅ <b>${trnScore}</b>/${trnDone}</div>
-        <div class="trn-stat">${pct}%</div>
+        <div class="trn-stat"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <span>${trnScore} / ${trnDone}</span></div>
+        <div class="trn-stat"><i class="fa-solid fa-chart-line"></i> <span>${pct}%</span></div>
       </div>
     </div>
+    
     <div class="trn-progress"><div class="trn-progress-bar" style="width:${(trnDone/CASES.length)*100}%"></div></div>
-    <div class="trn-case">
+    
+    <div class="trn-card">
+      <div class="trn-badge">Szenario</div>
       <div class="trn-scenario">${c.s}</div>
-      <div class="trn-q">Welches Präsentationsdiagramm wählst du?</div>
-      <div class="trn-opts" id="tOpts">${opts.map((o,i)=>{
+    </div>
+
+    <div class="trn-q"><i class="fa-solid fa-circle-question"></i> 1. Welches MTS Diagramm passt am besten?</div>
+    <div class="trn-opts" id="tOpts">
+      ${opts.map((o,i)=>{
         const dd=D.find(x=>x.id===o);
         let cls='trn-opt';
         if(trnAns!==null){
@@ -861,30 +868,48 @@ function rTrn(){
         }
         return`<div class="${cls}" ${trnAns===null?`onclick="trnAnswer(${i},${o},${c.diag})"`:''}>
           <span class="tb tb-${cl(dd.c)}"><span class="td td-${cl(dd.c)}"></span></span>
-          ${dd.name}
+          <span style="flex:1">${dd.name}</span>
+          ${trnAns!==null && o===c.diag ? '<i class="fa-solid fa-circle-check" style="font-size:1.4rem"></i>' : ''}
+          ${trnAns!==null && i===trnAns && o!==c.diag ? '<i class="fa-solid fa-circle-xmark" style="font-size:1.4rem"></i>' : ''}
         </div>`;
-      }).join('')}</div>
-      ${trnAns!==null?`
-        <div class="trn-q" style="margin-top:10px">Welche Dringlichkeitsstufe?</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px" id="tLvl">${[1,2,3,4,5].map(l=>{
-          let cls='calc-opt';
-          if(trnAns==='lvl'){
-            if(l===c.lvl)cls+=' on';
-          }
-          return`<div class="${cls}" ${trnAns==='lvl'?'':`onclick="trnLvl(${l},${c.lvl})"`} style="display:flex;align-items:center;gap:4px"><span class="td td-${l}"></span>${LV[l-1].n}</div>`;
-        }).join('')}</div>
-        ${trnAns==='lvl'?`<div class="trn-explain"><b>✓ Richtig:</b> ${diag.name} — Stufe ${c.lvl} (${LV[c.lvl-1].n})<br>${c.ex}</div>
-        <button class="trn-next" onclick="nextTrn()">Nächster Fall →</button>`:''}
-      `:''}
+      }).join('')}
     </div>
-    ${trnDone>=CASES.length?`<div style="text-align:center;margin-top:16px"><button class="rbtn" onclick="trnOrder=[];initTrain()" style="background:var(--accent-bg);color:var(--accent)">🔄 Neue Runde starten</button></div>`:''}
+
+    ${trnAns!==null?`
+      <div class="trn-q" style="margin-top:32px"><i class="fa-solid fa-traffic-light"></i> 2. Welche Dringlichkeitsstufe?</div>
+      <div class="trn-lvl-grid" id="tLvl">
+        ${[1,2,3,4,5].map(l=>{
+          let cls='trn-lvl-btn';
+          if(trnAns==='lvl' && l===c.lvl) cls+=' on';
+          return`<div class="${cls}" ${trnAns==='lvl'?'':`onclick="trnLvl(${l},${c.lvl})"`}>
+            <span class="td td-${l}"></span>${LV[l-1].n}
+          </div>`;
+        }).join('')}
+      </div>
+      
+      ${trnAns==='lvl'?`
+        <div class="trn-explain">
+          <b><i class="fa-solid fa-lightbulb"></i> Begründung:</b>
+          Stufe ${c.lvl} (${LV[c.lvl-1].n}) in "${diag.name}"<br><br>${c.ex}
+        </div>
+        <button class="trn-next" onclick="nextTrn()">Nächster Fall <i class="fa-solid fa-arrow-right"></i></button>
+      `:''}
+    `:''}
+    
+    ${trnDone>=CASES.length?`
+      <div style="text-align:center;margin-top:40px">
+        <h3 style="margin-bottom:12px;font-size:1.5rem;font-weight:800">Training abgeschlossen! 🎉</h3>
+        <p style="color:var(--text2);margin-bottom:24px">Du hast ${trnScore} von ${CASES.length} Fällen korrekt zugeordnet.</p>
+        <button class="rbtn primary" onclick="trnOrder=[];initTrain()"><i class="fa-solid fa-arrows-rotate"></i> Neue Runde starten</button>
+      </div>
+    `:''}
   `;
 }
+
 function trnAnswer(idx,chosen,correct){
   trnAns='diag';
   if(chosen===correct)trnScore++;
-  trnAns='diag';
-  const ci=trnOrder[trnIdx];const c=CASES[ci];const diag=D.find(x=>x.id===c.diag);
+  const ci=trnOrder[trnIdx];const c=CASES[ci];
   const opts=genOpts(c.diag);
   document.querySelectorAll('#tOpts .trn-opt').forEach((el,i)=>{
     el.style.pointerEvents='none';
@@ -892,10 +917,11 @@ function trnAnswer(idx,chosen,correct){
     else if(i===idx&&opts[i]!==c.diag)el.classList.add('wrong');
     else el.classList.add('dimmed');
   });
-  trnAns='diag';rTrn();
+  rTrn();
 }
 function trnLvl(chosen,correct){trnAns='lvl';rTrn()}
 function nextTrn(){trnDone++;trnIdx=(trnIdx+1)%trnOrder.length;trnAns=null;rTrn()}
+
 let _lastOpts={};
 function genOpts(correctId){
   if(_lastOpts.id===correctId)return _lastOpts.opts;
