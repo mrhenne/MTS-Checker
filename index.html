@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TriageAssist | MTS Ersteinschätzung</title>
-<!-- PWA Manifest -->
 <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22TriageAssist%22%2C%22short_name%22%3A%22TriageAssist%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%253E%253Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%234f46e5%27%2F%253E%253Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2730%27%20fill%3D%27white%27%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
-<!-- Fonts & FontAwesome Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -218,7 +216,7 @@ header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); displ
 .cg { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 .cc { background: var(--bg2); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); transition: transform 0.2s; }
 .cc:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.cc h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 10px; color: var(--text); border-bottom: 2px solid var(--bg3); padding-bottom: 8px; }
+.cc h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 10px; color: var(--text); border-bottom: 2px solid var(--bg3); padding-bottom: 8px; display:flex; align-items:center; gap:8px; }
 .cc ul { list-style: none; }
 .cc li { font-size: 0.85rem; color: var(--text2); padding: 4px 0 4px 20px; position: relative; line-height: 1.5; font-weight: 500; }
 .cc li i { position: absolute; left: 0; top: 6px; color: var(--accent); font-size: 0.9rem; }
@@ -338,6 +336,7 @@ body.focus-mode .vital-input-box { padding: 6px; }
     <button class="nt on" data-t="search"><i class="fa-solid fa-magnifying-glass"></i> Suche</button>
     <button class="nt" data-t="body"><i class="fa-solid fa-person"></i> Bodymap</button>
     <button class="nt" data-t="diag"><i class="fa-solid fa-sitemap"></i> Diagramme</button>
+    <button class="nt" data-t="tox"><i class="fa-solid fa-skull-crossbones"></i> Tox Board</button>
     <button class="nt" data-t="lvl"><i class="fa-solid fa-traffic-light"></i> Stufen</button>
     <button class="nt" data-t="cs"><i class="fa-solid fa-thumbtack"></i> Cheatsheet</button>
     <button class="nt" data-t="train"><i class="fa-solid fa-graduation-cap"></i> Training</button>
@@ -368,6 +367,10 @@ body.focus-mode .vital-input-box { padding: 6px; }
     <div class="sb"><i class="fa-solid fa-filter"></i><input type="text" id="dF" placeholder="Diagramme filtern..." autocomplete="off"></div>
     <div class="frow" id="cF"></div><div class="rbar"><span id="dC"></span></div><div id="dL"></div>
   </div>
+  
+  <div class="pnl" id="p-tox">
+    <div class="cg" id="toxL"></div>
+  </div>
 
   <div class="pnl" id="p-lvl"><div id="lvl"></div></div>
   <div class="pnl" id="p-cs"><div class="cg" id="cht"></div></div>
@@ -391,8 +394,8 @@ body.focus-mode .vital-input-box { padding: 6px; }
 </div>
 
 <div class="ov" id="detO" onclick="if(event.target===this)clO()"><div class="oc" id="oC"></div></div>
-
 <div class="ov" id="gcsO" onclick="if(event.target===this)clGCS()"><div class="oc" id="gcsC" style="max-width: 500px;"></div></div>
+<div class="ov" id="isbarO" onclick="if(event.target===this)clISBAR()"><div class="oc" id="isbarC" style="max-width: 600px;"></div></div>
 
 <script>
 if('serviceWorker' in navigator) {
@@ -424,6 +427,15 @@ const pedsW = {
   '3': '18 bis 40 kg (APLS: Alter × 3 + 7)',
   '4': '> 40 kg'
 };
+
+const TOX = [
+  {n:"Opiate / Opioide", s:"Miosis, Atemdepression, Koma, Bradykardie", a:"Naloxon (0,4 mg i.v., ggf. Titration)"},
+  {n:"Benzodiazepine", s:"Somnolenz, Ataxie, Hypotonie, Dysarthrie", a:"Flumazenil (0,2 mg i.v., Achtung Krampfgefahr!)"},
+  {n:"Trizyklische Antidepressiva", s:"Mydriasis, Tachykardie, QRS > 100ms, Krampf, Koma", a:"Natriumbicarbonat (bei QRS Verbreiterung)"},
+  {n:"Paracetamol", s:"Initiale Übelkeit, nach 24h Leberschaden, Ikterus", a:"Acetylcystein (ACC) nach Rumack Matthew Nomogramm"},
+  {n:"Kokain / Amphetamine", s:"Mydriasis, Tachykardie, Hypertonie, Agitation", a:"Benzodiazepine (Diazepam/Midazolam i.v., KEINE Betablocker!)"},
+  {n:"Beta-Blocker", s:"Bradykardie, Hypotonie, Hypoglykämie, Bronchospasmus", a:"Glukagon i.v., hochdosiertes Insulin"}
+];
 
 const D=[
 {id:1, name:"Abdominelle Schmerzen bei Erwachsenen", c:"Abdominell", kw:["bauch", "magen", "kolik", "bauchschmerz", "appendizitis", "blinddarm", "gallenkolik", "divertikulitis", "ileus", "oberbauch", "unterbauch", "peritonismus", "abwehrspannung", "akutes abdomen"], i:{2:["Akutes Erbrechen von Blut", "Teerstuhl", "Verdacht auf Aortenaneurysma"], 3:["Schmerz strahlt in Rücken aus", "Gürtelförmiger Schmerz", "Anhaltendes Erbrechen"], 4:["Schmerz bei Bewegung"]}, b:5},
@@ -535,6 +547,7 @@ document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
   document.getElementById('p-'+t.dataset.t).classList.add('on');
   if(t.dataset.t==='body')initBM();
   if(t.dataset.t==='diag')rDiag();
+  if(t.dataset.t==='tox')rTox();
   if(t.dataset.t==='lvl')rLvl();
   if(t.dataset.t==='cs')rCS();
   if(t.dataset.t==='train')initTrain();
@@ -591,7 +604,11 @@ const dF_=document.getElementById('dF');
 function rDiag(){document.getElementById('cF').innerHTML=`<button class="fb ${aCat===''?'a':''}" onclick="fC('')">Alle</button>${CATS.map(c=>`<button class="fb ${aCat===c?'a':''}" onclick="fC('${c}')">${c}</button>`).join('')}`;fR()}
 function fC(c){aCat=c;rDiag()}
 dF_.addEventListener('input',debounce(fR,150));
-function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> Diagramme`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="cs">Diagramm Nr. ${x.id}</div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
+function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> Diagramme`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="cs">Diagramm Nr. ${d.id}</div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
+
+function rTox(){
+  document.getElementById('toxL').innerHTML = TOX.map(t => `<div class="cc" style="border-left: 4px solid var(--orange);"><h4>${t.n}</h4><ul><li><i class="fa-solid fa-virus" style="color:var(--orange)"></i><b>Symptome:</b> ${t.s}</li><li><i class="fa-solid fa-syringe" style="color:var(--green)"></i><b style="color:var(--green)">Antidot:</b> ${t.a}</li></ul></div>`).join('');
+}
 
 function getActions(lvl, diag) {
   let a = [];
@@ -799,14 +816,14 @@ function rOvl(){
   html += `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
       <button class="rbtn primary" onclick="addH(${d.id}, ${lvl});clO()"><i class="fa-solid fa-check"></i> Speichern (${lObj.n})</button>
-      <button class="rbtn" onclick="clO()">Abbrechen</button>
+      <button class="rbtn" onclick="openISBAR(${lvl})" style="background:var(--accent-bg); color:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-clipboard-list"></i> ISBAR Generieren</button>
     </div>`;
     
   document.getElementById('oC').innerHTML=html;
 }
 
 function clO(){document.getElementById('detO').classList.remove('open')}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){clO();clGCS();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){clO();clGCS();clISBAR();}});
 
 function openGCS(){
   gcsS = {e:4, v:5, m:6};
@@ -887,6 +904,81 @@ function rGCS(){
 
     <button class="rbtn primary" style="width:100%;justify-content:center" onclick="applyGCS(${tot})">Werte übernehmen</button>
   `;
+}
+
+let curMTSLvl = 5;
+function openISBAR(lvl) {
+  curMTSLvl = lvl;
+  document.getElementById('isbarO').classList.add('open');
+  rISBAR();
+}
+
+function clISBAR() {
+  document.getElementById('isbarO').classList.remove('open');
+}
+
+function rISBAR() {
+  genISBARText();
+}
+
+function genISBARText() {
+  const sInput = document.getElementById('isbarS') ? document.getElementById('isbarS').value : '';
+  const bInput = document.getElementById('isbarB') ? document.getElementById('isbarB').value : '';
+  const d = curDiag;
+  const v = curVit;
+  
+  let txt = `I: Patient (Name/Alter)\n`;
+  txt += `S: ${d?d.name:'Ohne Zuordnung'}, MTS Stufe ${curMTSLvl} \n`;
+  if(sInput) txt += `   OPQRST: ${sInput}\n`;
+  txt += `B: SAMPLER: ${bInput ? bInput : 'Keine Besonderheiten erfasst'}\n`;
+  txt += `A: GCS ${v.gcs||'/'}, SpO2 ${v.spo2||'/'}%, Temp ${v.temp||'/'}°C, NRS ${v.nrs||'/'}\n`;
+  txt += `R: Bitte um zügige ärztliche Sichtung gemäß MTS Vorgabe.`;
+
+  document.getElementById('isbarC').innerHTML = `
+    <button class="ox" onclick="clISBAR()"><i class="fa-solid fa-xmark"></i></button>
+    <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px;color:var(--text)"><i class="fa-solid fa-clipboard-list"></i> ISBAR Übergabe Generator</h2>
+    
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+       <label style="font-weight:700; font-size:0.85rem; color:var(--text);">S (Symptoms) / OPQRST Quick Note</label>
+       <input type="text" id="isbarS" onkeyup="updateISBAROut()" value="${sInput}" placeholder="Beginn, Provokation, Qualität, Ausstrahlung..." style="padding:12px; border-radius:var(--radius-sm); border:1px solid var(--card-border); background:var(--bg2); color:var(--text); width:100%; outline:none; font-family:var(--font);">
+       
+       <label style="font-weight:700; font-size:0.85rem; margin-top:8px; color:var(--text);">B (Background) / SAMPLER</label>
+       <input type="text" id="isbarB" onkeyup="updateISBAROut()" value="${bInput}" placeholder="Allergien, Medis, Vorerkrankungen, Letzte Mahlzeit..." style="padding:12px; border-radius:var(--radius-sm); border:1px solid var(--card-border); background:var(--bg2); color:var(--text); width:100%; outline:none; font-family:var(--font);">
+    </div>
+    
+    <textarea id="isbarOut" style="width:100%; height:160px; padding:16px; border-radius:var(--radius-sm); border:1px solid var(--card-border); background:var(--bg3); color:var(--text); font-family:var(--mono); font-size:0.85rem; resize:none;" readonly>${txt}</textarea>
+    
+    <div style="display:flex; gap:10px; margin-top:16px;">
+      <button class="rbtn primary" style="width:100%; justify-content:center;" onclick="copyISBAR()"><i class="fa-solid fa-copy"></i> Text kopieren</button>
+    </div>
+  `;
+}
+
+function updateISBAROut() {
+  const sInput = document.getElementById('isbarS').value;
+  const bInput = document.getElementById('isbarB').value;
+  const d = curDiag;
+  const v = curVit;
+  
+  let txt = `I: Patient (Name/Alter)\n`;
+  txt += `S: ${d?d.name:'Ohne Zuordnung'}, MTS Stufe ${curMTSLvl} \n`;
+  if(sInput) txt += `   OPQRST: ${sInput}\n`;
+  txt += `B: SAMPLER: ${bInput ? bInput : 'Keine Besonderheiten erfasst'}\n`;
+  txt += `A: GCS ${v.gcs||'/'}, SpO2 ${v.spo2||'/'}%, Temp ${v.temp||'/'}°C, NRS ${v.nrs||'/'}\n`;
+  txt += `R: Bitte um zügige ärztliche Sichtung gemäß MTS Vorgabe.`;
+  
+  document.getElementById('isbarOut').value = txt;
+}
+
+function copyISBAR() {
+   const txt = document.getElementById('isbarOut').value;
+   navigator.clipboard.writeText(txt).then(() => {
+     const btn = document.querySelector('#isbarC .primary');
+     btn.innerHTML = '<i class="fa-solid fa-check"></i> Erfolgreich kopiert';
+     btn.style.background = 'var(--green)';
+     btn.style.borderColor = 'var(--green)';
+     setTimeout(() => { clISBAR(); }, 800);
+   });
 }
 
 function rLvl(){document.getElementById('lvl').innerHTML=LV.map(l=>`<div class="lc lc-${l.l}"><h3><i class="fa-solid fa-circle"></i> Stufe ${l.l} (${l.n})</h3><div class="tm">Max: <b>${l.t}</b> · Kontrolle: <b>${l.r}</b></div><div class="ds">${l.d}</div></div>`).join('')}
@@ -1074,7 +1166,7 @@ function genOpts(correctId){
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
-rLvl();rCS();SI_.focus();
+rLvl();rCS();rTox();SI_.focus();
 </script>
 </body>
 </html>
