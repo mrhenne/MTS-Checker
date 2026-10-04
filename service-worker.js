@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'triageassist-v2-c1';
+const CACHE_VERSION = 'triageassist-v2-d1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const APP_SHELL = [
   './data/mts-data.js',
   './data/clinical-addons.js',
   './data/training-cases.js',
+  './data/local-sop.js',
   './js/app.js',
   './version.json'
 ];
