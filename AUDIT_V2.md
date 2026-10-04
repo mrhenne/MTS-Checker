@@ -96,3 +96,111 @@ klar voneinander trennen.
 - UI/Barrierefreiheit
 - Offline/PWA-Verhalten
 - Datenschutz
+
+## Auditblock 1 – Hochrisikobereiche
+
+### Trauma / auffälliger Verletzungsmechanismus – ROT/GELB
+Aktueller Code:
+- Fahrradsturz pauschal als Orange.
+- Sturz aus eigener Körperhöhe pauschal als Orange.
+- E-Scooter-Fall bei 20 km/h wird im Training pauschal als Orange bewertet.
+
+Aktuelle Referenz 2025:
+- Auffälliger Verletzungsmechanismus wird konkreter definiert.
+- Dazu zählen u. a. schwere Verkehrsunfälle mit >30 km/h Geschwindigkeitsunterschied, Fußgänger/Zweiradfahrer gegen PKW oder größer, Herausschleudern/Tod eines anderen Insassen, Sturz ab 3 m bzw. bei Kindern ab zweifacher Körperhöhe.
+- Bei Senioren kann auch ein Sturz aus dem Stand die Bedingung erfüllen.
+
+Bewertung:
+- Pauschalregeln im aktuellen Code sind zu grob.
+- Besonders „Fahrradsturz = Orange“ und „Sturz aus eigener Körperhöhe = Orange“ sind so nicht als allgemeine Regel haltbar.
+- Der Trainingsfall E-Scooter 20 km/h ohne weitere Hochrisikomerkmale ist zu überprüfen und wahrscheinlich zu ändern.
+
+### Kardialer Schmerz / Thorax – GELB
+Aktueller Code:
+- Sonderregel „Thoraxschmerzen (AP) – Immer Orange“.
+- Training nutzt teils symptomatische Heuristiken.
+
+Aktuelle Referenz 2025:
+- Kardialer Schmerz wird als typisches intensives Engegefühl/heftigster retrosternaler Schmerz mit typischer oder atypischer Ausstrahlung beschrieben.
+- Schweißausbruch/Erbrechen können dazugehören.
+- Atypische Präsentationen, insbesondere bei Frauen, werden ausdrücklich berücksichtigt.
+- Kardialer Schmerz ist typischerweise nicht atemabhängig und nicht provozierbar.
+
+Bewertung:
+- „Thoraxschmerz immer Orange“ ist zu undifferenziert.
+- Die App muss künftig zwischen „Thoraxschmerz“ als Präsentationsdiagramm und „kardialer Schmerz“ als Diskriminator unterscheiden.
+- Atypische kardiale Präsentationen müssen in Suche/Training besser berücksichtigt werden.
+
+### Akutes neurologisches Defizit <24 h – ROT/GELB
+Aktueller Code:
+- „Neues neurologisches Defizit“ und „Neurologisches Defizit akut“ sind vorhanden, aber nur sehr knapp definiert.
+- Stroke-Training ist teilweise an Kopfschmerz gekoppelt.
+
+Aktuelle Referenz 2025:
+- Der Indikator umfasst u. a. Sprachstörung, Fazialisdefizit, einseitige Kraftminderung, reduziertes Bewusstsein, akute Orientierungsstörung, akut einsetzenden Schwindel, Blickparese, Gesichtsfelddefizit, Neglect, Koordinationsstörung sowie deutliche lokale Sensibilitäts-/Motorikdefizite.
+- Bei unklarem Beginn, z. B. Wake-up-Stroke, soll von <24 h ausgegangen werden.
+
+Bewertung:
+- Die aktuelle Definition ist zu dünn für eine sichere Entscheidungshilfe.
+- Der Stroke-Fall gehört nicht einfach in „Kopfschmerz“, sondern die Diagrammwahl muss anhand der Präsentation nachvollziehbar sein.
+- Die App sollte später eine Definition/Infoebene für den Diskriminator anbieten.
+
+### Vitalparameter Erwachsene – GELB
+Aktueller Code:
+- Globale automatische Trigger, z. B. SpO2 <92 % => mindestens Orange.
+- GCS <15 => Orange; GCS <12 => Rot.
+- Temperatur >39 => Gelb; >41 => Orange.
+
+Aktuelle Referenz / internationales MTS-Update 2025:
+- MTS-Vitalparameter sollen die Priorität bei vorhandenem Wert erhöhen.
+- NEWS2 soll nicht die MTS-Vitalparameter ersetzen, sondern kann zusätzlich genutzt werden.
+- Es gibt keine starke Evidenz für eine Umstellung des MTS auf einen aggregierten NEWS2-Ansatz.
+
+Bewertung:
+- Die Grundidee automatischer Prioritätserhöhung ist nicht grundsätzlich falsch.
+- Aber die App muss sicherstellen, dass nur tatsächlich im jeweiligen MTS-Kontext vorgesehene Vitalparameter-Diskriminatoren greifen.
+- Der globale Einheitsmechanismus ist zu grob und muss diagramm-/indikatorbezogen werden.
+
+### Pädiatrische Vitalparameter – ROT/GELB
+Aktueller Code:
+- Altersgruppen und Normwert-Text werden angezeigt.
+- Diese Werte wirken überwiegend informativ und treiben die Einstufung nicht systematisch.
+- Es fehlen AF/HF Eingabefelder in der dynamischen Triage.
+
+Aktuelle internationale MTS-Unterlagen 2025:
+- stärkste Tachypnoe Orange: <1 Jahr AF >=55/min, >=1 Jahr AF >=45/min in ausgewählten pädiatrischen Diagrammen.
+- Tachypnoe Gelb: <1 Jahr AF >=45/min, >=1 Jahr AF >=35/min.
+- Tachykardie beim Kind Gelb: <1 Jahr HF >=160/min, >=1 Jahr HF >=140/min in ausgewählten Diagrammen.
+
+Bewertung:
+- Die aktuelle Päd.-Ansicht ist als Entscheidungshilfe unvollständig.
+- Die generischen Alters-Normwerte ersetzen die MTS-Diskriminatoren nicht.
+- Später sollten AF/HF als strukturierte Werte erfassbar sein und nur in den passenden Diagrammen wirken.
+
+### Sepsis / qSOFA – ROT
+Aktueller Code:
+- qSOFA >=2 erzeugt direkt „Verdacht auf Sepsis!“.
+
+Aktuelle MTS-Unterlagen 2025:
+- „Sepsisverdacht“ ist ein eigener MTS-Indikator.
+- Andere nationale Sepsistools können ergänzend statt qSOFA verwendet werden.
+- qSOFA ist damit nicht identisch mit dem MTS-Sepsisindikator.
+
+Bewertung:
+- Die aktuelle Formulierung ist medizinisch und UX-seitig zu absolut.
+- qSOFA muss als Zusatztool vom MTS-Core getrennt werden.
+- Ein positives qSOFA-Ergebnis darf nicht als Diagnose oder als alleiniger MTS-Trigger dargestellt werden.
+
+### Psychiatrie – GELB
+Die 6. deutsche Auflage 2025 beschreibt eine grundlegende Überarbeitung psychiatrischer Diagramme und Indikatoren.
+Aktueller Code enthält „Auffälliges Verhalten“, „Psychische Erkrankung“ und „Selbstverletzung“, jedoch ohne nachgewiesene Versionierung.
+Bewertung:
+- Diese drei Bereiche werden in einem eigenen Auditblock vollständig gegen aktuelle Referenzen geprüft.
+- Bis dahin Status GELB, nicht freigegeben als „aktuell verifiziert“.
+
+## Erste Freigabeempfehlung
+Noch keine Änderungen am MTS-Core umsetzen.
+Nächster Schritt:
+1. komplette Klassifikation der 52/55 Diagramme,
+2. Sondermodule abtrennen,
+3. danach Änderungspaket A „Sicherheitsbugs ohne medizinische Neudefinition“ zur Freigabe vorlegen.
