@@ -735,3 +735,64 @@ Checkpoint: `checkpoint-B1-architecture`
 - echte automatisierte Test-Suite/CI
 - finales ZNA-UI-Redesign
 - vollständige fachliche Validierung gegen lizenzierte MTS-Vollreferenz
+
+
+## Paket C abgeschlossen – ZNA Cockpit UI C1
+
+Checkpoint: `checkpoint-C1-zna-cockpit`
+
+### Sichtbare Neuerungen
+- neuer Cockpit-Header mit ZNA-Kontext
+- Online/Offline-Anzeige
+- Live-Uhrzeit
+- sichtbare App-/Validierungsversion
+- kompakte Safety- und Validierungsleiste
+- neue Hero-Suche für die symptomorientierte Diagrammsuche
+- Schnellzugriffe für Atemnot, Thorax, Neurologie, Trauma, Abdomen, Pädiatrie und Psychiatrie
+- breiteres Cockpit-Layout für Desktop/Tablet
+- gezielte Glass-/Tiefenebenen statt flacher Karten
+- Rot/Orange erhalten als einzige Stufen eine dezente Pulsanimation
+- prefers-reduced-motion wird respektiert
+- Fokusmodus wurde an das neue Cockpit angepasst
+- responsive Darstellung für kleinere Displays
+
+### Entscheidungsansicht
+Neu: `Warum diese Einstufung?`
+- zeigt das gewählte Präsentationsdiagramm
+- zeigt aktiv gewählte generelle/spezifische Diskriminatoren
+- zeigt aktuelle Vitalwert-Trigger der bestehenden Engine
+- zeigt die zugehörige Stufe
+- wenn noch kein aktiver Trigger ausgewählt wurde, wird transparent auf die Basiseinstufung des Altbestands hingewiesen
+- keine neue medizinische Regel wurde in Paket C eingeführt
+
+### Betrieb
+- Cache-Version auf `triageassist-v2-c1` erhöht
+- `version.json`: `2.0.0-c1`, UI `C1`
+- dadurch werden alte B1-Caches bei Aktivierung des neuen Service Workers entfernt
+
+### Prüfung
+41 automatisierte statische Checks bestanden:
+- Syntax aller JS-Dateien
+- 55 Diagramme erhalten
+- 45 Trainingsfälle erhalten
+- alle Trainings- und Bodymap-Referenzen gültig
+- Cockpit-DOM-Elemente vorhanden
+- alle Schnellzugriffe verdrahtet
+- Entscheidungsweg implementiert und eingebunden
+- Netzwerkstatus/Uhr/Versionsanzeige implementiert
+- Pulsanimation nur Rot/Orange
+- Reduced-Motion-Unterstützung
+- Fokus- und Mobile-Kompatibilität
+- Sicherheitsfixes aus Paket A weiterhin vorhanden
+- C1 Cache-/Versionsstand korrekt
+- CSS-Klammerstruktur 321/321 ausgeglichen
+
+### Diff gegen `backup/pre-ui-redesign-c`
+- css/app.css: +176
+- index.html: +41 / -12
+- js/app.js: +94 / -2
+- service-worker.js: +1 / -1
+- version.json: +3 / -2
+
+Hinweis:
+Eine echte Browser-Renderingprüfung des Entwicklungsbranches war in der aktuellen Ausführungsumgebung nicht möglich; der lokale Netzwerkzugriff auf GitHub war blockiert. Deshalb wurde Paket C zusätzlich über Syntax-, Struktur-, Referenz- und Integritätsprüfungen abgesichert. Vor Merge nach main sollte noch ein visueller Browser-Smoke-Test der tatsächlich ausgelieferten Branch-Version erfolgen.
