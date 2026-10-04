@@ -1112,6 +1112,14 @@ function openSavedAssessment(index){
       const idx=source.findIndex(x=>x===saved.text);
       if(idx>=0)selI.push(`${level}-${idx}-${isGen?1:0}`);
     });
+    // Very old entries only contained the final level. Show that historical result explicitly.
+    if(!selI.length && !manualPriority.level && h.l){
+      manualPriority={
+        level:Number(h.l),
+        source:'historischer Verlauf',
+        label:'Gespeicherte Stufe – Detailkriterien wurden damals noch nicht mitgespeichert'
+      };
+    }
   }
 
   rOvl();
