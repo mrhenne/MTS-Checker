@@ -628,7 +628,7 @@ function rOvl(){
       <div class="triage-banner t-b-${lvl}">
         <div style="display:flex;align-items:center;gap:10px">
           <span style="width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.18);display:grid;place-items:center"><i class="fa-solid fa-triangle-exclamation"></i></span>
-          <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">Aktuelle MTS Einstufung</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
+          <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">${manualPriority.level!==null && (mtsLvl===null || manualPriority.level<=mtsLvl)?'Aktuelle Priorisierung · manuell/lokal':'Aktuelle MTS Einstufung'}</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
         </div>
         <div class="t-time">Max: ${lObj.t}</div>
       </div>`
@@ -639,6 +639,7 @@ function rOvl(){
         </div>
         <div class="t-time">Diskriminator wählen</div>
       </div>`}
+    ${manualPriority.level!==null?`<div class="manual-priority-chip"><i class="fa-solid fa-hand-pointer"></i><span>Manuell gewählt: <b>${priorityColorName(manualPriority.level)}</b> · ${escapeHtml(manualPriority.label)}</span><button type="button" onclick="clearManualPriority()" title="Manuelle Auswahl entfernen"><i class="fa-solid fa-xmark"></i></button></div>`:''}
     ${buildDecisionTrace(d,lvl)}`;
 
   if(d.c === 'Pädiatrisch'){
@@ -694,7 +695,10 @@ function rOvl(){
       <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-lock"></i> Lokale Zusatzregeln · getrennte SOP-Ebene</h4>
       <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Diese Altregeln liegen technisch außerhalb des MTS-Kerns. Sie sind deaktiviert und verändern die MTS-Stufe nicht.</div>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
-        ${localRules.map(r=>`<div style="padding:9px 11px;background:var(--bg2);border:1px solid var(--card-border);border-radius:8px;font-size:.8rem;color:var(--text3)"><i class="fa-solid fa-ban"></i> <b>${r.l}</b> · ${r.t}</div>`).join('')}
+        ${localRules.map(r=>`<button type="button" class="local-rule-link" onclick="setManualPriority(${r.v},'lokale Zusatzregel',${JSON.stringify(r.l)})">
+  <span><i class="fa-solid fa-link"></i> <b>${r.l}</b><small>${r.t}</small></span>
+  <span class="local-rule-action"><span class="td td-${r.v}"></span>${priorityColorName(r.v)} wählen <i class="fa-solid fa-arrow-right"></i></span>
+</button>`).join('')}
       </div>
     </div>`;
   }
