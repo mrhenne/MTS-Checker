@@ -28,15 +28,6 @@ const pedsW = {
   '4': '> 40 kg'
 };
 
-const TOX = [
-  {n:"Opiate / Opioide", s:"Miosis, Atemdepression, Koma, Bradykardie", a:"Naloxon (0,4 mg i.v., ggf. Titration)"},
-  {n:"Benzodiazepine", s:"Somnolenz, Ataxie, Hypotonie, Dysarthrie", a:"Flumazenil (0,2 mg i.v., Achtung Krampfgefahr!)"},
-  {n:"Trizyklische Antidepressiva", s:"Mydriasis, Tachykardie, QRS > 100ms, Krampf, Koma", a:"Natriumbicarbonat (bei QRS Verbreiterung)"},
-  {n:"Paracetamol", s:"Initiale Übelkeit, nach 24h Leberschaden, Ikterus", a:"Acetylcystein (ACC) nach Rumack Matthew Nomogramm"},
-  {n:"Kokain / Amphetamine", s:"Mydriasis, Tachykardie, Hypertonie, Agitation", a:"Benzodiazepine (Diazepam/Midazolam i.v., KEINE Betablocker!)"},
-  {n:"Beta-Blocker", s:"Bradykardie, Hypotonie, Hypoglykämie, Bronchospasmus", a:"Glukagon i.v., hochdosiertes Insulin"}
-];
-
 const D=[
 {id:1, name:"Abdominelle Schmerzen bei Erwachsenen", c:"Abdominell", kw:["bauch", "magen", "kolik", "bauchschmerz", "appendizitis", "blinddarm", "gallenkolik", "divertikulitis", "ileus", "oberbauch", "unterbauch", "peritonismus", "abwehrspannung", "akutes abdomen"], i:{2:["Akutes Erbrechen von Blut", "Teerstuhl", "Verdacht auf Aortenaneurysma"], 3:["Schmerz strahlt in Rücken aus", "Gürtelförmiger Schmerz", "Anhaltendes Erbrechen"], 4:["Schmerz bei Bewegung"]}, b:5},
 {id:2, name:"Abdominelle Schmerzen bei Kindern", c:"Pädiatrisch", kw:["bauch kind", "erbrechen", "bauchweh", "invagination", "dreimonatskolik", "säugling bauch"], i:{2:["Gallenfarbiges Erbrechen", "Verdacht auf Invagination", "Rote Geleestühle"], 3:["Anhaltendes Erbrechen", "Trinkschwäche"]}, b:5},
@@ -113,53 +104,3 @@ const BR=[
   {k:'psych',n:'Psych / Päd',icon:'fa-puzzle-piece',ids:[9,11,12,26,34,36,39]}
 ];
 const CS=[{t:"Sofort: Red Flags",i:["Atemstillstand","Kreislaufstillstand","Bewusstlos ohne Schutzreflexe","Massive arterielle Blutung","Anaphylaktischer Schock","Status epilepticus"]},{t:"Sehr dringend",i:["Schwere Atemnot oder SpO₂ < 92%","Schwere Thoraxschmerzen (ACS)","Fokalneurologisches Defizit","GCS ≤ 12","Unkontrollierbare Blutung","Akutes Abdomen und Abwehrspannung"]},{t:"Dringend",i:["Fieber > 39°C und reduzierter AZ","Starke Schmerzen NRS 7 bis 10","Erbrechen und Dehydration","Akute Verwirrtheit","Nicht reponierbare Hernie"]},{t:"Normal",i:["Schmerzen NRS 4 bis 6","Fieber ohne Begleitzeichen","Kleine Wunden","Erbrechen ohne Dehydration","Hautausschlag stabil"]},{t:"Vitalzeichen",i:["AF: 12 bis 20/min","SpO₂: > 95% (COPD > 92%)","HF: 60 bis 100/min","RR syst: 100 bis 140","Temp: 36,0 bis 37,5°C","GCS: 15 ist normal"]},{t:"FAST Test",i:["Face: Gesicht hängt?","Arms: Arm sinkt?","Speech: Sprache verwaschen?","Time: Beginn wann?","Bedeutet Orange Stufe","Lyse in unter 4,5 h"]},{t:"Pädiatrie",i:["Neugeborene und Fieber bedeutet Orange","Fontanelle vorgewölbt?","Trinkschwäche ist ein Alarmzeichen","Petechien und Fieber prüfen","Tachypnoe altersabhängig betrachten","Eltern Intuition absolut beachten"]}];
-
-
-const CASES=[
-{s:"58-jähriger Mann, akuter retrosternaler Druckschmerz seit 20 Min., Ausstrahlung in den linken Arm, kaltschweißig, blass.",diag:42,lvl:2,ex:"Typische ACS Symptomatik. Kaltschweißig und retrosternal bedeutet Sehr dringend."},
-{s:"23-jährige Frau, Schwellung der Lippen und Zunge 10 Min. nach Restaurantbesuch. Atemnot, generalisierte Urtikaria.",diag:4,lvl:2,ex:"Anaphylaktische Reaktion. Atemwegsbeteiligung bei Zunge und Lippen bedeutet Orange."},
-{s:"4-jähriger Junge, bellender Husten, inspiratorischer Stridor, leichtes Fieber 38,2°C.",diag:8,lvl:3,ex:"Verdacht auf Pseudokrupp. Stridor in Ruhe bedingt mindestens Gelb. Atemnot triggert gegebenenfalls Orange."},
-{s:"35-jähriger Mann, seit 3 Tagen zunehmende Halsschmerzen, Fieber 39,5°C, kann Mund kaum noch öffnen.",diag:21,lvl:3,ex:"Verdacht auf Peritonsillarabszess. Kieferklemme und Fieber bedeutet Dringend (Gelb)."},
-{s:"80-jährige Patientin, im Pflegeheim gestürzt, Schmerzen linke Hüfte, Bein verkürzt und außenrotiert.",diag:17,lvl:3,ex:"Verdacht auf Schenkelhalsfraktur. Fehlstellung großer Knochen bedeutet Gelb."},
-{s:"45-jähriger Mann, epigastrische Schmerzen, gürtelförmig in den Rücken ausstrahlend, Übelkeit.",diag:1,lvl:3,ex:"Verdacht auf akute Pankreatitis. Ausstrahlung in den Rücken bedeutet Gelb."},
-{s:"19-jähriger Student, akute Hodenschmerzen links seit 2 Stunden, Hoden hochstehend, starke Übelkeit.",diag:25,lvl:2,ex:"Verdacht auf Hodentorsion. Extrem zeitkritisch, Ausstrahlung und Verdacht bedeutet Orange."},
-{s:"8 Monate alter Säugling, schreit untröstlich seit 4 Stunden, Erbrechen, rote Geleestühle.",diag:2,lvl:2,ex:"Verdacht auf Invagination bei Säugling. Geleestühle bedeutet Orange."},
-{s:"55-jährige Frau, starker Kopfschmerz der extremsten Art, schlagartig aufgetreten, Nackensteife.",diag:29,lvl:2,ex:"Verdacht auf Subarachnoidalblutung (SAB). Donnerschlagkopfschmerz bedeutet Orange."},
-{s:"80-jähriger Mann, gestürzt auf Kopf, nimmt Apixaban (DOAK), GCS 14, Amnesie für das Ereignis.",diag:30,lvl:2,ex:"SHT und Antikoagulation. Auffälliger Mechanismus oder Amnesie bedeutet Orange."},
-{s:"75-jährige Frau, Hemiparese links seit 45 Min, GCS 14, keine Schmerzen.",diag:29,lvl:2,ex:"Verdacht auf Schlaganfall (FAST positiv). Neues neurologisches Defizit bedeutet Orange."},
-{s:"18-jähriger Mann, Suizidgedanken, superfizielle Schnittwunden am Unterarm, weint, kreislaufstabil.",diag:39,lvl:3,ex:"Verdacht auf psychotische Krise oder Agitiertheit ohne akute Lebensgefahr bedeutet Gelb."},
-{s:"3-jähriges Mädchen, fiebert seit heute 40,2°C, apathisch, Nackensteife, Eltern extrem besorgt.",diag:45,lvl:2,ex:"Verdacht auf Meningitis oder Sepsis. Apathisch und Nackensteife triggert Orange."},
-{s:"60-jähriger Mann, zweimaliges Kaffeesatzerbrechen, blass, HF 120, RR 90/60.",diag:19,lvl:2,ex:"Gastrointestinale Blutung. Kreislaufinstabilität und Schockzeichen bedeutet Orange."},
-{s:"25-jährige Frau, Sturz mit E-Scooter ohne Helm bei 20 km/h, Kopfschmerzen, GCS 15, keine Amnesie.",diag:41,lvl:2,ex:"Auffälliger Verletzungsmechanismus führt zur Aufwertung auf Orange."},
-{s:"40-jähriger Mann, Flankenschmerz rechts, schmerzgeplagt und extrem unruhig, NRS 9.",diag:48,lvl:3,ex:"Verdacht auf Nierenkolik. Starke Schmerzen bedeutet Gelb. Harnverhalt mit starken Schmerzen wäre Orange."},
-{s:"65-jähriger Mann, bekannte COPD, exazerbiert, SpO2 88% unter Raumluft, spricht in abgehackten Sätzen.",diag:6,lvl:2,ex:"COPD Exazerbation. SpO2 unter 92% oder Sprechunfähigkeit bedeutet Orange."},
-{s:"5-jähriger Junge, beim Nudelkochen mit Wasser verbrüht, Thorax vorne komplett betroffen mit Blasenbildung.",diag:50,lvl:2,ex:"KOF von ca. 18 Prozent bei Rumpf vorne Kind. Mehr als 15% KOF bedeutet Orange."},
-{s:"50-jähriger Mann, akuter Harnverhalt, extrem starke Schmerzen im Unterbauch, Anurie seit 12h.",diag:48,lvl:2,ex:"Akuter Harnverhalt mit starken Schmerzen ist hochgradig gefährdend und bedeutet Orange."},
-{s:"28-jährige Frau, umgeknickt beim Sport, Sprunggelenk geschwollen, Pulse tastbar, NRS 6.",diag:17,lvl:4,ex:"Keine Fehlstellung großer Knochen, Gelenk nicht blockiert, Schmerz NRS 6 bedeutet Normal (Grün)."},
-{s:"40-jährige Frau, plötzliche Luftnot seit 30 Min., nimmt Pille und raucht, atemabhängiger Schmerz rechtsseitig, SpO2 96%.",diag:7,lvl:3,ex:"Atemproblem Erwachsene. Atemabhängiger Schmerz ohne Zyanose oder starken SpO2 Abfall bedeutet Gelb (Verdacht auf Lungenembolie)."},
-{s:"65-jähriger Mann, Teerstuhl seit 2 Tagen, jetzt zuhause synkopiert, aktuell wach, HF 115.",diag:19,lvl:2,ex:"Gastrointestinale Blutung. Die begleitende Synkope weist auf eine Kreislaufinstabilität hin und triggert Orange."},
-{s:"22-jähriger Mann, in einen rostigen Nagel getreten, letzte Tetanusimpfung vor 15 Jahren, kleine Stichwunde, NRS 3.",diag:51,lvl:4,ex:"Wunden. Die Wunde ist klein, keine starke Blutung. Impfstatus ist relevant für Therapie, ändert aber MTS Stufe nicht direkt, daher Grün."},
-{s:"30-jährige Frau, Flankenschmerz links, Dysurie seit gestern, heute Fieber 39,2°C.",diag:48,lvl:3,ex:"Urologisches Problem. Flankenschmerz in Kombination mit Fieber bedeutet Dringend (Gelb)."},
-{s:"12-jähriger Junge, beim Fußball das Knie verdreht, Knie dick geschwollen, kann nicht auftreten, Schmerzen NRS 7.",diag:17,lvl:3,ex:"Extremitätenprobleme. Starke Schmerzen und das Unvermögen aufzutreten bedeuten Gelb."},
-{s:"80-jährige Frau, Bewohnerin Pflegeheim, zunehmend exsikkiert, GCS 12, Fieber 38,5°C.",diag:44,lvl:2,ex:"Unwohlsein bei Erwachsenen. Der veränderte Bewusstseinszustand (GCS unter 15) bedeutet Orange."},
-{s:"50-jähriger Mann, Blutzucker über 500 mg/dl gemessen, Kussmaul-Atmung, Patient wirkt somnolent.",diag:15,lvl:2,ex:"Diabetes. Die Kussmaul-Atmung und die starke Entgleisung mit Symptomatik bedeuten Orange."},
-{s:"7-jähriges Mädchen, Unterarmfraktur nach Sturz von Schaukel, deutliche Fehlstellung sichtbar.",diag:41,lvl:3,ex:"Stürze. Die offensichtliche Fehlstellung eines großen Knochens triggert Dringend (Gelb)."},
-{s:"45-jähriger Mann, bemerkt kreisrunden Haarausfall am Hinterkopf seit 3 Wochen, keine Schmerzen, vital stabil.",diag:22,lvl:5,ex:"Hautausschläge. Keine akuten Symptome und keine Schmerzen bedeuten Nicht dringend (Blau)."},
-{s:"19-jährige Frau, hyperventiliert nach Streit, Kribbeln in den Händen, weint stark, keine Vorerkrankungen.",diag:34,lvl:3,ex:"Psychische Erkrankung. Die starke Agitiertheit und Panik bedeuten Dringend (Gelb)."},
-{s:"30-jähriger Handwerker, ist mit Kreissäge abgerutscht, starke unstillbare arterielle Blutung am Daumen.",diag:51,lvl:2,ex:"Wunden. Eine arterielle, spritzende Blutung bedeutet sofortige Gefährdung und triggert Orange."},
-{s:"60-jähriger Mann, bekannte COPD, akute Dyspnoe, Sprechen ist nur noch in einzelnen Worten möglich.",diag:6,lvl:2,ex:"Asthma und COPD. Sprechunfähigkeit ist ein massives Warnsignal für Erschöpfung und bedeutet Orange."},
-{s:"2-jähriger Junge, Fieberkrampf, krampft aktuell bei Eintreffen in der ZNA seit 10 Minuten durchgehend.",diag:31,lvl:1,ex:"Krampfanfall. Ein Status epilepticus (Krampf über 5 Minuten) bedeutet unmittelbare Lebensgefahr und triggert Rot."},
-{s:"55-jährige Frau, Brustschmerz atemabhängig, NRS 5, leichter Reizhusten, kein Ausstrahlen.",diag:42,lvl:3,ex:"Thoraxschmerz. Ein atemabhängiger Schmerz ohne stärkste Begleitsymptome (Kaltschweiß) bedeutet Dringend (Gelb)."},
-{s:"28-jähriger Chemielaborant, hat sich Lauge ins Gesicht gespritzt, starke Schmerzen, linkes Auge brennt massiv.",diag:10,lvl:2,ex:"Augenprobleme. Eine chemische Verätzung des Auges ist potenziell sichtgefährdend und triggert Orange."},
-{s:"35-jährige Schwangere in der 32. SSW, plötzlich starke, kontinuierliche vaginale Blutung, kreislaufstabil.",diag:49,lvl:2,ex:"Vaginale Blutung. Eine starke unstillbare Blutung in der Schwangerschaft bedeutet Gefahr für Mutter und Kind und triggert Orange."},
-{s:"50-jähriger Mann, Wespenstich am Unterarm, nur lokale Rötung und Schwellung, kein Juckreiz am Körper, NRS 2.",diag:4,lvl:4,ex:"Allergie. Eine rein lokale Reaktion ohne systemische Zeichen bedeutet Normal (Grün)."},
-{s:"70-jähriger Mann, akute Harnverhaltung seit 24h, Blase tastbar, extreme Schmerzen NRS 8.",diag:48,lvl:2,ex:"Urologisches Problem. Ein akuter Harnverhalt gekoppelt mit starken Schmerzen triggert Orange."},
-{s:"15-jähriges Mädchen, Überdosis Paracetamol vor 3 Stunden aus Liebeskummer, suizidale Absicht geäußert, GCS 15.",diag:43,lvl:3,ex:"Überdosierung und Vergiftung. Eine gezielte suizidale Einnahme bei wachem Patienten bedeutet Dringend (Gelb)."},
-{s:"8-jähriger Junge, wurde von einem fremden Hund in die Wade gebissen, tiefe Wunde, blutet mäßig.",diag:13,lvl:3,ex:"Bisse und Stiche. Eine tiefe Bisswunde triggert Gelb, eine systemische allergische Reaktion läge bei Orange."},
-{s:"75-jährige Frau, Verwirrtheitszustand seit heute morgen, Urin riecht streng, fieberfrei, GCS 14.",diag:44,lvl:2,ex:"Unwohlsein bei Erwachsenen. Ein veränderter Bewusstseinszustand oder eine akute Verwirrtheit triggert Orange."},
-{s:"20-jähriger Mann, Schmerzen im rechten Unterbauch, Appendizitis-Zeichen positiv, verstärken sich beim Gehen, NRS 6.",diag:1,lvl:4,ex:"Abdominelle Schmerzen bei Erwachsenen. Schmerz bei Bewegung und NRS unter 7 bedeutet Normal (Grün)."},
-{s:"50-jähriger Mann, plötzlicher Sehverlust am rechten Auge, komplett schmerzlos.",diag:10,lvl:2,ex:"Augenprobleme. Ein akuter Visusverlust ist ein massives Warnsignal und bedeutet Orange."},
-{s:"60-jährige Frau, Verdacht auf tiefe Beinvenenthrombose, linkes Bein dick und gerötet, Schmerz NRS 4.",diag:17,lvl:4,ex:"Extremitätenprobleme. Keine Rot oder Orange Kriterien zutreffend, Schmerz mäßig, daher Normal (Grün)."},
-{s:"90-jähriger Mann, unter Reanimationsbedingungen (CPR) vom Rettungsdienst mit Lucas in den Schockraum gebracht.",diag:44,lvl:1,ex:"Generelle Indikatoren oder Unwohlsein. Kreislaufstillstand bedeutet absolute Lebensgefahr und triggert Sofort (Rot)."}
-];
-
