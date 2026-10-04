@@ -45,6 +45,41 @@ document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
 }));
 
 const SI_=document.getElementById('SI');
+
+function quickSearch(term){
+  SI_.value=term;
+  SI_.focus();
+  SI_.dispatchEvent(new Event('input',{bubbles:true}));
+}
+
+function updateCockpitClock(){
+  const el=document.getElementById('liveClock');
+  if(el) el.textContent=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+function updateNetworkStatus(){
+  const el=document.getElementById('netStatus');
+  if(!el)return;
+  const online=navigator.onLine;
+  el.classList.toggle('offline',!online);
+  const txt=el.querySelector('span:last-child');
+  if(txt) txt.textContent=online?'Online':'Offline';
+}
+async function loadVersionBadge(){
+  try{
+    const res=await fetch('./version.json',{cache:'no-store'});
+    if(!res.ok)return;
+    const v=await res.json();
+    const el=document.getElementById('versionBadge');
+    if(el) el.textContent=`${v.version||'V2'} · ${v.mtsDataStatus==='validation'?'Validierung':'Freigegeben'}`;
+  }catch{}
+}
+updateCockpitClock();
+updateNetworkStatus();
+loadVersionBadge();
+setInterval(updateCockpitClock,30000);
+window.addEventListener('online',updateNetworkStatus);
+window.addEventListener('offline',updateNetworkStatus);
+
 SI_.addEventListener('input',debounce(()=>{
   const q=SI_.value.trim().toLowerCase(),sB=document.getElementById('sB'),sC=document.getElementById('sC'),sH=document.getElementById('sH'),sR=document.getElementById('sR');
   if(q.length<2){sR.innerHTML='';sB.style.display='none';sH.style.display='block';return}
@@ -162,6 +197,59 @@ function tgI(lvl, idx, isGen){
 function updV(key, val) { curVit[key] = val; rOvl(); }
 function updPed(val) { curPed = val; rOvl(); }
 
+function buildDecisionTrace(d,lvl){
+  const rows=[];
+  rows.push({icon:'fa-sitemap',label:`Präsentationsdiagramm: <b>${d.name}</b>`,level:''});
+
+  selI.forEach(k=>{
+    const [ls,idxs,gen]=k.split('-');
+    const l=parseInt(ls),idx=parseInt(idxs),isGen=gen==='1';
+    const source=isGen?(GI[l]||[]):((d.i&&d.i[l])||[]);
+    const text=source[idx];
+    if(text) rows.push({icon:'fa-check',label:`${isGen?'Genereller':'Spezifischer'} Diskriminator: <b>${text}</b>`,level:`Stufe ${l}`});
+  });
+
+  const vit=[];
+  if(curVit.gcs!==''){
+    const g=parseInt(curVit.gcs);
+    if(g<12)vit.push({txt:`GCS ${g}`,l:1});
+    else if(g<15)vit.push({txt:`GCS ${g}`,l:2});
+  }
+  if(curVit.spo2!==''){
+    const v=parseInt(curVit.spo2);
+    if(v<92)vit.push({txt:`SpO₂ ${v}%`,l:2});
+  }
+  if(curVit.temp!==''){
+    const v=parseFloat(String(curVit.temp).replace(',','.'));
+    if(v>41)vit.push({txt:`Temperatur ${v.toFixed(1)} °C`,l:2});
+    else if(v>39)vit.push({txt:`Temperatur ${v.toFixed(1)} °C`,l:3});
+  }
+  if(curVit.nrs!==''){
+    const v=parseInt(curVit.nrs);
+    if(v>=8)vit.push({txt:`NRS ${v}`,l:3});
+    else if(v>=5)vit.push({txt:`NRS ${v}`,l:4});
+  }
+  vit.forEach(v=>rows.push({icon:'fa-wave-square',label:`Aktueller Engine-Trigger: <b>${v.txt}</b>`,level:`Stufe ${v.l}`}));
+
+  const active=rows.slice(1);
+  return `
+    <div class="decision-trace">
+      <div class="trace-head">
+        <h4><i class="fa-solid fa-route"></i> Warum diese Einstufung?</h4>
+        <span class="trace-badge">Entscheidungsweg</span>
+      </div>
+      <div class="trace-list">
+        ${rows.map((row,i)=>`
+          <div class="trace-item">
+            <div class="trace-icon"><i class="fa-solid ${row.icon}"></i></div>
+            <div class="trace-label">${row.label}</div>
+            <div class="trace-level" style="color:${row.level?['','var(--red)','var(--orange)','var(--yellow)','var(--green)','var(--blue)'][parseInt(row.level.match(/\d/)?.[0]||0)]:'var(--text3)'}">${row.level}</div>
+          </div>`).join('')}
+        ${active.length===0?'<div class="trace-empty"><i class="fa-solid fa-circle-info"></i> Noch kein aktiver Diskriminator gewählt. Die angezeigte Stufe basiert aktuell auf der hinterlegten Basiseinstufung des Altbestands.</div>':''}
+      </div>
+    </div>`;
+}
+
 function rOvl(){
   const d=curDiag;
   let lvl=d.b||5;
@@ -203,9 +291,13 @@ function rOvl(){
     <h2 style="font-size:1.3rem;font-weight:800;margin-top:12px;color:var(--text)">${d.id}. ${d.name}</h2>
     
     <div class="triage-banner t-b-${lvl}">
-      <div style="display:flex;align-items:center;gap:8px"><i class="fa-solid fa-triangle-exclamation"></i> Stufe ${lvl} (${lObj.n})</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.18);display:grid;place-items:center"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">Aktuelle MTS Einstufung</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
+      </div>
       <div class="t-time">Max: ${lObj.t}</div>
-    </div>`;
+    </div>
+    ${buildDecisionTrace(d,lvl)}`;
 
   if(d.c === 'Pädiatrisch'){
     html += `<div style="background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;border:1px solid var(--card-border)">
