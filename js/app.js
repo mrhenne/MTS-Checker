@@ -254,6 +254,10 @@ function rOvl(){
     ${d.id>=54?'<div style="padding:12px 14px;margin-bottom:14px;border-radius:var(--radius-sm);background:var(--yellow-bg);border:1px solid var(--yellow-border);font-size:.8rem;color:var(--text2)"><b style="color:var(--text)"><i class="fa-solid fa-triangle-exclamation"></i> MANV-Sondermodul in Validierung.</b> Nicht als reguläre MTS-Einstufung verwenden.</div>':''}
     <span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.id===53?'MTS Sonderdiagramm':d.c}</span>
     <h2 style="font-size:1.3rem;font-weight:800;margin-top:12px;color:var(--text)">${d.id}. ${d.name}</h2>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+      <span class="tag" style="background:var(--yellow-bg);border-color:var(--yellow-border);color:var(--text2)"><i class="fa-solid fa-shield-halved"></i> ${MTS_DIAGRAM_META[d.id]?.status==='not-mts-core'?'Nicht MTS Core':'Vollreferenz-Prüfung offen'}</span>
+      <span class="tag"><i class="fa-regular fa-calendar-check"></i> Review 04.10.2026</span>
+    </div>
     
     ${lvl!==null?`
       <div class="triage-banner t-b-${lvl}">
@@ -275,7 +279,7 @@ function rOvl(){
   if(d.c === 'Pädiatrisch'){
     html += `<div style="background:var(--bg3);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;border:1px solid var(--card-border)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:6px"><i class="fa-solid fa-baby"></i> Päd. Normwerte prüfen</h4>
+        <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:6px"><i class="fa-solid fa-baby"></i> Pädiatrische Orientierungswerte</h4>
         <select onchange="updPed(this.value)" style="padding:4px 8px;border-radius:6px;border:1px solid var(--card-border);font-family:var(--font);font-size:0.8rem;background:var(--bg2);color:var(--text);outline:none">
           <option value="0" ${curPed==='0'?'selected':''}>< 1 Monat</option>
           <option value="1" ${curPed==='1'?'selected':''}>1 bis 11 Monate</option>
@@ -290,6 +294,7 @@ function rOvl(){
       <div style="font-size:0.8rem;font-weight:600;color:var(--text2);text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;">
         <i class="fa-solid fa-weight-scale"></i> Geschätztes Gewicht: ${pedsW[curPed]}
       </div>
+      <div style="font-size:.7rem;color:var(--text3);margin-top:8px;text-align:center"><i class="fa-solid fa-circle-info"></i> Altbestand zur Orientierung. Kein automatischer MTS-Trigger in D1.</div>
     </div>`;
   }
 
@@ -548,7 +553,11 @@ function copyISBAR() {
 }
 
 function rLvl(){document.getElementById('lvl').innerHTML=LV.map(l=>`<div class="lc lc-${l.l}"><h3><i class="fa-solid fa-circle"></i> Stufe ${l.l} (${l.n})</h3><div class="tm">Max: <b>${l.t}</b> · Kontrolle: <b>${l.r}</b></div><div class="ds">${l.d}</div></div>`).join('')}
-function rCS(){document.getElementById('cht').innerHTML=CS.map(c=>`<div class="cc"><h4>${c.t}</h4><ul>${c.i.map(x=>`<li><i class="fa-solid fa-caret-right"></i>${x}</li>`).join('')}</ul></div>`).join('')}
+function rCS(){
+  document.getElementById('cht').innerHTML=
+    '<div style="grid-column:1/-1;padding:14px 16px;border:1px solid var(--yellow-border);background:var(--yellow-bg);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text2);line-height:1.5"><b style="color:var(--text)"><i class="fa-solid fa-book-medical"></i> Cheatsheet Altbestand.</b><br>Diese Kurzregeln sind noch nicht vollständig gegen die lizenzierte MTS Vollreferenz 2025 validiert und dürfen die D1 Einstufung nicht automatisch steuern.</div>'+
+    CS.map(c=>`<div class="cc"><h4>${c.t}</h4><ul>${c.i.map(x=>`<li><i class="fa-solid fa-caret-right"></i>${x}</li>`).join('')}</ul></div>`).join('');
+}
 
 function addH(id, lvl){
   const d=D.find(x=>x.id===id);
