@@ -38,6 +38,7 @@
     <button class="nt on" data-t="search"><i class="fa-solid fa-magnifying-glass"></i> Suche</button>
     <button class="nt" data-t="body"><i class="fa-solid fa-person"></i> Bodymap</button>
     <button class="nt" data-t="diag"><i class="fa-solid fa-sitemap"></i> Diagramme</button>
+    <button class="nt" data-t="validate"><i class="fa-solid fa-clipboard-check"></i> Validierung</button>
     <button class="nt" data-t="tox"><i class="fa-solid fa-skull-crossbones"></i> Tox Board</button>
     <button class="nt" data-t="lvl"><i class="fa-solid fa-traffic-light"></i> Stufen</button>
     <button class="nt" data-t="cs"><i class="fa-solid fa-thumbtack"></i> Cheatsheet</button>
@@ -90,6 +91,38 @@
     <div class="frow" id="cF"></div><div class="rbar"><span id="dC"></span></div><div id="dL"></div>
   </div>
   
+  <div class="pnl" id="p-validate">
+    <section class="validation-center">
+      <div class="validation-head">
+        <div>
+          <div class="eyebrow">Medical Governance</div>
+          <h2>Validierungscenter</h2>
+          <p>Diagramm für Diagramm dokumentieren, prüfen und freigeben. Der Status verändert niemals automatisch die MTS Einstufung.</p>
+        </div>
+        <div class="validation-summary" id="validationSummary"></div>
+      </div>
+      <div class="validation-toolbar">
+        <div class="sb validation-search"><i class="fa-solid fa-magnifying-glass"></i><input id="validationSearch" type="text" placeholder="Diagramm, Kategorie oder Status suchen..." autocomplete="off"></div>
+        <select id="validationFilter" class="validation-select">
+          <option value="">Alle Status</option>
+          <option value="unreviewed">Ungeprüft</option>
+          <option value="in-review">In Prüfung</option>
+          <option value="reviewed">Geprüft</option>
+          <option value="local-approved">Lokal freigegeben</option>
+          <option value="blocked">Gesperrt</option>
+        </select>
+      </div>
+      <div class="validation-legend">
+        <span><i class="fa-solid fa-circle" data-vc="unreviewed"></i> Ungeprüft</span>
+        <span><i class="fa-solid fa-circle" data-vc="in-review"></i> In Prüfung</span>
+        <span><i class="fa-solid fa-circle" data-vc="reviewed"></i> Geprüft</span>
+        <span><i class="fa-solid fa-circle" data-vc="local-approved"></i> Lokal freigegeben</span>
+        <span><i class="fa-solid fa-circle" data-vc="blocked"></i> Gesperrt</span>
+      </div>
+      <div id="validationList"></div>
+    </section>
+  </div>
+
   <div class="pnl" id="p-tox">
     <div class="cg" id="toxL"></div>
   </div>
