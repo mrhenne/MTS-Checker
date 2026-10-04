@@ -6,6 +6,7 @@ if ('serviceWorker' in navigator) {
 
 let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),aCat='';
 let curDiag=null,selR=[],selI=[];
+let manualPriority={level:null,source:'',label:''};
 let curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
 let curPed = '2'; 
 let gcsS = { e: 4, v: 5, m: 6 };
@@ -478,6 +479,7 @@ function getActions(lvl, diag) {
 function shD(id){
   curDiag=D.find(x=>x.id===id);
   selR=[]; selI=[];
+  manualPriority={level:null,source:'',label:''};
   curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
   if(!curDiag)return;
   rOvl();
@@ -499,28 +501,39 @@ function tgI(lvl, idx, isGen){
 
 function getVitalAdvisories(){
   const out=[];
-  const add=(field,severity,title,text)=>out.push({field,severity,title,text});
+  const add=(field,severity,title,text,suggestedLevel=null)=>out.push({field,severity,title,text,suggestedLevel});
   if(curVit.gcs!==''){
     const v=Number(curVit.gcs);
-    if(v>=3&&v<15) add('gcs',v<=12?'critical':'alert','GCS auffällig',`GCS ${v}: Bewusstseinslage ist nicht normal. Höhere Priorisierung und passenden MTS-Diskriminator prüfen.`);
+    if(v>=3&&v<15) add('gcs',v<=12?'critical':'alert','GCS auffällig',`GCS ${v}: Bewusstseinslage ist nicht normal. Höhere Priorisierung und passenden MTS-Diskriminator prüfen.`,2);
   }
   if(curVit.spo2!==''){
     const v=Number(curVit.spo2);
-    if(v>=0&&v<92) add('spo2','critical','SpO₂ deutlich erniedrigt',`SpO₂ ${v} % unter Raumluft liegt unter dem in der aktuellen MTS-Referenz genannten Grenzwert. Höhere Priorisierung prüfen.`);
-    else if(v>=92&&v<95) add('spo2','alert','SpO₂ erniedrigt',`SpO₂ ${v} % ist auffällig. Klinischen Kontext und passenden MTS-Diskriminator prüfen.`);
+    if(v>=0&&v<92) add('spo2','critical','SpO₂ deutlich erniedrigt',`SpO₂ ${v} % unter Raumluft liegt unter dem in der aktuellen MTS-Referenz genannten Grenzwert. Höhere Priorisierung prüfen.`,2);
+    else if(v>=92&&v<95) add('spo2','alert','SpO₂ erniedrigt',`SpO₂ ${v} % ist auffällig. Klinischen Kontext und passenden MTS-Diskriminator prüfen.`,3);
   }
   if(curVit.temp!==''){
     const v=Number(String(curVit.temp).replace(',','.'));
     if(Number.isFinite(v)){
-      if(v>41||v<35) add('temp','critical','Temperatur stark auffällig',`${v.toFixed(1)} °C: deutliche Temperaturabweichung. Höhere Priorisierung und passenden MTS-/Sepsis-Kontext prüfen.`);
-      else if(v>=39||v<36) add('temp','alert','Temperatur auffällig',`${v.toFixed(1)} °C: außerhalb des üblichen Normbereichs. Höhere Priorisierung im klinischen Kontext prüfen.`);
+      if(v>41||v<35) add('temp','critical','Temperatur stark auffällig',`${v.toFixed(1)} °C: deutliche Temperaturabweichung. Höhere Priorisierung und passenden MTS-/Sepsis-Kontext prüfen.`,2);
+      else if(v>=39||v<36) add('temp','alert','Temperatur auffällig',`${v.toFixed(1)} °C: außerhalb des üblichen Normbereichs. Höhere Priorisierung im klinischen Kontext prüfen.`,3);
     }
   }
   if(curVit.nrs!==''){
     const v=Number(curVit.nrs);
-    if(v>=7&&v<=10) add('nrs','alert','Hoher Schmerzscore',`NRS ${v}/10: starken Schmerz berücksichtigen und den aktuellen MTS-Schmerz-Diskriminator prüfen.`);
+    if(v>=7&&v<=10) add('nrs','alert','Hoher Schmerzscore',`NRS ${v}/10: starken Schmerz berücksichtigen und den aktuellen MTS-Schmerz-Diskriminator prüfen.`,3);
   }
   return out;
+}
+function priorityColorName(level){return ({1:'Rot',2:'Orange',3:'Gelb',4:'Grün',5:'Blau'})[level]||''}
+function setManualPriority(level,source,label){
+  manualPriority={level:Number(level),source:String(source||'manual'),label:String(label||'Manuelle Priorisierung')};
+  rOvl();
+}
+function clearManualPriority(){manualPriority={level:null,source:'',label:''};rOvl()}
+function priorityButtons(source,label,suggested){
+  return '<div class="priority-pick"><span>Farbe direkt wählen:</span><div class="priority-dots">'+
+    [1,2,3,4,5].map(l=>'<button type="button" class="priority-dot p-'+l+(suggested===l?' suggested':'')+'" onclick="event.stopPropagation();setManualPriority('+l+','+JSON.stringify(source)+','+JSON.stringify(label)+')" title="'+priorityColorName(l)+' wählen"><span class="td td-'+l+'"></span>'+priorityColorName(l)+'</button>').join('')+
+    '</div></div>';
 }
 function vitalFieldClass(field){
   const a=getVitalAdvisories().filter(x=>x.field===field);
@@ -533,7 +546,9 @@ function renderVitalAdvisories(){
   if(!a.length)return '';
   return `<div class="vital-flag ${a.some(x=>x.severity==='critical')?'critical':''}">
     <i class="fa-solid fa-triangle-exclamation"></i>
-    <div><b>Priorisierung erneut prüfen</b><br>${a.map(x=>escapeHtml(x.text)).join('<br>')}</div>
+    <div style="flex:1"><b>Priorisierung erneut prüfen</b>
+      ${a.map(x=>`<div class="vital-advisory-item"><div>${escapeHtml(x.text)}</div>${priorityButtons('vital:'+x.field,x.title,x.suggestedLevel)}</div>`).join('')}
+    </div>
   </div>`;
 }
 function updV(key, val) { curVit[key] = val; rOvl(); }
@@ -558,6 +573,7 @@ function buildDecisionTrace(d,lvl){
   if(curVit.nrs!=='') vit.push(`NRS ${parseInt(curVit.nrs)}`);
   vit.forEach(v=>rows.push({icon:'fa-wave-square',label:`Dokumentierter Vital-/Schmerzwert: <b>${v}</b> · derzeit ohne automatische MTS-Wertung`,level:''}));
 
+  if(manualPriority.level!==null) rows.push({icon:'fa-hand-pointer',label:`Manuell gewählt: <b>${escapeHtml(manualPriority.label)}</b>`,level:`Stufe ${manualPriority.level}`});
   const active=rows.filter(row=>row.level);
   return `
     <div class="decision-trace">
@@ -587,6 +603,8 @@ function rOvl(){
     const l=parseInt(k.split('-')[0]);
     if(lvl===null || l<lvl) lvl=l;
   });
+  const mtsLvl=lvl;
+  if(manualPriority.level!==null) lvl=lvl===null?manualPriority.level:Math.min(lvl,manualPriority.level);
 
   const lObj = lvl!==null ? LV.find(x=>x.l===lvl) : null;
   const rl = D.filter(x=>x.c===d.c&&x.id!==d.id);
