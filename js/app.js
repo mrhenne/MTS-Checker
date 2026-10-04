@@ -45,6 +45,7 @@ document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
   if(t.dataset.t==='train')initTrain();
   if(t.dataset.t==='hist')rHist();
   if(t.dataset.t==='health')runSystemHealth();
+  window.scrollTo({top:0,behavior:'smooth'});
 }));
 
 const SI_=document.getElementById('SI');
@@ -53,6 +54,17 @@ function quickSearch(term){
   SI_.value=term;
   SI_.focus();
   SI_.dispatchEvent(new Event('input',{bubbles:true}));
+}
+
+function renderRecentDiagrams(){
+  const el=document.getElementById('recentDiagrams');
+  if(!el)return;
+  const ids=[];
+  hist.forEach(h=>{if(!ids.includes(h.id))ids.push(h.id)});
+  const recent=ids.slice(0,4).map(id=>D.find(d=>d.id===id)).filter(Boolean);
+  if(!recent.length){el.innerHTML='';return}
+  el.innerHTML='<span><i class="fa-solid fa-clock-rotate-left"></i> Zuletzt verwendet</span>'+
+    '<div>'+recent.map(d=>`<button type="button" onclick="shD(${d.id})"><span class="td td-${cl(d.c)}"></span>${d.name}</button>`).join('')+'</div>';
 }
 
 function setupSearchClearButtons(){
@@ -483,7 +495,14 @@ function shD(id){
   curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
   if(!curDiag)return;
   rOvl();
-  document.getElementById('detO').classList.add('open');
+  const overlay=document.getElementById('detO');
+  overlay.classList.add('open');
+  requestAnimationFrame(()=>{
+    overlay.scrollTop=0;
+    const card=overlay.querySelector('.oc');
+    if(card)card.scrollTop=0;
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
 }
 
 function tgR(idx){
@@ -935,12 +954,58 @@ function rCS(){
     CS.map(c=>`<div class="cc"><h4>${c.t}</h4><ul>${c.i.map(x=>`<li><i class="fa-solid fa-caret-right"></i>${x}</li>`).join('')}</ul></div>`).join('');
 }
 
+function showToast(message,type='success'){
+  let el=document.getElementById('appToast');
+  if(!el){
+    el=document.createElement('div');
+    el.id='appToast';
+    document.body.appendChild(el);
+  }
+  el.className='app-toast '+type;
+  el.innerHTML=(type==='success'?'<i class="fa-solid fa-circle-check"></i>':'<i class="fa-solid fa-triangle-exclamation"></i>')+'<span>'+escapeHtml(message)+'</span>';
+  requestAnimationFrame(()=>el.classList.add('show'));
+  clearTimeout(showToast._t);
+  showToast._t=setTimeout(()=>el.classList.remove('show'),2600);
+}
+function getSelectedIndicatorLabels(){
+  return selI.map(k=>{
+    const [ls,idxs,gen]=k.split('-');
+    const l=Number(ls),idx=Number(idxs),isGen=gen==='1';
+    const source=isGen?(GI[l]||[]):((curDiag?.i&&curDiag.i[l])||[]);
+    return {level:l,text:source[idx]||'',type:isGen?'general':'specific'};
+  }).filter(x=>x.text);
+}
+
 function addH(id, lvl){
   const d=D.find(x=>x.id===id);
-  hist.unshift({id:d.id,name:d.name,c:d.c,ts:new Date().toISOString(),l:lvl});
-  if(hist.length>200)hist=hist.slice(0,200);
-  localStorage.setItem('mts_h',JSON.stringify(hist));
-  rHist();
+  if(!d||!lvl){showToast('Einschätzung konnte nicht gespeichert werden.','error');return false}
+  const entry={
+    id:d.id,
+    name:d.name,
+    c:d.c,
+    ts:new Date().toISOString(),
+    l:Number(lvl),
+    source:manualPriority.level!==null?'manual-or-local':'mts-discriminator',
+    manual:manualPriority.level!==null?{...manualPriority}:null,
+    vitals:{...curVit},
+    indicators:getSelectedIndicatorLabels()
+  };
+  try{
+    hist.unshift(entry);
+    if(hist.length>200)hist=hist.slice(0,200);
+    localStorage.setItem('mts_h',JSON.stringify(hist));
+    const verify=JSON.parse(localStorage.getItem('mts_h')||'[]');
+    if(!Array.isArray(verify)||verify[0]?.ts!==entry.ts)throw new Error('storage verification failed');
+    rHist();
+    renderRecentDiagrams();
+    showToast(`Einschätzung gespeichert · ${d.name} · ${priorityColorName(lvl)}`);
+    return true;
+  }catch(err){
+    console.error('[TriageAssist] save failed',err);
+    hist=hist.filter(h=>h.ts!==entry.ts);
+    showToast('Speichern fehlgeschlagen. Browser-Speicher prüfen.','error');
+    return false;
+  }
 }
 async function runSystemHealth(){
   const overall=document.getElementById('healthOverall');
@@ -1014,10 +1079,12 @@ function rHist(){
   hl_.innerHTML=hist.slice(0,50).map((h,i)=>{
     const d=new Date(h.ts);
     const lvlDot = h.l ? `<span class="td td-${h.l}" style="margin-right:6px"></span>Stufe ${h.l}` : '';
-    return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met"><i class="fa-regular fa-calendar"></i> ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} &bull; ${h.c} &bull; Nr.${h.id} <span style="margin-left:auto;font-weight:700;color:var(--text);display:flex;align-items:center">${lvlDot}</span></div></div><div class="act" style="display:flex;gap:6px;margin-left:12px"><button class="ib view" onclick="shD(${h.id})" title="Öffnen"><i class="fa-regular fa-eye"></i></button><button class="ib" onclick="rmH(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button></div></div>`
+    const sourceTxt=h.source==='manual-or-local'?'manuell/lokal':'MTS-Diskriminator';
+    const vit=[h.vitals?.gcs?`GCS ${h.vitals.gcs}`:'',h.vitals?.spo2?`SpO₂ ${h.vitals.spo2}%`:'',h.vitals?.temp?`${h.vitals.temp} °C`:'',h.vitals?.nrs?`NRS ${h.vitals.nrs}`:''].filter(Boolean).join(' · ');
+    return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met"><i class="fa-regular fa-calendar"></i> ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} &bull; ${h.c} &bull; Nr.${h.id} <span style="margin-left:auto;font-weight:700;color:var(--text);display:flex;align-items:center">${lvlDot}</span></div><div class="hist-detail"><span><i class="fa-solid fa-route"></i> ${sourceTxt}</span>${vit?`<span><i class="fa-solid fa-wave-square"></i> ${vit}</span>`:''}</div></div><div class="act" style="display:flex;gap:6px;margin-left:12px"><button class="ib view" onclick="shD(${h.id})" title="Öffnen"><i class="fa-regular fa-eye"></i></button><button class="ib" onclick="rmH(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button></div></div>`
   }).join('')
 }
-function rmH(i){hist.splice(i,1);localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
+function rmH(i){hist.splice(i,1);localStorage.setItem('mts_h',JSON.stringify(hist));rHist();renderRecentDiagrams()}
 function clrH(){if(!confirm('Verlauf wirklich komplett löschen?'))return;hist=[];localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
 function expJ(){dl(new Blob([JSON.stringify({v:6,ts:new Date().toISOString(),hist},null,2)],{type:'application/json'}),'triageassist-backup-'+ds()+'.json')}
 function expC(){let c='Datum;Uhrzeit;Nr;Diagramm;Kategorie;Level\n';hist.forEach(h=>{const d=new Date(h.ts);c+=`${d.toLocaleDateString('de-DE')};${d.toLocaleTimeString('de-DE')};${h.id};${h.name};${h.c};${h.l||''}\n`});dl(new Blob(['\ufeff'+c],{type:'text/csv;charset=utf-8'}),'triageassist-verlauf-'+ds()+'.csv')}
@@ -1159,4 +1226,5 @@ function runSafetySelfTests(){
 window.__triageSafety=runSafetySelfTests();
 
 setupSearchClearButtons();
+renderRecentDiagrams();
 rLvl();rCS();rTox();SI_.focus();
