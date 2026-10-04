@@ -37,6 +37,7 @@ document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
   document.getElementById('p-'+t.dataset.t).classList.add('on');
   if(t.dataset.t==='body')initBM();
   if(t.dataset.t==='diag')rDiag();
+  if(t.dataset.t==='validate')initValidationCenter();
   if(t.dataset.t==='tox')rTox();
   if(t.dataset.t==='lvl')rLvl();
   if(t.dataset.t==='cs')rCS();
@@ -142,6 +143,182 @@ function fR(){
     (manv.length?`<div style="margin:24px 0 10px;padding:12px 14px;border-radius:var(--radius-sm);background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--text2);font-size:.82rem"><b style="color:var(--text)"><i class="fa-solid fa-people-group"></i> MANV / Sichtung · Sonderbereich</b><br>Diese Altmodule sind nicht Teil des regulären 5-stufigen MTS-Workflows und befinden sich in fachlicher Validierung.</div>`:'') +
     manv.map(d=>`<div class="card" style="opacity:.78;border-style:dashed" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tag" style="background:var(--yellow-bg);border-color:var(--yellow-border)">MANV · Validierung</span></div><div class="cs">Sondermodul · nicht als reguläres MTS verwenden</div></div>`).join('');
 }
+
+const VALIDATION_KEY='mts_validation_v1';
+let validationState={};
+let validationOpenId=null;
+
+function getValidationDefaults(id){
+  const meta=MTS_DIAGRAM_META[id]||{};
+  let status='unreviewed';
+  if(meta.status==='not-mts-core') status='blocked';
+  return {
+    status,
+    source:'',
+    reviewer:'',
+    reviewedOn:'',
+    notes:'',
+    localApproved:false,
+    updatedAt:''
+  };
+}
+
+function loadValidationState(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(VALIDATION_KEY)||'{}');
+    validationState=raw&&typeof raw==='object'?raw:{};
+  }catch{
+    validationState={};
+  }
+}
+function getValidationRecord(id){
+  return {...getValidationDefaults(id),...(validationState[id]||{})};
+}
+function validationStatusLabel(status){
+  return {
+    'unreviewed':'Ungeprüft',
+    'in-review':'In Prüfung',
+    'reviewed':'Geprüft',
+    'local-approved':'Lokal freigegeben',
+    'blocked':'Gesperrt'
+  }[status]||'Ungeprüft';
+}
+function saveValidationRecord(id){
+  const rec=getValidationRecord(id);
+  const statusEl=document.getElementById('val-status-'+id);
+  const sourceEl=document.getElementById('val-source-'+id);
+  const reviewerEl=document.getElementById('val-reviewer-'+id);
+  const dateEl=document.getElementById('val-date-'+id);
+  const notesEl=document.getElementById('val-notes-'+id);
+  if(!statusEl)return;
+  const next={
+    ...rec,
+    status:statusEl.value,
+    source:(sourceEl?.value||'').trim(),
+    reviewer:(reviewerEl?.value||'').trim(),
+    reviewedOn:dateEl?.value||'',
+    notes:(notesEl?.value||'').trim(),
+    localApproved:statusEl.value==='local-approved',
+    updatedAt:new Date().toISOString()
+  };
+  validationState[id]=next;
+  localStorage.setItem(VALIDATION_KEY,JSON.stringify(validationState));
+  validationOpenId=null;
+  renderValidationCenter();
+}
+function resetValidationRecord(id){
+  delete validationState[id];
+  localStorage.setItem(VALIDATION_KEY,JSON.stringify(validationState));
+  validationOpenId=null;
+  renderValidationCenter();
+}
+function toggleValidationDrawer(id){
+  validationOpenId=validationOpenId===id?null:id;
+  renderValidationCenter();
+}
+function initValidationCenter(){
+  loadValidationState();
+  const q=document.getElementById('validationSearch');
+  const f=document.getElementById('validationFilter');
+  if(q&&!q.dataset.bound){
+    q.dataset.bound='1';
+    q.addEventListener('input',debounce(renderValidationCenter,100));
+  }
+  if(f&&!f.dataset.bound){
+    f.dataset.bound='1';
+    f.addEventListener('change',renderValidationCenter);
+  }
+  renderValidationCenter();
+}
+function renderValidationCenter(){
+  const list=document.getElementById('validationList');
+  const summary=document.getElementById('validationSummary');
+  if(!list||!summary)return;
+  const q=(document.getElementById('validationSearch')?.value||'').trim().toLowerCase();
+  const filter=document.getElementById('validationFilter')?.value||'';
+
+  const records=D.map(d=>({d,rec:getValidationRecord(d.id)}));
+  const counts={unreviewed:0,'in-review':0,reviewed:0,'local-approved':0,blocked:0};
+  records.forEach(x=>{counts[x.rec.status]=(counts[x.rec.status]||0)+1});
+  summary.innerHTML=
+    '<div class="validation-kpi"><b>'+D.length+'</b><span>Gesamt</span></div>'+
+    '<div class="validation-kpi"><b>'+counts['in-review']+'</b><span>In Prüfung</span></div>'+
+    '<div class="validation-kpi"><b>'+counts.reviewed+'</b><span>Geprüft</span></div>'+
+    '<div class="validation-kpi"><b>'+counts['local-approved']+'</b><span>Freigegeben</span></div>';
+
+  const filtered=records.filter(({d,rec})=>{
+    if(filter&&rec.status!==filter)return false;
+    if(!q)return true;
+    return [d.name,d.c,String(d.id),validationStatusLabel(rec.status),rec.source,rec.reviewer,rec.notes]
+      .join(' ').toLowerCase().includes(q);
+  });
+
+  if(!filtered.length){
+    list.innerHTML='<div class="empty"><i class="fa-solid fa-clipboard-check" style="font-size:2rem;margin-bottom:8px;display:block"></i>Keine Diagramme für diesen Filter.</div>';
+    return;
+  }
+
+  list.innerHTML=filtered.map(({d,rec})=>{
+    const meta=MTS_DIAGRAM_META[d.id]||{};
+    const opened=validationOpenId===d.id;
+    const metaText=meta.type==='manv-legacy'?'MANV Altbestand':meta.type==='mts-special'?'MTS Sonderdiagramm':'MTS Präsentation';
+    return `
+      <div class="validation-row">
+        <div class="validation-title">
+          <div class="validation-id">${d.id}</div>
+          <div><strong>${d.name}</strong><small>${d.c} · ${metaText}</small></div>
+        </div>
+        <span class="validation-status-pill ${rec.status}"><i class="fa-solid fa-circle"></i>${validationStatusLabel(rec.status)}</span>
+        <div class="validation-meta">${rec.reviewer?'<b>'+rec.reviewer+'</b><br>':''}${rec.reviewedOn||'Kein Reviewdatum'}${rec.source?'<br>'+rec.source:''}</div>
+        <div class="validation-actions">
+          <button onclick="shD(${d.id})" title="Diagramm öffnen"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+          <button onclick="toggleValidationDrawer(${d.id})" title="Validierung bearbeiten"><i class="fa-solid fa-pen"></i></button>
+        </div>
+      </div>
+      ${opened?`
+        <div class="validation-drawer">
+          <div class="validation-form-grid">
+            <div>
+              <label>Status</label>
+              <select id="val-status-${d.id}" class="validation-select">
+                ${[
+                  ['unreviewed','Ungeprüft'],
+                  ['in-review','In Prüfung'],
+                  ['reviewed','Geprüft'],
+                  ['local-approved','Lokal freigegeben'],
+                  ['blocked','Gesperrt']
+                ].map(([v,l])=>`<option value="${v}" ${rec.status===v?'selected':''}>${l}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label>Reviewdatum</label>
+              <input id="val-date-${d.id}" type="date" value="${rec.reviewedOn||''}">
+            </div>
+            <div>
+              <label>Reviewer / Prüfer</label>
+              <input id="val-reviewer-${d.id}" value="${escapeAttr(rec.reviewer)}" placeholder="Name / Rolle">
+            </div>
+            <div>
+              <label>Quelle / Referenz</label>
+              <input id="val-source-${d.id}" value="${escapeAttr(rec.source)}" placeholder="z. B. MTS 6. Auflage 2025, Kapitel ...">
+            </div>
+            <div class="full">
+              <label>Validierungsnotiz</label>
+              <textarea id="val-notes-${d.id}" placeholder="Was wurde geprüft? Was ist noch offen?">${escapeHtml(rec.notes)}</textarea>
+            </div>
+          </div>
+          <div class="validation-savebar">
+            <button class="rbtn" onclick="resetValidationRecord(${d.id})"><i class="fa-solid fa-rotate-left"></i> Zurücksetzen</button>
+            <button class="rbtn primary" onclick="saveValidationRecord(${d.id})"><i class="fa-solid fa-floppy-disk"></i> Validierung speichern</button>
+          </div>
+        </div>`:''}
+    `;
+  }).join('');
+}
+function escapeHtml(v=''){
+  return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeAttr(v=''){return escapeHtml(v)}
 
 function rTox(){
   document.getElementById('toxL').innerHTML =
@@ -256,7 +433,12 @@ function rOvl(){
     <h2 style="font-size:1.3rem;font-weight:800;margin-top:12px;color:var(--text)">${d.id}. ${d.name}</h2>
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
       <span class="tag" style="background:var(--yellow-bg);border-color:var(--yellow-border);color:var(--text2)"><i class="fa-solid fa-shield-halved"></i> ${MTS_DIAGRAM_META[d.id]?.status==='not-mts-core'?'Nicht MTS Core':'Vollreferenz-Prüfung offen'}</span>
-      <span class="tag"><i class="fa-regular fa-calendar-check"></i> Review 04.10.2026</span>
+      ${(()=>{
+        const vr=typeof getValidationRecord==='function'?getValidationRecord(d.id):null;
+        if(!vr)return '';
+        return `<span class="validation-status-pill ${vr.status}"><i class="fa-solid fa-circle"></i>${validationStatusLabel(vr.status)}</span>`+
+          (vr.reviewedOn?`<span class="tag"><i class="fa-regular fa-calendar-check"></i> ${vr.reviewedOn}</span>`:'');
+      })()}
     </div>
     
     ${lvl!==null?`
