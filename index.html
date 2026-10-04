@@ -44,6 +44,7 @@
     <button class="nt" data-t="cs"><i class="fa-solid fa-thumbtack"></i> Cheatsheet</button>
     <button class="nt" data-t="train"><i class="fa-solid fa-graduation-cap"></i> Training</button>
     <button class="nt" data-t="hist"><i class="fa-solid fa-clock-rotate-left"></i> Verlauf</button>
+    <button class="nt" data-t="health"><i class="fa-solid fa-shield-heart"></i> System</button>
   </nav>
 
   <div class="pnl on" id="p-search">
@@ -140,6 +141,27 @@
     <div id="trainArea"></div>
   </div>
 
+  <div class="pnl" id="p-health">
+    <section class="health-center">
+      <div class="health-hero">
+        <div>
+          <div class="eyebrow">System Integrity</div>
+          <h2>System Health</h2>
+          <p>Technischer Selbstcheck für Datenintegrität, Entscheidungsengine, Cache und Governance-Trennung.</p>
+        </div>
+        <div id="healthOverall" class="health-overall">Prüfung läuft…</div>
+      </div>
+      <div class="health-grid" id="healthGrid"></div>
+      <div class="health-details">
+        <div class="health-details-head">
+          <h3><i class="fa-solid fa-list-check"></i> Prüfergebnisse</h3>
+          <button class="eb" onclick="runSystemHealth()"><i class="fa-solid fa-rotate"></i> Neu prüfen</button>
+        </div>
+        <div id="healthChecks"></div>
+      </div>
+    </section>
+  </div>
+
   <div class="pnl" id="p-hist">
     <div class="sr" id="stR"></div>
     <h3 style="font-size:1.1rem;margin-bottom:12px;font-weight:800;color:var(--text)">Letzte Zuordnungen</h3>
@@ -162,6 +184,7 @@
 <script src="./data/clinical-addons.js"></script>
 <script src="./data/training-cases.js"></script>
 <script src="./data/local-sop.js"></script>
+<script src="./tests/triage-regression.js"></script>
 <script src="./js/app.js"></script>
 
 </body>
