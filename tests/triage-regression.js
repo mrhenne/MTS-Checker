@@ -40,5 +40,5 @@
   }
 
   if(typeof module!=='undefined'&&module.exports) module.exports={runTriageRegressionTests};
-  if(typeof window!=='undefined') window.runTriageRegressionTests=runTriageRegressionTests;
+  if(typeof globalThis!=='undefined') globalThis.runTriageRegressionTests=runTriageRegressionTests;
 })();
