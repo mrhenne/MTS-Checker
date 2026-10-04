@@ -111,6 +111,16 @@ SI_.addEventListener('input',debounce(()=>{
   if(q.length<2){sR.innerHTML='';sB.style.display='none';sH.style.display='block';return}
   sH.style.display='none';
   const ts=q.split(/[\s,;]+/).filter(t=>t.length>=2);
+  const norm=q.replace(/[-_/]+/g,' ').replace(/\s+/g,' ').trim();
+  const aliasHits=[];
+  if(typeof SEARCH_ALIASES!=='undefined'){
+    Object.entries(SEARCH_ALIASES).forEach(([phrase,ids])=>{
+      const p=phrase.toLowerCase();
+      if(norm.includes(p)||p.includes(norm)||ts.every(t=>p.includes(t))){
+        ids.forEach((id,rank)=>aliasHits.push({id,score:60-(rank*6),phrase}));
+      }
+    });
+  }
   let sc=D.map(d=>{
     let s=0,m=[];
     const indText = d.i ? Object.values(d.i).flat().join(' ').toLowerCase() : '';
@@ -123,6 +133,7 @@ SI_.addEventListener('input',debounce(()=>{
       if(indText.includes(t)){s+=5;m.push(t)}
     });
     if(ts.length>1&&ts.every(t=>d.kw.some(k=>k.includes(t))||d.name.toLowerCase().includes(t)||indText.includes(t)))s+=18;
+    aliasHits.filter(a=>a.id===d.id).forEach(a=>{s+=a.score;m.push(a.phrase)});
     return{...d,score:s,mt:[...new Set(m)]}
   }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
   sB.style.display='flex';sC.innerHTML=`<b>${sc.length}</b> Treffer`;
