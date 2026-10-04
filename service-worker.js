@@ -11,7 +11,8 @@ const APP_SHELL = [
   './data/search-rules.js',
   './tests/triage-regression.js',
   './js/app.js',
-  './version.json'
+  './version.json',
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
