@@ -483,3 +483,14 @@ body.focus-mode .oc{max-height:96vh}
 @media(max-width:760px){
   body.focus-mode .cockpit-header{grid-template-columns:1fr}
 }
+
+.t-b-neutral{
+  background:var(--panel);
+  color:var(--text);
+  border:1px dashed var(--card-border);
+  box-shadow:var(--shadow-sm);
+}
+.t-b-neutral .t-time{
+  background:var(--bg3);
+  color:var(--text3);
+}
