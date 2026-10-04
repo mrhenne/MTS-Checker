@@ -1029,3 +1029,34 @@ Abgedeckt:
 
 ### Offene fachliche Freigabe
 RC1 ist technisch konsistent und als Review-/Trainingsbasis vorbereitet. Er ist weiterhin nicht als institutionell freigegebene klinische Produktivversion zu kennzeichnen, solange der vollständige Zeilenabgleich der MTS-Diskriminatoren gegen eine lizenzierte aktuelle Vollreferenz und die lokale institutionelle Freigabe fehlen.
+
+
+## Paket L abgeschlossen – Workflow Hardening L1 / RC7
+
+### Suchqualität
+- pure Suchengine in `data/search-engine.js`
+- Qualitätsmatrix in `tests/search-quality.js`
+- Top-3-Qualität wird im CI und System Health geprüft
+- Suchregressionen blockieren den Quality Gate
+
+### Triage-Workflow
+- Stufe 1 Rot und Stufe 2 Orange immer offen
+- Stufen 3–5 kompakt als aufklappbare Bereiche
+- aktive Auswahl öffnet die jeweilige Stufe automatisch
+- medizinische Einstufungslogik unverändert
+
+### Lokale Datensicherung
+- Komplettbackup aller TriageAssist-localStorage-Daten
+- Restore nur nach expliziter Bestätigung
+- weiterhin vollständig lokale Datenspeicherung
+
+### Offline / Updates
+- kontrollierter Service Worker ohne automatisches `skipWaiting`
+- Nutzer entscheidet über Versionswechsel
+- Update-Banner bei neuer Version
+- Offline-Fallback und versionierte App-Shell
+
+### Qualität
+- GitHub Actions enthält zusätzlich die Such-Top-3-Matrix
+- System Health zeigt Suchqualität und Offline-Cache
+- L1 enthält keine neue medizinische Autotriage
