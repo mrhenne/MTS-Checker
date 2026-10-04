@@ -530,6 +530,10 @@ function setManualPriority(level,source,label){
   rOvl();
 }
 function clearManualPriority(){manualPriority={level:null,source:'',label:''};rOvl()}
+function goToLevelCard(level,source,label){
+  setManualPriority(level,source,label);
+  setTimeout(()=>document.getElementById('level-card-'+level)?.scrollIntoView({behavior:'smooth',block:'center'}),40);
+}
 function priorityButtons(source,label,suggested){
   const src=encodeURIComponent(String(source||'manual'));
   const lab=encodeURIComponent(String(label||'Manuelle Priorisierung'));
@@ -697,7 +701,7 @@ function rOvl(){
       <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-lock"></i> Lokale Zusatzregeln · getrennte SOP-Ebene</h4>
       <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Diese Regeln liegen technisch außerhalb des MTS-Kerns. Ein Klick übernimmt die angezeigte Farbe bewusst als manuelle/lokale Priorisierung; automatisch verändern sie die Einstufung nicht.</div>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
-        ${localRules.map(r=>`<button type="button" class="local-rule-link" onclick="setManualPriority(${r.v},'lokale Zusatzregel',decodeURIComponent('${encodeURIComponent(r.l)}'))">
+        ${localRules.map(r=>`<button type="button" class="local-rule-link" onclick="goToLevelCard(${r.v},'lokale Zusatzregel',decodeURIComponent('${encodeURIComponent(r.l)}'))">
   <span><i class="fa-solid fa-link"></i> <b>${r.l}</b><small>${r.t}</small></span>
   <span class="local-rule-action"><span class="td td-${r.v}"></span>${priorityColorName(r.v)} wählen <i class="fa-solid fa-arrow-right"></i></span>
 </button>`).join('')}
@@ -727,7 +731,7 @@ function rOvl(){
     const specInds = (d.i && d.i[l]) ? d.i[l] : [];
     if(genInds.length === 0 && specInds.length === 0) return;
     
-    html += `<div class="ind-head t-b-${l}"><i class="fa-solid fa-circle" style="font-size:0.8em"></i> Stufe ${l}</div>`;
+    html += `<div id="level-card-${l}" class="ind-head t-b-${l}"><i class="fa-solid fa-circle" style="font-size:0.8em"></i> Stufe ${l}</div>`;
     
     specInds.forEach((ind, idx) => {
       const key = `${l}-${idx}-0`;
