@@ -4,6 +4,8 @@ const APP_SHELL = [
   './index.html',
   './css/app.css',
   './data/mts-data.js',
+  './data/clinical-addons.js',
+  './data/training-cases.js',
   './js/app.js',
   './version.json'
 ];
