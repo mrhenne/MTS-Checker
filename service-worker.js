@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'triageassist-v2-b1';
+const CACHE_VERSION = 'triageassist-v2-c1';
 const APP_SHELL = [
   './',
   './index.html',
