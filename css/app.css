@@ -462,3 +462,24 @@ body{
   .oc{padding:18px 14px;border-radius:20px}
   .vitals-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+
+/* Cockpit compatibility with legacy focus mode */
+body.focus-mode .cockpit-header{
+  padding:10px 0 8px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+}
+body.focus-mode .cockpit-header h1{font-size:1.35rem}
+body.focus-mode .cockpit-brand .brand-mark{width:42px;height:42px;border-radius:13px}
+body.focus-mode .cockpit-status{margin:0}
+body.focus-mode .cockpit-header .safety-strip{display:none}
+body.focus-mode .triage-hero{padding:18px;margin-bottom:10px}
+body.focus-mode .hero-copy p{display:none}
+body.focus-mode .quick-grid{margin-top:10px}
+body.focus-mode .nav-tabs{margin:8px 0 12px}
+body.focus-mode .oc{max-height:96vh}
+@media(max-width:760px){
+  body.focus-mode .cockpit-header{grid-template-columns:1fr}
+}
