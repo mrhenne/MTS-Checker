@@ -112,6 +112,12 @@
           <option value="blocked">Gesperrt</option>
         </select>
       </div>
+      <div class="validation-exportbar">
+        <button class="eb" onclick="exportValidationState()"><i class="fa-solid fa-file-export"></i> Validierung exportieren</button>
+        <button class="eb" onclick="document.getElementById('validationImportFile').click()"><i class="fa-solid fa-file-import"></i> Importieren</button>
+        <button class="eb" onclick="resetAllValidation()" style="color:var(--red);border-color:var(--red-border);background:var(--red-bg)"><i class="fa-solid fa-trash"></i> Alle Status zurücksetzen</button>
+        <input id="validationImportFile" type="file" accept=".json" style="display:none" onchange="importValidationState(event)">
+      </div>
       <div class="validation-legend">
         <span><i class="fa-solid fa-circle" data-vc="unreviewed"></i> Ungeprüft</span>
         <span><i class="fa-solid fa-circle" data-vc="in-review"></i> In Prüfung</span>
