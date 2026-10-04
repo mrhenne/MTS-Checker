@@ -15,3 +15,5 @@ Datum: 2026-10-04
 ## Öffentlicher Zugriff
 - RC5 ist für einen stabilen öffentlichen Vercel-Alias vorgesehen, damit die App ohne Vercel-Login auf anderen Rechnern geöffnet werden kann.
 - Verlauf und Validierungsdaten bleiben browserlokal und synchronisieren sich nicht automatisch zwischen Computern.
+
+Preview branch: `release/v2-rc5`
