@@ -796,3 +796,76 @@ Neu: `Warum diese Einstufung?`
 
 Hinweis:
 Eine echte Browser-Renderingprüfung des Entwicklungsbranches war in der aktuellen Ausführungsumgebung nicht möglich; der lokale Netzwerkzugriff auf GitHub war blockiert. Deshalb wurde Paket C zusätzlich über Syntax-, Struktur-, Referenz- und Integritätsprüfungen abgesichert. Vor Merge nach main sollte noch ein visueller Browser-Smoke-Test der tatsächlich ausgelieferten Branch-Version erfolgen.
+
+
+## Paket D abgeschlossen – Medical Model D1
+
+Checkpoint: `checkpoint-D1-medical-model`
+
+### Ziel
+Die App darf während der noch offenen Vollreferenz-Validierung keine scheinbar präzise MTS-Farbe aus unvalidierten Basiswerten, globalen Vitalwert-Heuristiken oder lokalen Eigenregeln erzeugen.
+
+### Änderungen
+- alle `b`-Basiseinstufungen aus `data/mts-data.js` entfernt.
+- alle lokalen/heuristischen `r`-Regeln aus dem MTS-Kern entfernt.
+- lokale Altregeln separat in `data/local-sop.js` isoliert.
+- betroffene Regelgruppen: IDs 7, 30, 35, 38, 41, 42.
+- neue Datenmetadaten `MTS_DATA_META` eingeführt.
+- neue Metadaten für alle 55 Diagramme über `MTS_DIAGRAM_META`.
+- reguläre IDs 1–52: Vollreferenz-Prüfung offen.
+- ID 53: MTS-Sonderdiagramm, Vollreferenz-Prüfung offen.
+- IDs 54–55: MANV-Altbestand, nicht MTS-Core.
+
+### Engine D1
+- Startzustand ist jetzt `lvl = null`.
+- eine MTS-Stufe entsteht ausschließlich aus explizit ausgewählten Diskriminatoren.
+- keine automatische Basiseinstufung mehr.
+- GCS, SpO2, Temperatur und NRS erzeugen aktuell keine globale automatische MTS-Stufe mehr.
+- Vital-/Schmerzwerte bleiben dokumentierbar und erscheinen im Entscheidungsweg als Kontext.
+- Speichern und ISBAR werden erst angeboten, wenn eine explizite Stufe entstanden ist.
+- klinische Zusatzhinweise werden ebenfalls erst nach expliziter Einstufung angezeigt.
+- ohne ausgewählten Diskriminator zeigt die UI „Noch nicht eingestuft“.
+
+### Transparenz
+- Entscheidungsweg erklärt jetzt, dass Vitalwerte in D1 nicht automatisch gewertet werden.
+- jedes Diagramm zeigt den Status der noch offenen Vollreferenz-Prüfung.
+- Pädiatrie-Normwerte als Orientierungswerte/Altbestand gekennzeichnet.
+- Cheatsheet als noch nicht vollständig validierter Altbestand gekennzeichnet.
+- lokale Altregeln werden aus der getrennten SOP-Ebene angezeigt und beeinflussen MTS nicht.
+
+### Betrieb
+- Cache-Version: `triageassist-v2-d1`
+- App-Version: `2.0.0-d1`
+- Medical Model: `D1`
+- `data/local-sop.js` wird vom Service Worker mitgeführt.
+
+### Doppelte Prüfung
+39/39 Checks bestanden:
+- Syntax aller JS-Dateien
+- 55 Diagramme erhalten
+- 45 Trainingsfälle erhalten
+- eindeutige IDs
+- keine `b`-Properties mehr
+- keine `r`-Properties mehr im MTS-Kern
+- sechs lokale Regelgruppen korrekt isoliert
+- alle Diagrammmetadaten vorhanden
+- Trainings-/Bodymap-Referenzen gültig
+- Engine startet neutral
+- keine globale Vital-/NRS-Autotriage
+- Speichern/Aktionen nur nach expliziter Stufe
+- lokale SOP nur über `LOCAL_RULES`
+- Cheatsheet/Pädiatrie sichtbar als nicht final validiert
+- qSOFA/Training/MANV-Sicherheitsänderungen weiterhin erhalten
+- D1 Cache/Version korrekt
+
+### Diff gegen `backup/pre-medical-model-d`
+- css/app.css: +11
+- data/local-sop.js: +58
+- data/mts-data.js: +73 / -55
+- index.html: +1
+- js/app.js: +57 / -69
+- service-worker.js: +2 / -1
+- version.json: +3 / -2
+
+### Noch offen
+Die konkreten Diskriminatorinhalte selbst bleiben Alt-/Arbeitsbestand, bis eine vollständige lizenzierte bzw. institutionell freigegebene MTS-Referenz für den Zeilenabgleich vorliegt. D1 verbessert daher vor allem Sicherheit, Trennung und Transparenz, nicht die fachliche Vollvalidierung einzelner Diskriminatorformulierungen.
