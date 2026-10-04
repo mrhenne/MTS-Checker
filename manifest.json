@@ -1,0 +1,9 @@
+{
+  "name": "TriageAssist",
+  "short_name": "TriageAssist",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#101827",
+  "description": "MTS Ersteinschätzung – Review- und Trainingsversion"
+}
