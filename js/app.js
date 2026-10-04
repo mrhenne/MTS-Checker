@@ -320,6 +320,69 @@ function escapeHtml(v=''){
 }
 function escapeAttr(v=''){return escapeHtml(v)}
 
+function exportValidationState(){
+  loadValidationState();
+  const payload={
+    schema:'triageassist-validation-v1',
+    exportedAt:new Date().toISOString(),
+    appVersion:'2.0.0-e1',
+    records:validationState
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='triageassist-validation-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function importValidationState(event){
+  const file=event.target.files?.[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const parsed=JSON.parse(String(reader.result||'{}'));
+      if(parsed.schema!=='triageassist-validation-v1'||!parsed.records||typeof parsed.records!=='object'){
+        alert('Ungültige Validierungsdatei.');
+        return;
+      }
+      const cleaned={};
+      for(const [id,rec] of Object.entries(parsed.records)){
+        const num=Number(id);
+        if(!D.some(d=>d.id===num)||!rec||typeof rec!=='object')continue;
+        const allowed=['unreviewed','in-review','reviewed','local-approved','blocked'];
+        cleaned[num]={
+          ...getValidationDefaults(num),
+          status:allowed.includes(rec.status)?rec.status:'unreviewed',
+          source:String(rec.source||'').slice(0,500),
+          reviewer:String(rec.reviewer||'').slice(0,200),
+          reviewedOn:/^\d{4}-\d{2}-\d{2}$/.test(rec.reviewedOn||'')?rec.reviewedOn:'',
+          notes:String(rec.notes||'').slice(0,4000),
+          localApproved:rec.status==='local-approved',
+          updatedAt:String(rec.updatedAt||'')
+        };
+      }
+      validationState=cleaned;
+      localStorage.setItem(VALIDATION_KEY,JSON.stringify(validationState));
+      validationOpenId=null;
+      renderValidationCenter();
+    }catch{
+      alert('Validierungsdatei konnte nicht gelesen werden.');
+    }finally{
+      event.target.value='';
+    }
+  };
+  reader.readAsText(file);
+}
+function resetAllValidation(){
+  if(!confirm('Alle lokal gespeicherten Validierungsstatus und Notizen zurücksetzen?'))return;
+  validationState={};
+  localStorage.removeItem(VALIDATION_KEY);
+  validationOpenId=null;
+  renderValidationCenter();
+}
+
 function rTox(){
   document.getElementById('toxL').innerHTML =
     '<div style="grid-column:1/-1;padding:14px 16px;border:1px solid var(--yellow-border);background:var(--yellow-bg);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text2);line-height:1.5"><b style="color:var(--text)"><i class="fa-solid fa-flask-vial"></i> Klinisches Zusatzmodul, kein MTS.</b><br>Die vorhandenen Therapieangaben sind bis zur Freigabe einer institutionellen Tox- oder Giftnotruf-SOP nur als Altbestand zur Validierung zu verstehen und beeinflussen die MTS-Stufe nicht.</div>' +
