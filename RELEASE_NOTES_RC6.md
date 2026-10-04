@@ -26,3 +26,5 @@ Datum: 2026-10-04
 
 ## Datenspeicherung
 - bleibt vollständig browserlokal. Keine Cloud-Synchronisation.
+
+Preview branch: `release/v2-rc6`
