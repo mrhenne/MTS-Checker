@@ -1,13 +1,15 @@
 {
   "app": "TriageAssist",
   "architecture": "B1",
-  "version": "2.0.0-rc2",
+  "version": "2.0.0-rc3",
   "date": "2026-10-04",
   "mtsDataStatus": "validation",
-  "branch": "release/v2-rc2",
-  "ui": "G1",
+  "branch": "release/v2-rc3",
+  "ui": "G2",
   "medicalModel": "D1",
   "validationCenter": "E1",
   "qualitySystem": "F1",
-  "releaseStage": "release-candidate"
+  "releaseStage": "release-candidate",
+  "search": "H1",
+  "manualPriority": "H1"
 }
