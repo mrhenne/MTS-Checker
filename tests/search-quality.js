@@ -28,4 +28,4 @@ function runSearchQualityTests(ctx){
   return {ok:passed===results.length,count:results.length,passed,results};
 }
 if(typeof module!=='undefined'&&module.exports)module.exports={SEARCH_QUALITY_CASES,runSearchQualityTests};
-if(typeof window!=='undefined')Object.assign(window,{SEARCH_QUALITY_CASES,runSearchQualityTests});
+if(typeof globalThis!=='undefined')Object.assign(globalThis,{SEARCH_QUALITY_CASES,runSearchQualityTests});
