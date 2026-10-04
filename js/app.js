@@ -952,6 +952,8 @@ function runSafetySelfTests(){
   test('explicit-discriminator-only', rov.includes('let lvl=null') && !rov.includes('d.b||5'));
   test('legacy-rules-outside-core', typeof LOCAL_RULES!=='undefined' && !rov.includes('d.r'));
   test('no-global-vital-autotriage', !rov.includes('vLvl') && !rov.includes('Math.min(lvl, vLvl)'));
+  const calcCore=rov.slice(0,rov.indexOf('const lObj'));
+  test('validation-metadata-does-not-triage', !calcCore.includes('validationState') && !calcCore.includes('getValidationRecord') && !calcCore.includes('local-approved'));
   test('training-level-evaluation', trnLvl.toString().includes('chosen===correct'));
   test('qsofa-separated', rGCS.toString().includes('kein MTS'));
   test('manv-labelled', fR.toString().includes('MANV / Sichtung'));
