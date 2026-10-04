@@ -165,6 +165,17 @@
         </div>
         <div id="healthChecks"></div>
       </div>
+      <div class="local-data-panel">
+        <div>
+          <h3><i class="fa-solid fa-hard-drive"></i> Lokale Daten</h3>
+          <p>Verlauf, Validierungsstatus und Einstellungen vollständig lokal sichern oder wiederherstellen.</p>
+        </div>
+        <div class="local-data-actions">
+          <button class="eb" onclick="exportFullLocalBackup()"><i class="fa-solid fa-box-archive"></i> Komplettbackup</button>
+          <button class="eb" onclick="document.getElementById('fullBackupImport').click()"><i class="fa-solid fa-file-import"></i> Backup wiederherstellen</button>
+          <input id="fullBackupImport" type="file" accept=".json" style="display:none" onchange="importFullLocalBackup(event)">
+        </div>
+      </div>
     </section>
   </div>
 
@@ -180,6 +191,13 @@
     </div>
     <input type="file" id="impF" accept=".json" style="display:none" onchange="hImp(event)">
   </div>
+</div>
+
+<div class="update-banner" id="updateBanner">
+  <i class="fa-solid fa-arrow-rotate-right"></i>
+  <div><b>Neue Version verfügbar</b><span>Aktualisieren, wenn die laufende Einschätzung abgeschlossen ist.</span></div>
+  <button type="button" onclick="applyAppUpdate()">Jetzt aktualisieren</button>
+  <button type="button" class="update-later" onclick="dismissAppUpdate()" title="Später"><i class="fa-solid fa-xmark"></i></button>
 </div>
 
 <div class="ov" id="detO" onclick="if(event.target===this)clO()"><div class="oc" id="oC"></div></div>
