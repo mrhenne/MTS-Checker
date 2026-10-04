@@ -289,7 +289,8 @@ header h1 .sub { font-weight: 500; font-size: 0.9rem; color: var(--text3); displ
 .trn-lvl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 20px; }
 .trn-lvl-btn { padding: 14px; border: 2px solid var(--card-border); border-radius: var(--radius-sm); font-weight: 700; background: var(--bg2); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; }
 .trn-lvl-btn:hover { border-color: var(--text3); background: var(--bg3); }
-.trn-lvl-btn.on { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+.trn-lvl-btn.on { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+.trn-lvl-btn.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
 
 .trn-explain { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px; font-size: 0.95rem; color: #166534; line-height: 1.5; }
 .dark .trn-explain { color: #86efac; }
@@ -1060,9 +1061,9 @@ const CASES=[
 {s:"90-jähriger Mann, unter Reanimationsbedingungen (CPR) vom Rettungsdienst mit Lucas in den Schockraum gebracht.",diag:44,lvl:1,ex:"Generelle Indikatoren oder Unwohlsein. Kreislaufstillstand bedeutet absolute Lebensgefahr und triggert Sofort (Rot)."}
 ];
 
-let trnIdx=0,trnAns=null,trnScore=0,trnDone=0,trnOrder=[];
+let trnIdx=0,trnAns=null,trnScore=0,trnDone=0,trnOrder=[],trnDiagChosen=null,trnLvlChosen=null,trnDiagScore=0,trnLvlScore=0;
 function initTrain(){
-  if(!trnOrder.length||trnDone>=trnOrder.length){trnOrder=shuffle([...Array(CASES.length).keys()]);trnIdx=0;trnAns=null;trnScore=0;trnDone=0;}
+  if(!trnOrder.length||trnDone>=trnOrder.length){trnOrder=shuffle([...Array(CASES.length).keys()]);trnIdx=0;trnAns=null;trnScore=0;trnDone=0;trnDiagChosen=null;trnLvlChosen=null;trnDiagScore=0;trnLvlScore=0;}
   rTrn();
 }
 
@@ -1070,14 +1071,14 @@ function rTrn(){
   const ci=trnOrder[trnIdx];const c=CASES[ci];
   const diag=D.find(x=>x.id===c.diag);
   const opts=genOpts(c.diag);
-  const pct=trnDone>0?Math.round(trnScore/trnDone*100):0;
+  const pct=trnDone>0?Math.round(((trnDiagScore+trnLvlScore)/(trnDone*2))*100):0;
   
   document.getElementById('trainArea').innerHTML=`
     <div class="trn-header">
       <h3><i class="fa-solid fa-user-graduate"></i> Fall ${trnDone+1} von ${CASES.length}</h3>
       <div class="trn-stats">
-        <div class="trn-stat"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <span>${trnScore} / ${trnDone}</span></div>
-        <div class="trn-stat"><i class="fa-solid fa-chart-line"></i> <span>${pct}%</span></div>
+        <div class="trn-stat"><i class="fa-solid fa-sitemap" style="color:var(--green)"></i> <span>Diagramm ${trnDiagScore}/${trnDone}</span></div>
+        <div class="trn-stat"><i class="fa-solid fa-traffic-light" style="color:var(--orange)"></i> <span>Stufe ${trnLvlScore}/${trnDone}</span></div>
       </div>
     </div>
     
@@ -1095,14 +1096,14 @@ function rTrn(){
         let cls='trn-opt';
         if(trnAns!==null){
           if(o===c.diag)cls+=' correct';
-          else if(i===trnAns&&o!==c.diag)cls+=' wrong';
+          else if(o===trnDiagChosen&&o!==c.diag)cls+=' wrong';
           else cls+=' dimmed';
         }
         return`<div class="${cls}" ${trnAns===null?`onclick="trnAnswer(${i},${o},${c.diag})"`:''}>
           <span class="tb tb-${cl(dd.c)}"><span class="td td-${cl(dd.c)}"></span></span>
           <span style="flex:1">${dd.name}</span>
           ${trnAns!==null && o===c.diag ? '<i class="fa-solid fa-circle-check" style="font-size:1.4rem"></i>' : ''}
-          ${trnAns!==null && i===trnAns && o!==c.diag ? '<i class="fa-solid fa-circle-xmark" style="font-size:1.4rem"></i>' : ''}
+          ${trnAns!==null && o===trnDiagChosen && o!==c.diag ? '<i class="fa-solid fa-circle-xmark" style="font-size:1.4rem"></i>' : ''}
         </div>`;
       }).join('')}
     </div>
@@ -1112,9 +1113,11 @@ function rTrn(){
       <div class="trn-lvl-grid" id="tLvl">
         ${[1,2,3,4,5].map(l=>{
           let cls='trn-lvl-btn';
-          if(trnAns==='lvl' && l===c.lvl) cls+=' on';
+          let extra='';
+          if(trnAns==='lvl' && l===c.lvl){cls+=' on';extra='<i class="fa-solid fa-circle-check"></i>';}
+          else if(trnAns==='lvl' && l===trnLvlChosen && l!==c.lvl){cls+=' wrong';extra='<i class="fa-solid fa-circle-xmark"></i>';}
           return`<div class="${cls}" ${trnAns==='lvl'?'':`onclick="trnLvl(${l},${c.lvl})"`}>
-            <span class="td td-${l}"></span>${LV[l-1].n}
+            <span class="td td-${l}"></span>${LV[l-1].n}${extra}
           </div>`;
         }).join('')}
       </div>
@@ -1122,7 +1125,7 @@ function rTrn(){
       ${trnAns==='lvl'?`
         <div class="trn-explain">
           <b><i class="fa-solid fa-lightbulb"></i> Begründung:</b>
-          Stufe ${c.lvl} (${LV[c.lvl-1].n}) in "${diag.name}"<br><br>${c.ex}
+          ${trnLvlChosen===c.lvl?'<span style="color:var(--green);font-weight:800">Richtig.</span>':'<span style="color:var(--red);font-weight:800">Deine Wahl war nicht korrekt.</span>'} Richtig ist Stufe ${c.lvl} (${LV[c.lvl-1].n}) in „${diag.name}“.<br><br>${c.ex}
         </div>
         <button class="trn-next" onclick="nextTrn()">Nächster Fall <i class="fa-solid fa-arrow-right"></i></button>
       `:''}
@@ -1131,7 +1134,7 @@ function rTrn(){
     ${trnDone>=CASES.length?`
       <div style="text-align:center;margin-top:40px">
         <h3 style="margin-bottom:12px;font-size:1.5rem;font-weight:800">Training abgeschlossen! 🎉</h3>
-        <p style="color:var(--text2);margin-bottom:24px">Du hast ${trnScore} von ${CASES.length} Fällen korrekt zugeordnet.</p>
+        <p style="color:var(--text2);margin-bottom:24px">Diagrammwahl: <b>${trnDiagScore}/${CASES.length}</b> · Dringlichkeitsstufe: <b>${trnLvlScore}/${CASES.length}</b></p>
         <button class="rbtn primary" onclick="trnOrder=[];initTrain()"><i class="fa-solid fa-arrows-rotate"></i> Neue Runde starten</button>
       </div>
     `:''}
@@ -1139,20 +1142,25 @@ function rTrn(){
 }
 
 function trnAnswer(idx,chosen,correct){
+  trnDiagChosen=chosen;
   trnAns='diag';
-  if(chosen===correct)trnScore++;
-  const ci=trnOrder[trnIdx];const c=CASES[ci];
-  const opts=genOpts(c.diag);
-  document.querySelectorAll('#tOpts .trn-opt').forEach((el,i)=>{
-    el.style.pointerEvents='none';
-    if(opts[i]===c.diag)el.classList.add('correct');
-    else if(i===idx&&opts[i]!==c.diag)el.classList.add('wrong');
-    else el.classList.add('dimmed');
-  });
+  if(chosen===correct){trnScore++;trnDiagScore++;}
   rTrn();
 }
-function trnLvl(chosen,correct){trnAns='lvl';rTrn()}
-function nextTrn(){trnDone++;trnIdx=(trnIdx+1)%trnOrder.length;trnAns=null;rTrn()}
+function trnLvl(chosen,correct){
+  trnLvlChosen=chosen;
+  if(chosen===correct)trnLvlScore++;
+  trnAns='lvl';
+  rTrn();
+}
+function nextTrn(){
+  trnDone++;
+  trnIdx=(trnIdx+1)%trnOrder.length;
+  trnAns=null;
+  trnDiagChosen=null;
+  trnLvlChosen=null;
+  rTrn();
+}
 
 let _lastOpts={};
 function genOpts(correctId){
