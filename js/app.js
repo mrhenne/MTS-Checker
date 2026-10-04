@@ -1211,21 +1211,24 @@ function rTrn(){
   const ci=trnOrder[trnIdx];const c=CASES[ci];
   const diag=D.find(x=>x.id===c.diag);
   const opts=genOpts(c.diag);
-  const pct=trnDone>0?Math.round(((trnDiagScore+trnLvlScore)/(trnDone*2))*100):0;
-  
+  const completedIdx=trnOrder.slice(0,trnDone);
+  const lvlDone=completedIdx.filter(i=>!CASES[i].diagramOnly).length;
+  const lvlTotal=CASES.filter(x=>!x.diagramOnly).length;
+  const isDiagramOnly=!!c.diagramOnly;
+
   document.getElementById('trainArea').innerHTML=`
     <div class="trn-header">
       <h3><i class="fa-solid fa-user-graduate"></i> Fall ${trnDone+1} von ${CASES.length}</h3>
       <div class="trn-stats">
         <div class="trn-stat"><i class="fa-solid fa-sitemap" style="color:var(--green)"></i> <span>Diagramm ${trnDiagScore}/${trnDone}</span></div>
-        <div class="trn-stat"><i class="fa-solid fa-traffic-light" style="color:var(--orange)"></i> <span>Stufe ${trnLvlScore}/${trnDone}</span></div>
+        <div class="trn-stat"><i class="fa-solid fa-traffic-light" style="color:var(--orange)"></i> <span>Stufe ${trnLvlScore}/${lvlDone}</span></div>
       </div>
     </div>
-    
+
     <div class="trn-progress"><div class="trn-progress-bar" style="width:${(trnDone/CASES.length)*100}%"></div></div>
-    
+
     <div class="trn-card">
-      <div class="trn-badge">Szenario</div>
+      <div class="trn-badge">${isDiagramOnly?'Diagrammtraining':'Szenario'}</div>
       <div class="trn-scenario">${c.s}</div>
     </div>
 
@@ -1248,7 +1251,16 @@ function rTrn(){
       }).join('')}
     </div>
 
-    ${trnAns!==null?`
+    ${trnAns!==null && isDiagramOnly?`
+      <div class="trn-explain">
+        <b><i class="fa-solid fa-lightbulb"></i> Auflösung:</b>
+        ${trnDiagChosen===c.diag?'<span style="color:var(--green);font-weight:800">Richtig.</span>':'<span style="color:var(--red);font-weight:800">Nicht ganz.</span>'}
+        Passend ist „${diag.name}“.<br><br>${c.ex}
+      </div>
+      <button class="trn-next" onclick="nextTrn()">Nächster Fall <i class="fa-solid fa-arrow-right"></i></button>
+    `:''}
+
+    ${trnAns!==null && !isDiagramOnly?`
       <div class="trn-q" style="margin-top:32px"><i class="fa-solid fa-traffic-light"></i> 2. Welche Dringlichkeitsstufe?</div>
       <div class="trn-lvl-grid" id="tLvl">
         ${[1,2,3,4,5].map(l=>{
@@ -1261,7 +1273,7 @@ function rTrn(){
           </div>`;
         }).join('')}
       </div>
-      
+
       ${trnAns==='lvl'?`
         <div class="trn-explain">
           <b><i class="fa-solid fa-lightbulb"></i> Begründung:</b>
@@ -1270,11 +1282,11 @@ function rTrn(){
         <button class="trn-next" onclick="nextTrn()">Nächster Fall <i class="fa-solid fa-arrow-right"></i></button>
       `:''}
     `:''}
-    
+
     ${trnDone>=CASES.length?`
       <div style="text-align:center;margin-top:40px">
         <h3 style="margin-bottom:12px;font-size:1.5rem;font-weight:800">Training abgeschlossen! 🎉</h3>
-        <p style="color:var(--text2);margin-bottom:24px">Diagrammwahl: <b>${trnDiagScore}/${CASES.length}</b> · Dringlichkeitsstufe: <b>${trnLvlScore}/${CASES.length}</b></p>
+        <p style="color:var(--text2);margin-bottom:24px">Diagrammwahl: <b>${trnDiagScore}/${CASES.length}</b> · Dringlichkeitsstufe: <b>${trnLvlScore}/${lvlTotal}</b></p>
         <button class="rbtn primary" onclick="trnOrder=[];initTrain()"><i class="fa-solid fa-arrows-rotate"></i> Neue Runde starten</button>
       </div>
     `:''}
