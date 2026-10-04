@@ -1086,6 +1086,35 @@ async function runSystemHealth(){
     add('Runtime self-tests',false,String(e));
   }
 
+  try{
+    if(typeof runSearchQualityTests==='function'){
+      const sq=runSearchQualityTests({
+        D,
+        SEARCH_ALIASES:typeof SEARCH_ALIASES!=='undefined'?SEARCH_ALIASES:{},
+        SEARCH_BODY_RULES:typeof SEARCH_BODY_RULES!=='undefined'?SEARCH_BODY_RULES:[],
+        SEARCH_SYMPTOM_RULES:typeof SEARCH_SYMPTOM_RULES!=='undefined'?SEARCH_SYMPTOM_RULES:{},
+        rankSearchResults
+      });
+      add('Search Top-3 quality',sq.ok,`${sq.passed}/${sq.count} Suchfälle`);
+      sq.results.filter(x=>!x.ok).slice(0,5).forEach(x=>add('Search: '+x.query,false,'Top 3: '+x.top3.join(', ')));
+    }else{
+      add('Search quality suite loaded',false,'runSearchQualityTests fehlt');
+    }
+  }catch(e){
+    add('Search quality execution',false,String(e));
+  }
+
+  try{
+    if('caches' in window){
+      const keys=await caches.keys();
+      add('Offline cache ready',keys.some(k=>k.startsWith('triageassist-v2-')),keys.join(', '));
+    }else{
+      add('Offline cache ready',false,'Cache API nicht verfügbar');
+    }
+  }catch(e){
+    add('Offline cache ready',false,String(e));
+  }
+
   let version=null;
   try{
     const res=await fetch('./version.json',{cache:'no-store'});
