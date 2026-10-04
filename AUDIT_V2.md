@@ -939,3 +939,93 @@ Der einzige zunächst rote reguläre Test war ein bewusst zu breiter Stringtest,
 
 ### Wichtig
 „Geprüft“ oder „Lokal freigegeben“ ist derzeit eine dokumentierte Nutzer-/Teamentscheidung, keine automatische medizinische Freigabe durch die Software. Für produktiven klinischen Einsatz bleibt eine institutionelle fachliche Freigabe erforderlich.
+
+
+## Paket F abgeschlossen – Quality System / RC1
+
+Checkpoint: `checkpoint-F1-quality-rc1`
+
+### Quality System F1
+- pure Regressionstests in `tests/triage-regression.js`
+- Browser-Testseite in `tests/index.html`
+- Node Runner in `tests/run-tests.cjs`
+- GitHub Actions Workflow `.github/workflows/quality.yml`
+- sichtbares System Health Panel in der Anwendung
+
+### Regression Coverage
+Die Tests prüfen u. a.:
+- 55 Diagramme
+- eindeutige IDs
+- 5 MTS-Stufen
+- vollständige Diagrammmetadaten
+- keine Basisstufen `b`
+- keine lokalen `r`-Regeln im MTS-Kern
+- lokale Regelgruppen isoliert
+- Trainingsreferenzen gültig
+- Bodymap-Referenzen gültig
+- MANV außerhalb des MTS-Core
+- ID53 als Sonderdiagramm
+- unklassifiziert ohne Auswahl
+- höchste Priorität gewinnt unabhängig von Reihenfolge
+
+### System Health
+Die App kann zur Laufzeit anzeigen:
+- App-Version
+- Anzahl Diagramme
+- Anzahl Trainingsfälle
+- vorhandene Review-Datensätze
+- lokal freigegebene Review-Datensätze
+- Ergebnisse der Regressionstests
+- Ergebnisse der Runtime-Selbsttests
+- Erreichbarkeit der Versionsmetadaten
+- Service-Worker-Unterstützung
+- Browser-Storage-Verfügbarkeit
+
+### CI
+GitHub Actions läuft auf:
+- main
+- dev/mts-checker-v2
+- release/**
+- Pull Requests
+
+CI führt aus:
+- `node tests/run-tests.cjs`
+- Syntaxprüfung aller relevanten JavaScript-Dateien
+
+Der Workflow `TriageAssist Quality` wurde auf dem RC-Stand erfolgreich ausgeführt.
+
+### Finaler Integritätslauf
+54/54 finale Checks bestanden.
+
+Abgedeckt:
+- Syntax
+- Datenintegrität
+- Regression Suite
+- D1 Engine-Invarianten
+- Validation-Center-Nichtkopplung
+- qSOFA-Trennung
+- MANV-Trennung
+- Training
+- UI-Struktur
+- Health Panel
+- Cache
+- RC1-Version
+- CI-Konfiguration
+- README / Release-Hinweise
+
+### Release Candidate
+- Version: `2.0.0-rc1`
+- Architecture: B1
+- UI: C1
+- Medical Model: D1
+- Validation Center: E1
+- Quality System: F1
+- Cache: `triageassist-v2-rc1`
+
+### Dokumentation
+- `README.md`
+- `RELEASE_NOTES_RC1.md`
+- `AUDIT_V2.md`
+
+### Offene fachliche Freigabe
+RC1 ist technisch konsistent und als Review-/Trainingsbasis vorbereitet. Er ist weiterhin nicht als institutionell freigegebene klinische Produktivversion zu kennzeichnen, solange der vollständige Zeilenabgleich der MTS-Diskriminatoren gegen eine lizenzierte aktuelle Vollreferenz und die lokale institutionelle Freigabe fehlen.
