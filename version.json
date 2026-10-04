@@ -1,9 +1,10 @@
 {
   "app": "TriageAssist",
   "architecture": "B1",
-  "version": "2.0.0-c1",
+  "version": "2.0.0-d1",
   "date": "2026-10-04",
   "mtsDataStatus": "validation",
   "branch": "dev/mts-checker-v2",
-  "ui": "C1"
+  "ui": "C1",
+  "medicalModel": "D1"
 }
