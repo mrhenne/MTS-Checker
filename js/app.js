@@ -779,7 +779,7 @@ function rOvl(){
   html += `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
       ${lvl!==null
-        ? `<button class="rbtn primary" onclick="addH(${d.id}, ${lvl});clO()"><i class="fa-solid fa-check"></i> Speichern (${lObj.n})</button>
+        ? `<button class="rbtn primary" onclick="saveAssessmentAndClose(${d.id}, ${lvl})"><i class="fa-solid fa-floppy-disk"></i> Einschätzung speichern (${lObj.n})</button>
            <button class="rbtn" onclick="openISBAR(${lvl})" style="background:var(--accent-bg); color:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-clipboard-list"></i> ISBAR Generieren</button>`
         : `<button class="rbtn" disabled style="opacity:.5;cursor:not-allowed"><i class="fa-solid fa-lock"></i> Erst Diskriminator wählen</button>`}
     </div>`;
@@ -1007,6 +1007,10 @@ function addH(id, lvl){
     return false;
   }
 }
+function saveAssessmentAndClose(id,lvl){
+  if(addH(id,lvl))clO();
+}
+
 async function runSystemHealth(){
   const overall=document.getElementById('healthOverall');
   const grid=document.getElementById('healthGrid');
