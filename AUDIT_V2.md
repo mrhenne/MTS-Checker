@@ -649,3 +649,32 @@ Empfohlener nächster Commit nach Nutzerfreigabe:
 `checkpoint-A1-safety-fixes`
 
 Vorher keine Änderung an main.
+
+
+## Paket A abgeschlossen – 2026-10-04
+
+Checkpoint: `checkpoint-A1-safety-fixes`
+
+Umgesetzt:
+- alte lokale Sonderregeln `d.r` aus der MTS-Einstufungsengine entfernt; sie werden nur noch als deaktivierter Altbestand angezeigt.
+- damit ist die bekannte Herunterstufung einer höheren Dringlichkeit durch eine weniger dringliche Sonderregel beseitigt.
+- qSOFA sichtbar als klinisches Zusatztool getrennt; Formulierung „Verdacht auf Sepsis!“ entfernt.
+- Action Checklist als klinische Zusatzhinweise und ausdrücklich nicht als Teil der MTS-Einstufung markiert.
+- Trainingsmodus bewertet Diagrammwahl und Dringlichkeitsstufe jetzt separat.
+- falsche Dringlichkeitsauswahl wird sichtbar markiert; richtige Lösung und getrennte Scores werden angezeigt.
+- MANV-Altmodule als eigener Sonderbereich gekennzeichnet und vom regulären MTS-Workflow abgegrenzt.
+- Tox Board sichtbar als klinisches Zusatzmodul markiert; Therapieangaben als zu validierender Altbestand gekennzeichnet.
+- sichtbarer Validierungsstatus in der Anwendung ergänzt.
+- Laufzeit-Selbsttests für Kern-Sicherheitsbedingungen ergänzt.
+
+Doppelte Prüfung:
+1. gesamter Inline-JavaScript-Block syntaktisch erfolgreich kompiliert.
+2. gezielte Prüfung der Funktion `rOvl()`: keine `d.r`-Mutation der Stufe mehr; Minimum-Logik der gewählten MTS-Diskriminatoren und Vitalparameter bleibt erhalten.
+3. Diff gegen `backup/pre-safety-fixes`: nur `index.html`, 79 Ergänzungen / 48 Löschungen.
+4. `main` wurde nicht verändert.
+
+Noch bewusst nicht umgesetzt:
+- endgültige Aktualisierung aller geschützten MTS-Diskriminatoren.
+- große Architekturmodernisierung.
+- finales ZNA-Redesign.
+- institutionell freigegebene lokale SOP.
