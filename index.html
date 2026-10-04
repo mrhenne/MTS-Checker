@@ -330,6 +330,7 @@ body.focus-mode .vital-input-box { padding: 6px; }
       </div>
     </div>
     <div class="disc"><i class="fa-solid fa-circle-exclamation"></i> <span>Entscheidungshilfe. Ersetzt nicht MTS Schulung oder klinisches Urteil.</span></div>
+    <div style="margin:10px auto 0;max-width:680px;padding:10px 14px;border:1px solid var(--yellow-border);background:var(--yellow-bg);color:var(--text2);border-radius:var(--radius-sm);font-size:.76rem;font-weight:650;display:flex;gap:8px;align-items:flex-start"><i class="fa-solid fa-shield-heart" style="color:var(--yellow);margin-top:2px"></i><span><b style="color:var(--text)">MTS-Datenbestand: Validierung V2 läuft.</b> Ungeprüfte lokale Sonderregeln sind deaktiviert. MTS, Zusatztools und lokale Maßnahmen werden getrennt dargestellt.</span></div>
   </header>
   
   <nav class="nav-tabs">
@@ -664,14 +665,8 @@ function rOvl(){
   
   selI.forEach(k=>{ const l = parseInt(k.split('-')[0]); if(l < lvl) lvl = l; });
 
-  if(d.r){
-    d.r.forEach((r,i)=>{
-      if(selR.includes(i)) {
-        if(r.v < lvl) lvl = r.v;
-        if(r.v > lvl) lvl = r.v; 
-      }
-    });
-  }
+  // V2 Safety: lokale Sonderregeln (d.r) beeinflussen die MTS-Stufe während der Validierung nicht.
+  // Dadurch kann eine bereits höhere Dringlichkeit weder überschrieben noch heruntergestuft werden.
 
   let vLvl = 5;
   if(curVit.gcs !== '') {
@@ -769,7 +764,8 @@ function rOvl(){
   const act = getActions(lvl, d);
   if(act.length > 0) {
     html += `<div style="margin-bottom:20px;background:var(--bg3);border-radius:var(--radius-sm);padding:16px;border:1px solid var(--card-border)">
-      <h4 style="font-size:0.9rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-check-double"></i> Action Checklist für Stufe ${lvl}</h4>
+      <h4 style="font-size:0.9rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-check-double"></i> Klinische Zusatzhinweise</h4>
+      <div style="font-size:.76rem;color:var(--text3);margin-bottom:12px;font-weight:600">Kein Bestandteil der MTS-Einstufung. Lokale Maßnahmen müssen gegen eure SOP freigegeben werden.</div>
       <div style="display:flex;flex-direction:column;gap:6px">
         ${act.map(a => `<div class="rule-box" style="margin:0;padding:10px 12px" onclick="this.classList.toggle('active');this.querySelector('input').checked=!this.querySelector('input').checked">
           <input type="checkbox" style="margin-top:2px;transform:scale(1.1)">
@@ -883,7 +879,8 @@ function rGCS(){
       Gesamt GCS: ${tot}
     </div>
     
-    <h3 style="font-size:1.1rem;font-weight:800;margin:24px 0 12px;color:var(--text);border-top:1px solid var(--card-border);padding-top:16px"><i class="fa-solid fa-virus"></i> qSOFA Score</h3>
+    <h3 style="font-size:1.1rem;font-weight:800;margin:24px 0 6px;color:var(--text);border-top:1px solid var(--card-border);padding-top:16px"><i class="fa-solid fa-virus"></i> qSOFA Score</h3>
+    <div style="font-size:.78rem;color:var(--text3);margin-bottom:12px;font-weight:600"><i class="fa-solid fa-circle-info"></i> Klinisches Zusatztool, kein MTS-Diskriminator und keine Sepsisdiagnose.</div>
     <div class="qsf-box ${qsfS.af?'on':''}" onclick="tqS('af')">
       <span style="font-weight:700">Atemfrequenz &ge; 22 pro min</span>
       <i class="fa-solid ${qsfS.af?'fa-circle-check':'fa-circle'}" style="font-size:1.2rem"></i>
@@ -900,7 +897,7 @@ function rGCS(){
     <div class="qsf-score" style="color:${qS>=2?'var(--red)':'var(--text2)'}">
       qSOFA Punkte: ${qS} von 3
     </div>
-    ${qS>=2?'<div style="background:var(--red-bg);color:var(--red);padding:12px;border-radius:6px;font-size:0.85rem;font-weight:700;text-align:center;margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i> Verdacht auf Sepsis!</div>':''}
+    ${qS>=2?'<div style="background:var(--red-bg);color:var(--red);padding:12px;border-radius:6px;font-size:0.85rem;font-weight:700;text-align:center;margin-bottom:16px;"><i class="fa-solid fa-triangle-exclamation"></i> qSOFA erhöht. Klinische Sepsisabklärung nach lokalem Standard erwägen. Dies ist kein MTS-Ergebnis.</div>':''}
 
     <button class="rbtn primary" style="width:100%;justify-content:center" onclick="applyGCS(${tot})">Werte übernehmen</button>
   `;
