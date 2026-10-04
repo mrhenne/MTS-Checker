@@ -43,3 +43,5 @@ Den bestehenden Funktionsumfang nicht weiter aufblasen, sondern Suche, lokale Da
 
 ## Sicherheitsgrenze
 L1 verändert keine medizinischen Diskriminatorinhalte und fügt keine neue automatische MTS-Einstufungslogik hinzu.
+
+Preview branch: `release/v2-rc7`
