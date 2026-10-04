@@ -869,3 +869,73 @@ Die App darf während der noch offenen Vollreferenz-Validierung keine scheinbar 
 
 ### Noch offen
 Die konkreten Diskriminatorinhalte selbst bleiben Alt-/Arbeitsbestand, bis eine vollständige lizenzierte bzw. institutionell freigegebene MTS-Referenz für den Zeilenabgleich vorliegt. D1 verbessert daher vor allem Sicherheit, Trennung und Transparenz, nicht die fachliche Vollvalidierung einzelner Diskriminatorformulierungen.
+
+
+## Paket E abgeschlossen – Validation Center E1
+
+Checkpoint: `checkpoint-E1-validation-center`
+
+### Ziel
+Eine nachvollziehbare medizinische Governance-Ebene für alle Diagramme, ohne irgendeinen Einfluss auf die MTS-Einstufungsengine.
+
+### Neue Funktionen
+- eigener Navigationspunkt `Validierung`
+- Übersicht aller 55 Diagramme
+- Status je Diagramm:
+  - Ungeprüft
+  - In Prüfung
+  - Geprüft
+  - Lokal freigegeben
+  - Gesperrt
+- Such- und Statusfilter
+- Reviewer / Prüfer
+- Reviewdatum
+- Quelle / Referenz
+- Validierungsnotiz
+- lokale Speicherung der Governance-Metadaten
+- Export als JSON
+- Import mit Schema- und Feldvalidierung
+- Zurücksetzen einzelner Datensätze
+- globales Zurücksetzen aller lokalen Validierungsmetadaten
+- Validierungsstatus wird im normalen Diagrammdialog sichtbar angezeigt
+
+### Sicherheitsregel
+Der Validierungsstatus ist reine Governance-Metadaten.
+Er beeinflusst weder Dringlichkeitsfarbe noch Diskriminatorlogik.
+
+Gezielte Prüfung des Klassifikationskerns bestätigt:
+- kein Zugriff auf `validationState`
+- kein Zugriff auf `getValidationRecord`
+- kein Zugriff auf `local-approved`
+- Stufe entsteht weiterhin ausschließlich aus `selI`
+- keine Basiseinstufung
+- keine globale Vital-Autotriage
+
+Diese Nichtkopplung wurde zusätzlich als permanenter Laufzeit-Selbsttest `validation-metadata-does-not-triage` ergänzt.
+
+### Import-Sicherheit
+- nur Schema `triageassist-validation-v1`
+- nur bekannte Diagramm-IDs
+- nur bekannte Statuswerte
+- Datumsformat validiert
+- Reviewer/Quelle/Notizen werden begrenzt
+- importierte lokale Freigabe bleibt reine Metadaten
+
+### Betrieb
+- App-Version: `2.0.0-e1`
+- Validation Center: `E1`
+- Cache: `triageassist-v2-e1`
+
+### Prüfung
+38 reguläre E1 Checks plus 7 gezielte Nichtkopplungs-Checks.
+Der einzige zunächst rote reguläre Test war ein bewusst zu breiter Stringtest, weil der Status im selben Renderpfad angezeigt wird. Die anschließende gezielte Prüfung des tatsächlichen Klassifikationskerns war vollständig grün.
+
+### Diff gegen `backup/pre-validation-center-e`
+- css/app.css: +90
+- index.html: +39
+- js/app.js: +248 / -1
+- service-worker.js: +1 / -1
+- version.json: +3 / -2
+
+### Wichtig
+„Geprüft“ oder „Lokal freigegeben“ ist derzeit eine dokumentierte Nutzer-/Teamentscheidung, keine automatische medizinische Freigabe durch die Software. Für produktiven klinischen Einsatz bleibt eine institutionelle fachliche Freigabe erforderlich.
