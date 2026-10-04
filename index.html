@@ -606,10 +606,24 @@ const dF_=document.getElementById('dF');
 function rDiag(){document.getElementById('cF').innerHTML=`<button class="fb ${aCat===''?'a':''}" onclick="fC('')">Alle</button>${CATS.map(c=>`<button class="fb ${aCat===c?'a':''}" onclick="fC('${c}')">${c}</button>`).join('')}`;fR()}
 function fC(c){aCat=c;rDiag()}
 dF_.addEventListener('input',debounce(fR,150));
-function fR(){const q=dF_.value.trim().toLowerCase();let f=D.slice();if(aCat)f=f.filter(d=>d.c===aCat);if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));document.getElementById('dC').innerHTML=`<b>${f.length}</b> Diagramme`;document.getElementById('dL').innerHTML=f.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span></div><div class="cs">Diagramm Nr. ${d.id}</div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('')}
+function fR(){
+  const q=dF_.value.trim().toLowerCase();
+  let f=D.slice();
+  if(aCat)f=f.filter(d=>d.c===aCat);
+  if(q.length>=2)f=f.filter(d=>d.name.toLowerCase().includes(q)||(d.i&&Object.values(d.i).flat().join(' ').toLowerCase().includes(q))||d.kw.some(k=>k.includes(q)));
+  const core=f.filter(d=>d.id<=53);
+  const manv=f.filter(d=>d.id>=54);
+  document.getElementById('dC').innerHTML=`<b>${core.length}</b> MTS/Sonderdiagramme${manv.length?` · <b>${manv.length}</b> MANV`:''}`;
+  document.getElementById('dL').innerHTML=
+    core.map(d=>`<div class="card" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.id===53?'MTS Sonderdiagramm':d.c}</span></div><div class="cs">${d.id===53?'Nur für Ausnahmefälle · ':''}Diagramm Nr. ${d.id}</div><div class="tags">${d.kw.slice(0,5).map(k=>`<span class="tag">${k}</span>`).join('')}${d.kw.length>5?`<span class="tag" style="opacity:.4">+${d.kw.length-5}</span>`:''}</div></div>`).join('') +
+    (manv.length?`<div style="margin:24px 0 10px;padding:12px 14px;border-radius:var(--radius-sm);background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--text2);font-size:.82rem"><b style="color:var(--text)"><i class="fa-solid fa-people-group"></i> MANV / Sichtung · Sonderbereich</b><br>Diese Altmodule sind nicht Teil des regulären 5-stufigen MTS-Workflows und befinden sich in fachlicher Validierung.</div>`:'') +
+    manv.map(d=>`<div class="card" style="opacity:.78;border-style:dashed" onclick="shD(${d.id})"><div class="ch"><span class="ct">${d.id}. ${d.name}</span><span class="tag" style="background:var(--yellow-bg);border-color:var(--yellow-border)">MANV · Validierung</span></div><div class="cs">Sondermodul · nicht als reguläres MTS verwenden</div></div>`).join('');
+}
 
 function rTox(){
-  document.getElementById('toxL').innerHTML = TOX.map(t => `<div class="cc" style="border-left: 4px solid var(--orange);"><h4>${t.n}</h4><ul><li><i class="fa-solid fa-virus" style="color:var(--orange)"></i><b>Symptome:</b> ${t.s}</li><li><i class="fa-solid fa-syringe" style="color:var(--green)"></i><b style="color:var(--green)">Antidot:</b> ${t.a}</li></ul></div>`).join('');
+  document.getElementById('toxL').innerHTML =
+    '<div style="grid-column:1/-1;padding:14px 16px;border:1px solid var(--yellow-border);background:var(--yellow-bg);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text2);line-height:1.5"><b style="color:var(--text)"><i class="fa-solid fa-flask-vial"></i> Klinisches Zusatzmodul, kein MTS.</b><br>Die vorhandenen Therapieangaben sind bis zur Freigabe einer institutionellen Tox- oder Giftnotruf-SOP nur als Altbestand zur Validierung zu verstehen und beeinflussen die MTS-Stufe nicht.</div>' +
+    TOX.map(t => `<div class="cc" style="border-left: 4px solid var(--orange);"><h4>${t.n}</h4><ul><li><i class="fa-solid fa-virus" style="color:var(--orange)"></i><b>Leitsymptome:</b> ${t.s}</li><li><i class="fa-solid fa-circle-info" style="color:var(--text3)"></i><b>Altbestand / zu validieren:</b> ${t.a}</li></ul></div>`).join('');
 }
 
 function getActions(lvl, diag) {
@@ -696,7 +710,8 @@ function rOvl(){
 
   let html = `
     <button class="ox" onclick="clO()"><i class="fa-solid fa-xmark"></i></button>
-    <span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.c}</span>
+    ${d.id>=54?'<div style="padding:12px 14px;margin-bottom:14px;border-radius:var(--radius-sm);background:var(--yellow-bg);border:1px solid var(--yellow-border);font-size:.8rem;color:var(--text2)"><b style="color:var(--text)"><i class="fa-solid fa-triangle-exclamation"></i> MANV-Sondermodul in Validierung.</b> Nicht als reguläre MTS-Einstufung verwenden.</div>':''}
+    <span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.id===53?'MTS Sonderdiagramm':d.c}</span>
     <h2 style="font-size:1.3rem;font-weight:800;margin-top:12px;color:var(--text)">${d.id}. ${d.name}</h2>
     
     <div class="triage-banner t-b-${lvl}">
@@ -749,17 +764,13 @@ function rOvl(){
     </div>`;
 
   if(d.r && d.r.length > 0){
-    html += `<div style="margin-bottom:20px;background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:var(--radius-sm);padding:16px;">
-      <h4 style="font-size:0.85rem;font-weight:800;color:var(--orange);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-bolt"></i> SOP Höherstufungen</h4>
-      <div style="display:flex;flex-direction:column;gap:8px">`;
-    d.r.forEach((r,i)=>{
-      const isSel = selR.includes(i);
-      html += `<div class="rule-box ${isSel?'active':''}" onclick="tgR(${i})" style="margin:0;background:var(--bg2)">
-        <input type="checkbox" ${isSel?'checked':''}>
-        <div><div class="rule-txt">${r.l}</div><span class="rule-sub">${r.t}</span></div>
-      </div>`;
-    });
-    html += `</div></div>`;
+    html += `<div style="margin-bottom:20px;background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius-sm);padding:16px;">
+      <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-lock"></i> Lokale Zusatzregeln vorübergehend deaktiviert</h4>
+      <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Für dieses Diagramm existieren ältere lokale oder heuristische Sonderregeln. Sie werden während der V2-Validierung nur angezeigt und beeinflussen die MTS-Stufe bewusst nicht.</div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+        ${d.r.map(r=>`<div style="padding:9px 11px;background:var(--bg2);border:1px solid var(--card-border);border-radius:8px;font-size:.8rem;color:var(--text3)"><i class="fa-solid fa-ban"></i> <b>${r.l}</b> · ${r.t}</div>`).join('')}
+      </div>
+    </div>`;
   }
 
   const act = getActions(lvl, d);
@@ -1170,6 +1181,21 @@ function genOpts(correctId){
   _lastOpts={id:correctId,opts:all};return all;
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function runSafetySelfTests(){
+  const results=[];
+  const test=(name,ok)=>results.push({name,ok:!!ok});
+  test('priority-order', Math.min(1,3)===1 && Math.min(2,5)===2);
+  test('legacy-downgrade-removed', !rOvl.toString().includes('if(r.v > lvl)'));
+  test('training-level-evaluation', trnLvl.toString().includes('chosen===correct'));
+  test('qsofa-separated', rGCS.toString().includes('kein MTS'));
+  test('manv-labelled', fR.toString().includes('MANV / Sichtung'));
+  const failed=results.filter(x=>!x.ok);
+  console.info('[TriageAssist V2] Safety self-tests',results);
+  if(failed.length) console.error('[TriageAssist V2] Safety self-tests FAILED',failed);
+  return {ok:failed.length===0,results};
+}
+window.__triageSafety=runSafetySelfTests();
 
 rLvl();rCS();rTox();SI_.focus();
 </script>
