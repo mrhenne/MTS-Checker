@@ -1,7 +1,44 @@
+let pendingServiceWorker=null;
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js').catch(err => {
+  navigator.serviceWorker.register('./service-worker.js').then(reg=>{
+    if(reg.waiting){
+      pendingServiceWorker=reg.waiting;
+      showUpdateBanner();
+    }
+    reg.addEventListener('updatefound',()=>{
+      const worker=reg.installing;
+      if(!worker)return;
+      worker.addEventListener('statechange',()=>{
+        if(worker.state==='installed' && navigator.serviceWorker.controller){
+          pendingServiceWorker=worker;
+          showUpdateBanner();
+        }
+      });
+    });
+  }).catch(err=>{
     console.warn('[TriageAssist] Service Worker registration failed', err);
   });
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(sessionStorage.getItem('mts_reloading_update')==='1'){
+      sessionStorage.removeItem('mts_reloading_update');
+      location.reload();
+    }
+  });
+}
+
+function showUpdateBanner(){
+  document.getElementById('updateBanner')?.classList.add('show');
+}
+function dismissAppUpdate(){
+  document.getElementById('updateBanner')?.classList.remove('show');
+}
+function applyAppUpdate(){
+  if(!pendingServiceWorker){
+    location.reload();
+    return;
+  }
+  sessionStorage.setItem('mts_reloading_update','1');
+  pendingServiceWorker.postMessage({type:'SKIP_WAITING'});
 }
 
 let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),aCat='';
@@ -744,29 +781,41 @@ function rOvl(){
            <div style="font-size:0.8rem;color:var(--text3);margin-bottom:12px;font-weight:500">Wähle alle zutreffenden Symptome von oben nach unten.</div>`;
   
   [1,2,3,4,5].forEach(l => {
-    const genInds = GI[l] || [];
-    const specInds = (d.i && d.i[l]) ? d.i[l] : [];
-    if(genInds.length === 0 && specInds.length === 0) return;
-    
-    html += `<div id="level-card-${l}" class="ind-head t-b-${l}"><i class="fa-solid fa-circle" style="font-size:0.8em"></i> Stufe ${l}</div>`;
-    
-    specInds.forEach((ind, idx) => {
-      const key = `${l}-${idx}-0`;
-      const isSel = selI.includes(key);
-      html += `<div class="ind-row" onclick="tgI(${l}, ${idx}, false)">
+    const genInds=GI[l]||[];
+    const specInds=(d.i&&d.i[l])?d.i[l]:[];
+    if(genInds.length===0&&specInds.length===0)return;
+    const rows=[];
+    specInds.forEach((ind,idx)=>{
+      const key=`${l}-${idx}-0`;
+      const isSel=selI.includes(key);
+      rows.push(`<div class="ind-row" onclick="tgI(${l},${idx},false)">
         <input type="checkbox" ${isSel?'checked':''}>
         <div class="ind-txt" style="font-weight:700">${ind}</div>
-      </div>`;
+      </div>`);
     });
-
-    genInds.forEach((ind, idx) => {
-      const key = `${l}-${idx}-1`;
-      const isSel = selI.includes(key);
-      html += `<div class="ind-row" onclick="tgI(${l}, ${idx}, true)">
+    genInds.forEach((ind,idx)=>{
+      const key=`${l}-${idx}-1`;
+      const isSel=selI.includes(key);
+      rows.push(`<div class="ind-row" onclick="tgI(${l},${idx},true)">
         <input type="checkbox" ${isSel?'checked':''}>
-        <div class="ind-txt">${ind} <span style="opacity:0.6;font-size:0.75rem;font-weight:500">(Generell)</span></div>
-      </div>`;
+        <div class="ind-txt">${ind} <span style="opacity:.6;font-size:.75rem;font-weight:500">(Generell)</span></div>
+      </div>`);
     });
+    const selectedAtLevel=selI.some(k=>parseInt(k.split('-')[0])===l);
+    if(l<=2){
+      html+=`<section class="priority-section priority-open">
+        <div id="level-card-${l}" class="ind-head t-b-${l}"><i class="fa-solid fa-circle" style="font-size:.8em"></i> Stufe ${l}</div>
+        ${rows.join('')}
+      </section>`;
+    }else{
+      html+=`<details class="priority-section priority-collapsible" ${selectedAtLevel?'open':''}>
+        <summary id="level-card-${l}" class="ind-head t-b-${l}">
+          <span><i class="fa-solid fa-circle" style="font-size:.8em"></i> Stufe ${l}</span>
+          <span class="priority-summary-meta">${rows.length} Kriterien <i class="fa-solid fa-chevron-down"></i></span>
+        </summary>
+        <div class="priority-body">${rows.join('')}</div>
+      </details>`;
+    }
   });
 
   if(rl.length){
@@ -1131,6 +1180,55 @@ function rHist(){
 }
 function rmH(i){hist.splice(i,1);localStorage.setItem('mts_h',JSON.stringify(hist));rHist();renderRecentDiagrams()}
 function clrH(){if(!confirm('Verlauf wirklich komplett löschen?'))return;hist=[];localStorage.setItem('mts_h',JSON.stringify(hist));rHist()}
+function collectLocalAppData(){
+  const data={};
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    if(key && (key.startsWith('mts_')||key==='mts_validation_v1'))data[key]=localStorage.getItem(key);
+  }
+  return data;
+}
+function exportFullLocalBackup(){
+  const payload={
+    schema:'triageassist-local-backup-v1',
+    exportedAt:new Date().toISOString(),
+    appVersion:document.getElementById('versionBadge')?.textContent||'',
+    localStorage:collectLocalAppData()
+  };
+  dl(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),'triageassist-komplettbackup-'+ds()+'.json');
+  showToast('Lokales Komplettbackup erstellt.');
+}
+function importFullLocalBackup(event){
+  const file=event.target.files?.[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const payload=JSON.parse(String(reader.result||'{}'));
+      if(payload.schema!=='triageassist-local-backup-v1'||!payload.localStorage||typeof payload.localStorage!=='object'){
+        throw new Error('Ungültiges Backup-Format');
+      }
+      const entries=Object.entries(payload.localStorage).filter(([key,value])=>
+        (key.startsWith('mts_')||key==='mts_validation_v1') && typeof value==='string'
+      );
+      if(!entries.length)throw new Error('Backup enthält keine App-Daten');
+      if(!confirm('Lokale App-Daten durch dieses Backup ersetzen?'))return;
+      [...Array(localStorage.length).keys()].map(i=>localStorage.key(i)).filter(Boolean)
+        .filter(key=>key.startsWith('mts_')||key==='mts_validation_v1')
+        .forEach(key=>localStorage.removeItem(key));
+      entries.forEach(([key,value])=>localStorage.setItem(key,value));
+      showToast('Backup wiederhergestellt. App wird neu geladen.');
+      setTimeout(()=>location.reload(),700);
+    }catch(err){
+      console.error('[TriageAssist] backup import failed',err);
+      showToast('Backup konnte nicht wiederhergestellt werden.','error');
+    }finally{
+      event.target.value='';
+    }
+  };
+  reader.readAsText(file);
+}
+
 function expJ(){dl(new Blob([JSON.stringify({v:6,ts:new Date().toISOString(),hist},null,2)],{type:'application/json'}),'triageassist-backup-'+ds()+'.json')}
 function expC(){let c='Datum;Uhrzeit;Nr;Diagramm;Kategorie;Level\n';hist.forEach(h=>{const d=new Date(h.ts);c+=`${d.toLocaleDateString('de-DE')};${d.toLocaleTimeString('de-DE')};${h.id};${h.name};${h.c};${h.l||''}\n`});dl(new Blob(['\ufeff'+c],{type:'text/csv;charset=utf-8'}),'triageassist-verlauf-'+ds()+'.csv')}
 function impD(){document.getElementById('impF').click()}
