@@ -54,6 +54,30 @@ function quickSearch(term){
   SI_.dispatchEvent(new Event('input',{bubbles:true}));
 }
 
+function setupSearchClearButtons(){
+  document.querySelectorAll('.sb input[type="text"]').forEach(input=>{
+    const wrap=input.closest('.sb');
+    if(!wrap||wrap.querySelector('.search-clear'))return;
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='search-clear';
+    btn.title='Eingabe löschen';
+    btn.setAttribute('aria-label','Eingabe löschen');
+    btn.innerHTML='<i class="fa-solid fa-xmark"></i>';
+    const sync=()=>btn.classList.toggle('show',input.value.length>0);
+    btn.addEventListener('click',()=>{
+      input.value='';
+      input.focus();
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+      input.dispatchEvent(new Event('change',{bubbles:true}));
+      sync();
+    });
+    input.addEventListener('input',sync);
+    wrap.appendChild(btn);
+    sync();
+  });
+}
+
 function updateCockpitClock(){
   const el=document.getElementById('liveClock');
   if(el) el.textContent=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
@@ -124,8 +148,35 @@ function bmS(key){
   document.getElementById('bmR').innerHTML=`<h3 style="display:flex;align-items:center;gap:8px"><i class="fa-solid ${rr.icon}"></i> ${rr.n}</h3><div class="sub">${ds.length} verknüpfte Diagramme</div>${ds.map(d=>`<div class="bm-di" onclick="shD(${d.id})"><div><strong>${d.name}</strong><span>Nr. ${d.id}</span></div><i class="fa-solid fa-caret-right" style="color:var(--text3)"></i></div>`).join('')}`;
 }
 
-function svgF(){return`<svg viewBox="0 0 200 460" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs><path class="bz" data-r="head" d="M85,25 a15,15 0 0,1 30,0 v15 a15,15 0 0,1 -30,0 z" style="fill:url(#gf)"/><text class="bl" x="100" y="42" text-anchor="middle" font-size="9">Kopf</text><path class="bz" data-r="chest" d="M75,65 h50 a15,15 0 0,1 15,15 l-8,60 h-64 l-8,-60 a15,15 0 0,1 15,-15 z"/><text class="bl" x="100" y="112" text-anchor="middle" font-size="9">Thorax</text><path class="bz" data-r="abdomen" d="M71,148 h58 l-5,45 a10,10 0 0,1 -10,10 h-28 a10,10 0 0,1 -10,-10 z"/><text class="bl" x="100" y="182" text-anchor="middle" font-size="8">Abdomen</text><path class="bz" data-r="pelvis" d="M76,211 h48 a15,15 0 0,1 15,15 l-4,20 a15,15 0 0,1 -12,14 l-18,12 a6,6 0 0,1 -10,0 l-18,-12 a15,15 0 0,1 -12,-14 l-4,-20 a15,15 0 0,1 15,-15 z"/><text class="bl" x="100" y="242" text-anchor="middle" font-size="8">Becken</text><path class="bz" data-r="arm_r" d="M56,70 a12,12 0 0,0 -20,8 l-15,100 a12,12 0 0,0 22,6 l15,-100 a12,12 0 0,0 -2,-14 z"/><text class="bl" x="32" y="160" text-anchor="middle" font-size="7">R. Arm</text><path class="bz" data-r="arm_l" d="M144,70 a12,12 0 0,1 20,8 l15,100 a12,12 0 0,1 -22,6 l-15,-100 a12,12 0 0,1 2,-14 z"/><text class="bl" x="168" y="160" text-anchor="middle" font-size="7">L. Arm</text><path class="bz" data-r="leg_r" d="M72,255 l-12,160 a14,14 0 0,0 26,4 l12,-155 z"/><text class="bl" x="68" y="360" text-anchor="middle" font-size="7">R. Bein</text><path class="bz" data-r="leg_l" d="M128,255 l12,160 a14,14 0 0,1 -26,4 l-12,-155 z"/><text class="bl" x="132" y="360" text-anchor="middle" font-size="7">L. Bein</text></svg>`}
-function svgB(){return`<svg viewBox="0 0 200 460" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs><path class="bz" data-r="head" d="M85,25 a15,15 0 0,1 30,0 v15 a15,15 0 0,1 -30,0 z" style="fill:url(#gb)"/><text class="bl" x="100" y="42" text-anchor="middle" font-size="9">Kopf</text><path class="bz" data-r="neck_back" d="M85,65 h30 a15,15 0 0,1 15,15 l-2,15 h-56 l-2,-15 a15,15 0 0,1 15,-15 z"/><text class="bl" x="100" y="85" text-anchor="middle" font-size="7">HWS</text><path class="bz" data-r="back_upper" d="M72,100 h56 l-4,40 h-48 l-4,-40 z"/><text class="bl" x="100" y="125" text-anchor="middle" font-size="7">Ob. Rücken</text><path class="bz" data-r="back_lower" d="M71,148 h58 l-5,45 a10,10 0 0,1 -10,10 h-28 a10,10 0 0,1 -10,-10 z"/><text class="bl" x="100" y="182" text-anchor="middle" font-size="7">Unt. Rücken</text><path class="bz" data-r="pelvis" d="M76,211 h48 a15,15 0 0,1 15,15 l-4,20 a15,15 0 0,1 -12,14 l-18,12 a6,6 0 0,1 -10,0 l-18,-12 a15,15 0 0,1 -12,-14 l-4,-20 a15,15 0 0,1 15,-15 z"/><text class="bl" x="100" y="242" text-anchor="middle" font-size="8">Gesäß</text><path class="bz" data-r="arm_r" d="M56,70 a12,12 0 0,0 -20,8 l-15,100 a12,12 0 0,0 22,6 l15,-100 a12,12 0 0,0 -2,-14 z"/><text class="bl" x="32" y="160" text-anchor="middle" font-size="7">R. Arm</text><path class="bz" data-r="arm_l" d="M144,70 a12,12 0 0,1 20,8 l15,100 a12,12 0 0,1 -22,6 l-15,-100 a12,12 0 0,1 2,-14 z"/><text class="bl" x="168" y="160" text-anchor="middle" font-size="7">L. Arm</text><path class="bz" data-r="leg_r" d="M72,255 l-12,160 a14,14 0 0,0 26,4 l12,-155 z"/><text class="bl" x="68" y="360" text-anchor="middle" font-size="7">R. Bein</text><path class="bz" data-r="leg_l" d="M128,255 l12,160 a14,14 0 0,1 -26,4 l-12,-155 z"/><text class="bl" x="132" y="360" text-anchor="middle" font-size="7">L. Bein</text></svg>`}
+function svgF(){return`<svg viewBox="0 0 240 540" xmlns="http://www.w3.org/2000/svg" aria-label="Körper Vorderseite">
+<defs><linearGradient id="bodyFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs>
+<ellipse class="bz" data-r="head" cx="120" cy="48" rx="28" ry="35"/>
+<path class="bz" data-r="chest" d="M91 94 C100 84 140 84 149 94 C162 111 164 150 157 188 C146 200 94 200 83 188 C76 150 78 111 91 94 Z"/>
+<path class="bz" data-r="abdomen" d="M86 192 C98 201 142 201 154 192 L151 258 C146 276 94 276 89 258 Z"/>
+<path class="bz" data-r="pelvis" d="M89 263 C103 274 137 274 151 263 L160 304 C151 324 137 337 120 343 C103 337 89 324 80 304 Z"/>
+<path class="bz" data-r="arm_r" d="M80 103 C67 102 57 112 53 129 L30 245 C27 261 36 271 47 269 C57 267 61 257 63 245 L88 124 C91 113 88 106 80 103 Z"/>
+<path class="bz" data-r="arm_l" d="M160 103 C173 102 183 112 187 129 L210 245 C213 261 204 271 193 269 C183 267 179 257 177 245 L152 124 C149 113 152 106 160 103 Z"/>
+<path class="bz" data-r="leg_r" d="M92 326 C102 333 111 337 118 340 L108 499 C107 516 97 526 85 523 C74 520 70 509 73 494 L79 347 C80 337 84 330 92 326 Z"/>
+<path class="bz" data-r="leg_l" d="M148 326 C138 333 129 337 122 340 L132 499 C133 516 143 526 155 523 C166 520 170 509 167 494 L161 347 C160 337 156 330 148 326 Z"/>
+<path class="body-detail" d="M105 83 Q120 91 135 83 M120 88 V340 M92 151 Q120 165 148 151 M94 219 Q120 229 146 219"/>
+<text class="bl" x="120" y="52" text-anchor="middle">Kopf</text><text class="bl" x="120" y="145" text-anchor="middle">Thorax</text>
+<text class="bl" x="120" y="235" text-anchor="middle">Abdomen</text><text class="bl" x="120" y="305" text-anchor="middle">Becken</text>
+</svg>`}
+function svgB(){return`<svg viewBox="0 0 240 540" xmlns="http://www.w3.org/2000/svg" aria-label="Körper Rückseite">
+<defs><linearGradient id="bodyFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bz-grad2)"/><stop offset="100%" stop-color="var(--bz-grad1)"/></linearGradient></defs>
+<ellipse class="bz" data-r="head" cx="120" cy="48" rx="28" ry="35"/>
+<path class="bz" data-r="neck_back" d="M101 83 Q120 92 139 83 L145 111 Q120 121 95 111 Z"/>
+<path class="bz" data-r="back_upper" d="M91 111 C102 103 138 103 149 111 L158 190 C146 201 94 201 82 190 Z"/>
+<path class="bz" data-r="back_lower" d="M85 194 C98 202 142 202 155 194 L151 260 C144 277 96 277 89 260 Z"/>
+<path class="bz" data-r="pelvis" d="M89 265 C103 276 137 276 151 265 L160 304 C151 324 137 337 120 343 C103 337 89 324 80 304 Z"/>
+<path class="bz" data-r="arm_r" d="M80 111 C67 106 57 116 53 132 L30 245 C27 261 36 271 47 269 C57 267 61 257 63 245 L88 132 C91 120 88 114 80 111 Z"/>
+<path class="bz" data-r="arm_l" d="M160 111 C173 106 183 116 187 132 L210 245 C213 261 204 271 193 269 C183 267 179 257 177 245 L152 132 C149 120 152 114 160 111 Z"/>
+<path class="bz" data-r="leg_r" d="M92 326 C102 333 111 337 118 340 L108 499 C107 516 97 526 85 523 C74 520 70 509 73 494 L79 347 C80 337 84 330 92 326 Z"/>
+<path class="bz" data-r="leg_l" d="M148 326 C138 333 129 337 122 340 L132 499 C133 516 143 526 155 523 C166 520 170 509 167 494 L161 347 C160 337 156 330 148 326 Z"/>
+<path class="body-detail" d="M120 112 V340 M98 145 Q120 155 142 145 M96 220 Q120 230 144 220"/>
+<text class="bl" x="120" y="52" text-anchor="middle">Kopf</text><text class="bl" x="120" y="102" text-anchor="middle">HWS</text>
+<text class="bl" x="120" y="154" text-anchor="middle">Oberer Rücken</text><text class="bl" x="120" y="235" text-anchor="middle">LWS</text>
+</svg>`}
 
 const dF_=document.getElementById('dF');
 function rDiag(){document.getElementById('cF').innerHTML=`<button class="fb ${aCat===''?'a':''}" onclick="fC('')">Alle</button>${CATS.map(c=>`<button class="fb ${aCat===c?'a':''}" onclick="fC('${c}')">${c}</button>`).join('')}`;fR()}
@@ -435,6 +486,45 @@ function tgI(lvl, idx, isGen){
   rOvl();
 }
 
+function getVitalAdvisories(){
+  const out=[];
+  const add=(field,severity,title,text)=>out.push({field,severity,title,text});
+  if(curVit.gcs!==''){
+    const v=Number(curVit.gcs);
+    if(v>=3&&v<15) add('gcs',v<=12?'critical':'alert','GCS auffällig',`GCS ${v}: Bewusstseinslage ist nicht normal. Höhere Priorisierung und passenden MTS-Diskriminator prüfen.`);
+  }
+  if(curVit.spo2!==''){
+    const v=Number(curVit.spo2);
+    if(v>=0&&v<92) add('spo2','critical','SpO₂ deutlich erniedrigt',`SpO₂ ${v} % unter Raumluft liegt unter dem in der aktuellen MTS-Referenz genannten Grenzwert. Höhere Priorisierung prüfen.`);
+    else if(v>=92&&v<95) add('spo2','alert','SpO₂ erniedrigt',`SpO₂ ${v} % ist auffällig. Klinischen Kontext und passenden MTS-Diskriminator prüfen.`);
+  }
+  if(curVit.temp!==''){
+    const v=Number(String(curVit.temp).replace(',','.'));
+    if(Number.isFinite(v)){
+      if(v>41||v<35) add('temp','critical','Temperatur stark auffällig',`${v.toFixed(1)} °C: deutliche Temperaturabweichung. Höhere Priorisierung und passenden MTS-/Sepsis-Kontext prüfen.`);
+      else if(v>=39||v<36) add('temp','alert','Temperatur auffällig',`${v.toFixed(1)} °C: außerhalb des üblichen Normbereichs. Höhere Priorisierung im klinischen Kontext prüfen.`);
+    }
+  }
+  if(curVit.nrs!==''){
+    const v=Number(curVit.nrs);
+    if(v>=7&&v<=10) add('nrs','alert','Hoher Schmerzscore',`NRS ${v}/10: starken Schmerz berücksichtigen und den aktuellen MTS-Schmerz-Diskriminator prüfen.`);
+  }
+  return out;
+}
+function vitalFieldClass(field){
+  const a=getVitalAdvisories().filter(x=>x.field===field);
+  if(a.some(x=>x.severity==='critical'))return ' vital-critical';
+  if(a.length)return ' vital-alert';
+  return '';
+}
+function renderVitalAdvisories(){
+  const a=getVitalAdvisories();
+  if(!a.length)return '';
+  return `<div class="vital-flag ${a.some(x=>x.severity==='critical')?'critical':''}">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div><b>Priorisierung erneut prüfen</b><br>${a.map(x=>escapeHtml(x.text)).join('<br>')}</div>
+  </div>`;
+}
 function updV(key, val) { curVit[key] = val; rOvl(); }
 function updPed(val) { curPed = val; rOvl(); }
 
@@ -547,26 +637,27 @@ function rOvl(){
   html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;color:var(--text)"><i class="fa-solid fa-heart-pulse"></i> Vital- und Schmerzwerte</h4>
     <div style="font-size:.76rem;color:var(--text3);margin-bottom:10px;font-weight:600"><i class="fa-solid fa-shield"></i> Dokumentation: In D1 verändern diese Werte die MTS-Stufe nicht automatisch.</div>
     <div class="vitals-grid">
-      <div class="vital-input-box" style="position:relative; display:flex; flex-direction:column;">
+      <div class="vital-input-box${vitalFieldClass('gcs')}" style="position:relative; display:flex; flex-direction:column;">
         <label style="display:flex; justify-content:space-between; align-items:center;">
           GCS (3 bis 15)
           <button onclick="openGCS()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.1rem;padding:0 4px;" title="GCS Rechner öffnen"><i class="fa-solid fa-calculator"></i></button>
         </label>
         <input type="number" min="3" max="15" value="${curVit.gcs}" onchange="updV('gcs', this.value)" style="margin-top:auto;">
       </div>
-      <div class="vital-input-box">
+      <div class="vital-input-box${vitalFieldClass('spo2')}">
         <label>SpO₂ (%)</label>
         <input type="number" min="0" max="100" value="${curVit.spo2}" onchange="updV('spo2', this.value)">
       </div>
-      <div class="vital-input-box">
+      <div class="vital-input-box${vitalFieldClass('temp')}">
         <label>Temp (°C)</label>
         <input type="number" step="0.1" value="${curVit.temp}" onchange="updV('temp', this.value)">
       </div>
-      <div class="vital-input-box">
+      <div class="vital-input-box${vitalFieldClass('nrs')}">
         <label>NRS (0-10)</label>
         <input type="number" min="0" max="10" value="${curVit.nrs}" onchange="updV('nrs', this.value)">
       </div>
-    </div>`;
+    </div>
+    ${renderVitalAdvisories()}`;
 
   const localRules=(typeof LOCAL_RULES!=='undefined' && LOCAL_RULES[d.id]) ? LOCAL_RULES[d.id] : [];
   if(localRules.length > 0){
@@ -1027,4 +1118,5 @@ function runSafetySelfTests(){
 }
 window.__triageSafety=runSafetySelfTests();
 
+setupSearchClearButtons();
 rLvl();rCS();rTox();SI_.focus();
