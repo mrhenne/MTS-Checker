@@ -7,6 +7,7 @@ if ('serviceWorker' in navigator) {
 let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),aCat='';
 let curDiag=null,selR=[],selI=[];
 let manualPriority={level:null,source:'',label:''};
+let restoredAssessment=null;
 let curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
 let curPed = '2'; 
 let gcsS = { e: 4, v: 5, m: 6 };
@@ -492,6 +493,7 @@ function shD(id){
   curDiag=D.find(x=>x.id===id);
   selR=[]; selI=[];
   manualPriority={level:null,source:'',label:''};
+  restoredAssessment=null;
   curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
   if(!curDiag)return;
   rOvl();
@@ -648,12 +650,26 @@ function rOvl(){
           (vr.reviewedOn?`<span class="tag"><i class="fa-regular fa-calendar-check"></i> ${vr.reviewedOn}</span>`:'');
       })()}
     </div>
+    ${restoredAssessment?`<div class="saved-snapshot">
+      <div class="saved-snapshot-head"><i class="fa-solid fa-clock-rotate-left"></i><div><b>Gespeicherte Einschätzung</b><span>${new Date(restoredAssessment.ts).toLocaleString('de-DE')}</span></div></div>
+      <div class="saved-snapshot-grid">
+        <span><b>Gespeicherte Stufe</b>${restoredAssessment.l?priorityColorName(restoredAssessment.l):'—'}</span>
+        <span><b>Quelle</b>${restoredAssessment.source==='manual-or-local'?'manuell/lokal':'MTS-Diskriminator'}</span>
+        <span><b>Vitalwerte</b>${[
+          restoredAssessment.vitals?.gcs?`GCS ${restoredAssessment.vitals.gcs}`:'',
+          restoredAssessment.vitals?.spo2?`SpO₂ ${restoredAssessment.vitals.spo2}%`:'',
+          restoredAssessment.vitals?.temp?`${restoredAssessment.vitals.temp} °C`:'',
+          restoredAssessment.vitals?.nrs?`NRS ${restoredAssessment.vitals.nrs}`:''
+        ].filter(Boolean).join(' · ')||'nicht gespeichert'}</span>
+      </div>
+      ${(!restoredAssessment.selectedKeys?.length&&!restoredAssessment.indicators?.length)?'<div class="saved-snapshot-note"><i class="fa-solid fa-circle-info"></i> Dieser ältere Verlaufseintrag enthält noch keine gespeicherten Diskriminator-Details. Ab RC5 werden sie vollständig mitgespeichert.</div>':''}
+    </div>`:''}
     
     ${lvl!==null?`
       <div class="triage-banner t-b-${lvl}">
         <div style="display:flex;align-items:center;gap:10px">
           <span style="width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.18);display:grid;place-items:center"><i class="fa-solid fa-triangle-exclamation"></i></span>
-          <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">${manualPriority.level!==null && (mtsLvl===null || manualPriority.level<=mtsLvl)?'Aktuelle Priorisierung · manuell/lokal':'Aktuelle MTS Einstufung'}</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
+          <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">${restoredAssessment?'Gespeicherte Einstufung':manualPriority.level!==null && (mtsLvl===null || manualPriority.level<=mtsLvl)?'Aktuelle Priorisierung · manuell/lokal':'Aktuelle MTS Einstufung'}</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
         </div>
         <div class="t-time">Max: ${lObj.t}</div>
       </div>`
@@ -988,7 +1004,8 @@ function addH(id, lvl){
     source:manualPriority.level!==null?'manual-or-local':'mts-discriminator',
     manual:manualPriority.level!==null?{...manualPriority}:null,
     vitals:{...curVit},
-    indicators:getSelectedIndicatorLabels()
+    indicators:getSelectedIndicatorLabels(),
+    selectedKeys:[...selI]
   };
   try{
     hist.unshift(entry);
@@ -1073,6 +1090,40 @@ async function runSystemHealth(){
     </div>`).join('');
 }
 
+function openSavedAssessment(index){
+  const h=hist[index];
+  if(!h)return;
+  const d=D.find(x=>x.id===h.id);
+  if(!d)return;
+  curDiag=d;
+  curVit={gcs:'',spo2:'',temp:'',nrs:'',...(h.vitals||{})};
+  manualPriority=h.manual?{...h.manual}:{level:null,source:'',label:''};
+  restoredAssessment={...h};
+
+  if(Array.isArray(h.selectedKeys)&&h.selectedKeys.length){
+    selI=[...h.selectedKeys];
+  }else{
+    // Best effort for entries created before RC5: recover keys by stored indicator text.
+    selI=[];
+    (h.indicators||[]).forEach(saved=>{
+      const level=Number(saved.level);
+      const isGen=saved.type==='general';
+      const source=isGen?(GI[level]||[]):((d.i&&d.i[level])||[]);
+      const idx=source.findIndex(x=>x===saved.text);
+      if(idx>=0)selI.push(`${level}-${idx}-${isGen?1:0}`);
+    });
+  }
+
+  rOvl();
+  const overlay=document.getElementById('detO');
+  overlay.classList.add('open');
+  requestAnimationFrame(()=>{
+    overlay.scrollTop=0;
+    overlay.querySelector('.oc')?.scrollTo({top:0});
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
 function rHist(){
   const t=hist.length,td=hist.filter(h=>new Date(h.ts).toDateString()===new Date().toDateString()).length,cc={};
   hist.forEach(h=>{cc[h.c]=(cc[h.c]||0)+1});
@@ -1085,7 +1136,7 @@ function rHist(){
     const lvlDot = h.l ? `<span class="td td-${h.l}" style="margin-right:6px"></span>Stufe ${h.l}` : '';
     const sourceTxt=h.source==='manual-or-local'?'manuell/lokal':'MTS-Diskriminator';
     const vit=[h.vitals?.gcs?`GCS ${h.vitals.gcs}`:'',h.vitals?.spo2?`SpO₂ ${h.vitals.spo2}%`:'',h.vitals?.temp?`${h.vitals.temp} °C`:'',h.vitals?.nrs?`NRS ${h.vitals.nrs}`:''].filter(Boolean).join(' · ');
-    return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met"><i class="fa-regular fa-calendar"></i> ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} &bull; ${h.c} &bull; Nr.${h.id} <span style="margin-left:auto;font-weight:700;color:var(--text);display:flex;align-items:center">${lvlDot}</span></div><div class="hist-detail"><span><i class="fa-solid fa-route"></i> ${sourceTxt}</span>${vit?`<span><i class="fa-solid fa-wave-square"></i> ${vit}</span>`:''}</div></div><div class="act" style="display:flex;gap:6px;margin-left:12px"><button class="ib view" onclick="shD(${h.id})" title="Öffnen"><i class="fa-regular fa-eye"></i></button><button class="ib" onclick="rmH(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button></div></div>`
+    return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met"><i class="fa-regular fa-calendar"></i> ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} &bull; ${h.c} &bull; Nr.${h.id} <span style="margin-left:auto;font-weight:700;color:var(--text);display:flex;align-items:center">${lvlDot}</span></div><div class="hist-detail"><span><i class="fa-solid fa-route"></i> ${sourceTxt}</span>${vit?`<span><i class="fa-solid fa-wave-square"></i> ${vit}</span>`:''}</div></div><div class="act" style="display:flex;gap:6px;margin-left:12px"><button class="ib view" onclick="openSavedAssessment(${i})" title="Gespeicherte Einschätzung öffnen"><i class="fa-regular fa-eye"></i></button><button class="ib" onclick="rmH(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button></div></div>`
   }).join('')
 }
 function rmH(i){hist.splice(i,1);localStorage.setItem('mts_h',JSON.stringify(hist));rHist();renderRecentDiagrams()}
