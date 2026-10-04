@@ -43,6 +43,7 @@ document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>{
   if(t.dataset.t==='cs')rCS();
   if(t.dataset.t==='train')initTrain();
   if(t.dataset.t==='hist')rHist();
+  if(t.dataset.t==='health')runSystemHealth();
 }));
 
 const SI_=document.getElementById('SI');
@@ -811,6 +812,68 @@ function addH(id, lvl){
   localStorage.setItem('mts_h',JSON.stringify(hist));
   rHist();
 }
+async function runSystemHealth(){
+  const overall=document.getElementById('healthOverall');
+  const grid=document.getElementById('healthGrid');
+  const checksEl=document.getElementById('healthChecks');
+  if(!overall||!grid||!checksEl)return;
+
+  const checks=[];
+  const add=(name,ok,detail='')=>checks.push({name,ok:!!ok,detail});
+
+  try{
+    if(typeof runTriageRegressionTests==='function'){
+      const r=runTriageRegressionTests({D,GI,LV,BR,CASES,LOCAL_RULES,MTS_DATA_META,MTS_DIAGRAM_META});
+      r.results.forEach(x=>add(x.name,x.ok,x.detail||''));
+    }else{
+      add('Regression suite loaded',false,'runTriageRegressionTests fehlt');
+    }
+  }catch(e){
+    add('Regression suite execution',false,String(e));
+  }
+
+  try{
+    const rt=runSafetySelfTests();
+    rt.results.forEach(x=>add('Runtime: '+x.name,x.ok));
+  }catch(e){
+    add('Runtime self-tests',false,String(e));
+  }
+
+  let version=null;
+  try{
+    const res=await fetch('./version.json',{cache:'no-store'});
+    if(res.ok) version=await res.json();
+    add('Version metadata reachable',!!version,version?.version||'');
+  }catch(e){
+    add('Version metadata reachable',false,String(e));
+  }
+
+  add('Service Worker supported','serviceWorker' in navigator);
+  add('Browser storage available',typeof localStorage!=='undefined');
+
+  const failed=checks.filter(x=>!x.ok);
+  const passed=checks.length-failed.length;
+  overall.className='health-overall '+(failed.length?'fail':'pass');
+  overall.innerHTML=failed.length
+    ? `<i class="fa-solid fa-triangle-exclamation"></i><div><b>${failed.length} Fehler</b><span>${passed}/${checks.length} bestanden</span></div>`
+    : `<i class="fa-solid fa-circle-check"></i><div><b>System konsistent</b><span>${passed}/${checks.length} bestanden</span></div>`;
+
+  const validationRecords=Object.keys(validationState||{}).length;
+  const approved=Object.values(validationState||{}).filter(x=>x?.status==='local-approved').length;
+  grid.innerHTML=
+    `<div class="health-card"><i class="fa-solid fa-code-branch"></i><div><b>${version?.version||'unbekannt'}</b><span>App Version</span></div></div>`+
+    `<div class="health-card"><i class="fa-solid fa-diagram-project"></i><div><b>${D.length}</b><span>Diagramme</span></div></div>`+
+    `<div class="health-card"><i class="fa-solid fa-graduation-cap"></i><div><b>${CASES.length}</b><span>Trainingsfälle</span></div></div>`+
+    `<div class="health-card"><i class="fa-solid fa-clipboard-check"></i><div><b>${validationRecords}</b><span>Review Datensätze</span></div></div>`+
+    `<div class="health-card"><i class="fa-solid fa-shield"></i><div><b>${approved}</b><span>Lokal freigegeben</span></div></div>`;
+
+  checksEl.innerHTML=checks.map(c=>`
+    <div class="health-check ${c.ok?'ok':'bad'}">
+      <i class="fa-solid ${c.ok?'fa-circle-check':'fa-circle-xmark'}"></i>
+      <div><b>${escapeHtml(c.name)}</b>${c.detail?`<span>${escapeHtml(c.detail)}</span>`:''}</div>
+    </div>`).join('');
+}
+
 function rHist(){
   const t=hist.length,td=hist.filter(h=>new Date(h.ts).toDateString()===new Date().toDateString()).length,cc={};
   hist.forEach(h=>{cc[h.c]=(cc[h.c]||0)+1});
