@@ -294,7 +294,7 @@ function rOvl(){
   }
 
   html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;color:var(--text)"><i class="fa-solid fa-heart-pulse"></i> Vital- und Schmerzwerte</h4>
-    <div style="font-size:.76rem;color:var(--text3);margin-bottom:10px;font-weight:600"><i class="fa-solid fa-shield"></i> Dokumentation בלבד: In D1 verändern diese Werte die MTS-Stufe nicht automatisch.</div>
+    <div style="font-size:.76rem;color:var(--text3);margin-bottom:10px;font-weight:600"><i class="fa-solid fa-shield"></i> Dokumentation: In D1 verändern diese Werte die MTS-Stufe nicht automatisch.</div>
     <div class="vitals-grid">
       <div class="vital-input-box" style="position:relative; display:flex; flex-direction:column;">
         <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -694,8 +694,10 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random
 function runSafetySelfTests(){
   const results=[];
   const test=(name,ok)=>results.push({name,ok:!!ok});
-  test('priority-order', Math.min(1,3)===1 && Math.min(2,5)===2);
-  test('legacy-downgrade-removed', !rOvl.toString().includes('if(r.v > lvl)'));
+  const rov=rOvl.toString();
+  test('explicit-discriminator-only', rov.includes('let lvl=null') && !rov.includes('d.b||5'));
+  test('legacy-rules-outside-core', typeof LOCAL_RULES!=='undefined' && !rov.includes('d.r'));
+  test('no-global-vital-autotriage', !rov.includes('vLvl') && !rov.includes('Math.min(lvl, vLvl)'));
   test('training-level-evaluation', trnLvl.toString().includes('chosen===correct'));
   test('qsofa-separated', rGCS.toString().includes('kein MTS'));
   test('manv-labelled', fR.toString().includes('MANV / Sichtung'));
