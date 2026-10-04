@@ -531,8 +531,10 @@ function setManualPriority(level,source,label){
 }
 function clearManualPriority(){manualPriority={level:null,source:'',label:''};rOvl()}
 function priorityButtons(source,label,suggested){
+  const src=encodeURIComponent(String(source||'manual'));
+  const lab=encodeURIComponent(String(label||'Manuelle Priorisierung'));
   return '<div class="priority-pick"><span>Farbe direkt wählen:</span><div class="priority-dots">'+
-    [1,2,3,4,5].map(l=>'<button type="button" class="priority-dot p-'+l+(suggested===l?' suggested':'')+'" onclick="event.stopPropagation();setManualPriority('+l+','+JSON.stringify(source)+','+JSON.stringify(label)+')" title="'+priorityColorName(l)+' wählen"><span class="td td-'+l+'"></span>'+priorityColorName(l)+'</button>').join('')+
+    [1,2,3,4,5].map(l=>'<button type="button" class="priority-dot p-'+l+(suggested===l?' suggested':'')+'" onclick="event.stopPropagation();setManualPriority('+l+',decodeURIComponent(\''+src+'\'),decodeURIComponent(\''+lab+'\'))" title="'+priorityColorName(l)+' wählen"><span class="td td-'+l+'"></span>'+priorityColorName(l)+'</button>').join('')+
     '</div></div>';
 }
 function vitalFieldClass(field){
@@ -693,9 +695,9 @@ function rOvl(){
   if(localRules.length > 0){
     html += `<div style="margin-bottom:20px;background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius-sm);padding:16px;">
       <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-lock"></i> Lokale Zusatzregeln · getrennte SOP-Ebene</h4>
-      <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Diese Altregeln liegen technisch außerhalb des MTS-Kerns. Sie sind deaktiviert und verändern die MTS-Stufe nicht.</div>
+      <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Diese Regeln liegen technisch außerhalb des MTS-Kerns. Ein Klick übernimmt die angezeigte Farbe bewusst als manuelle/lokale Priorisierung; automatisch verändern sie die Einstufung nicht.</div>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
-        ${localRules.map(r=>`<button type="button" class="local-rule-link" onclick="setManualPriority(${r.v},'lokale Zusatzregel',${JSON.stringify(r.l)})">
+        ${localRules.map(r=>`<button type="button" class="local-rule-link" onclick="setManualPriority(${r.v},'lokale Zusatzregel',decodeURIComponent('${encodeURIComponent(r.l)}'))">
   <span><i class="fa-solid fa-link"></i> <b>${r.l}</b><small>${r.t}</small></span>
   <span class="local-rule-action"><span class="td td-${r.v}"></span>${priorityColorName(r.v)} wählen <i class="fa-solid fa-arrow-right"></i></span>
 </button>`).join('')}
