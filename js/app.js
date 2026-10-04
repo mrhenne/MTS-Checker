@@ -120,79 +120,18 @@ setInterval(updateCockpitClock,30000);
 window.addEventListener('online',updateNetworkStatus);
 window.addEventListener('offline',updateNetworkStatus);
 
-function normSearchToken(v=''){
-  return String(v).toLowerCase()
-    .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
-    .replace(/[^a-z0-9]+/g,' ').trim();
-}
-function searchTokens(v=''){
-  return normSearchToken(v).split(/\s+/).filter(Boolean).map(t=>{
-    if(t.endsWith('en')&&t.length>5)return t.slice(0,-2);
-    if(t.endsWith('ern')&&t.length>6)return t.slice(0,-3);
-    if(t.endsWith('e')&&t.length>4)return t.slice(0,-1);
-    return t;
-  });
-}
-function getSemanticSearchHits(query){
-  const out=[];
-  if(typeof SEARCH_BODY_RULES==='undefined')return out;
-  const normalized=normSearchToken(query);
-  const tokens=searchTokens(query);
-  const symptomGroups=typeof SEARCH_SYMPTOM_RULES!=='undefined'?SEARCH_SYMPTOM_RULES:{};
-  const has=(arr)=>arr.some(term=>{
-    const nt=normSearchToken(term);
-    return normalized.includes(nt)||tokens.includes(searchTokens(nt)[0]);
-  });
-  SEARCH_BODY_RULES.forEach(rule=>{
-    const bodyMatch=rule.terms.some(term=>{
-      const nt=normSearchToken(term);
-      return normalized.includes(nt)||tokens.includes(searchTokens(nt)[0]);
-    });
-    if(!bodyMatch)return;
-    let boost=42;
-    if(has(symptomGroups.pain||[]))boost+=32;
-    if(has(symptomGroups.trauma||[]))boost+=28;
-    if(has(symptomGroups.wound||[]))boost+=30;
-    if(has(symptomGroups.swelling||[]))boost+=16;
-    if(has(symptomGroups.numbness||[]))boost+=14;
-    if(has(symptomGroups.weakness||[]))boost+=14;
-    rule.ids.forEach((id,rank)=>out.push({id,score:boost-(rank*7),label:rule.label}));
-  });
-  return out;
-}
-
 SI_.addEventListener('input',debounce(()=>{
   const q=SI_.value.trim().toLowerCase(),sB=document.getElementById('sB'),sC=document.getElementById('sC'),sH=document.getElementById('sH'),sR=document.getElementById('sR');
   if(q.length<2){sR.innerHTML='';sB.style.display='none';sH.style.display='block';return}
   sH.style.display='none';
   const ts=q.split(/[\s,;]+/).filter(t=>t.length>=2);
-  const norm=q.replace(/[-_/]+/g,' ').replace(/\s+/g,' ').trim();
-  const aliasHits=[];
-  const semanticHits=getSemanticSearchHits(q);
-  if(typeof SEARCH_ALIASES!=='undefined'){
-    Object.entries(SEARCH_ALIASES).forEach(([phrase,ids])=>{
-      const p=phrase.toLowerCase();
-      if(norm.includes(p)||p.includes(norm)||ts.every(t=>p.includes(t))){
-        ids.forEach((id,rank)=>aliasHits.push({id,score:60-(rank*6),phrase}));
-      }
-    });
-  }
-  let sc=D.map(d=>{
-    let s=0,m=[];
-    const indText = d.i ? Object.values(d.i).flat().join(' ').toLowerCase() : '';
-    if(d.name.toLowerCase().includes(q)){s+=25;m.push(q)}
-    if(indText.includes(q)){s+=15;m.push(q)}
-    d.kw.forEach(k=>{if(k.includes(q)||q.includes(k)){s+=20;m.push(q)}});
-    ts.forEach(t=>{
-      d.kw.forEach(k=>{if(k===t)s+=12;else if(k.includes(t)){s+=8;m.push(t)}});
-      if(d.name.toLowerCase().includes(t)){s+=10;m.push(t)}
-      if(indText.includes(t)){s+=5;m.push(t)}
-    });
-    if(ts.length>1&&ts.every(t=>d.kw.some(k=>k.includes(t))||d.name.toLowerCase().includes(t)||indText.includes(t)))s+=18;
-    aliasHits.filter(a=>a.id===d.id).forEach(a=>{s+=a.score;m.push(a.phrase)});
-    semanticHits.filter(a=>a.id===d.id).forEach(a=>{s+=a.score;m.push(a.label)});
-    return{...d,score:s,mt:[...new Set(m)]}
-  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
+  const sc=rankSearchResults(
+    q,
+    D,
+    typeof SEARCH_ALIASES!=='undefined'?SEARCH_ALIASES:{},
+    typeof SEARCH_BODY_RULES!=='undefined'?SEARCH_BODY_RULES:[],
+    typeof SEARCH_SYMPTOM_RULES!=='undefined'?SEARCH_SYMPTOM_RULES:{}
+  );
   sB.style.display='flex';sC.innerHTML=`<b>${sc.length}</b> Treffer`;
   if(!sc.length){sR.innerHTML='<div class="empty"><i class="fa-solid fa-magnifying-glass" style="font-size:2rem;margin-bottom:8px;display:block"></i>Keine Diagramme gefunden.</div>';return}
   sR.innerHTML=sc.slice(0,15).map(x=>`<div class="card" onclick="shD(${x.id})"><div class="ch"><span class="ct">${hl(x.name,ts)}</span><span class="tb tb-${cl(x.c)}"><span class="td td-${cl(x.c)}"></span>${x.c}</span></div><div class="cs">Diagramm Nr. ${x.id}</div><div class="tags">${x.kw.filter(k=>x.mt.some(m=>k.includes(m))).slice(0,5).map(k=>`<span class="tag m">${k}</span>`).join('')}${x.kw.filter(k=>!x.mt.some(m=>k.includes(m))).slice(0,3).map(k=>`<span class="tag">${k}</span>`).join('')}</div></div>`).join('')
