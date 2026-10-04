@@ -17,3 +17,5 @@ Datum: 2026-10-04
 
 ## Sicherheit
 - manuelle/lokale Priorisierung kann eine bereits höhere MTS-Stufe weiterhin niemals herabsetzen.
+
+Preview branch: `release/v2-rc4`
