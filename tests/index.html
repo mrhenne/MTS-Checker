@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="de">
+<head><meta charset="utf-8"><title>TriageAssist Tests</title></head>
+<body>
+<pre id="out">running...</pre>
+<script src="../data/mts-data.js"></script>
+<script src="../data/clinical-addons.js"></script>
+<script src="../data/training-cases.js"></script>
+<script src="../data/local-sop.js"></script>
+<script src="./triage-regression.js"></script>
+<script>
+const r=runTriageRegressionTests({D,GI,LV,BR,CASES,LOCAL_RULES,MTS_DATA_META,MTS_DIAGRAM_META});
+document.getElementById('out').textContent=JSON.stringify(r,null,2);
+document.body.dataset.testStatus=r.ok?'pass':'fail';
+</script>
+</body>
+</html>
