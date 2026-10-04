@@ -18,3 +18,5 @@ Datum: 2026-10-04
 - weitere Gruppen u. a. Atemnot, Thorax, Synkope, Schwindel, Neurologie, Abdomen, Rückenschmerz, Trauma, Wunden, Pädiatrie, Psychiatrie, Gynäkologie, Urologie, Toxikologie
 
 Die Sucherweiterung dient ausschließlich zum Finden möglicher Präsentationsdiagramme und legt keine Dringlichkeit fest.
+
+Preview branch: `release/v2-rc3`
