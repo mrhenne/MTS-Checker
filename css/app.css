@@ -307,3 +307,158 @@ body.focus-mode .vital-input-box { padding: 6px; }
 @media(max-width:640px){html{font-size:15px}.app{padding:12px}header h1{font-size:1.5rem}.nt{padding:8px 12px;font-size:0.8rem}.sr{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}.bm-fig{width:130px}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
 @media print{body{background:#fff!important;color:#000!important}.nav-tabs,.sb,.frow,.es,.hr,.ov{display:none!important}}
+
+
+/* ===== ZNA COCKPIT V2 ===== */
+:root{
+  --panel: color-mix(in srgb, var(--bg2) 88%, transparent);
+  --panel-strong: color-mix(in srgb, var(--bg2) 96%, transparent);
+  --glass-border: color-mix(in srgb, var(--card-border) 82%, transparent);
+}
+body{
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb,var(--accent) 10%,transparent), transparent 34rem),
+    radial-gradient(circle at 100% 20%, color-mix(in srgb,var(--blue) 8%,transparent), transparent 28rem),
+    var(--bg);
+}
+.app{max-width:1280px;padding:18px 24px 36px}
+.cockpit-header{
+  padding:18px 0 12px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px 24px;
+  text-align:left;
+}
+.cockpit-brand{display:flex;align-items:center;gap:14px;min-width:0}
+.brand-mark{
+  width:52px;height:52px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 90%,white),var(--blue));
+  color:white;font-size:1.35rem;box-shadow:0 12px 30px color-mix(in srgb,var(--accent) 24%,transparent);
+}
+.eyebrow{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text3);font-weight:800;margin-bottom:3px;
+}
+.cockpit-header h1{margin:0;font-size:1.85rem;line-height:1.05}
+.cockpit-header h1 .sub{font-size:.76rem;margin-top:5px}
+.cockpit-status{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.status-chip{
+  height:38px;padding:0 12px;border:1px solid var(--glass-border);
+  background:var(--panel);backdrop-filter:blur(12px);border-radius:999px;
+  display:flex;align-items:center;gap:7px;color:var(--text2);font-size:.75rem;font-weight:750;
+  box-shadow:var(--shadow-sm)
+}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 14%,transparent)}
+.status-chip.offline .status-dot{background:var(--red);box-shadow:0 0 0 4px color-mix(in srgb,var(--red) 14%,transparent)}
+.validation-chip{color:var(--yellow);border-color:color-mix(in srgb,var(--yellow) 34%,var(--glass-border))}
+.safety-strip{
+  grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  border:1px solid var(--glass-border);background:var(--panel);backdrop-filter:blur(12px);
+  border-radius:14px;padding:9px 12px;color:var(--text2);font-size:.74rem;font-weight:600;
+}
+.safety-strip i{margin-right:6px;color:var(--orange)}
+.validation-note{color:var(--text3)}
+.validation-note i{color:var(--yellow)}
+
+.nav-tabs{
+  margin:10px 0 18px;top:8px;border-radius:16px;padding:5px;
+  background:color-mix(in srgb,var(--bg2) 90%,transparent);backdrop-filter:blur(18px);
+}
+.nt{padding:10px 14px;border-radius:12px}
+.nt.on{box-shadow:0 8px 22px color-mix(in srgb,var(--accent) 24%,transparent)}
+
+.triage-hero{
+  position:relative;overflow:hidden;border:1px solid var(--glass-border);border-radius:26px;
+  background:linear-gradient(145deg,var(--panel-strong),color-mix(in srgb,var(--accent-bg) 45%,var(--bg2)));
+  padding:28px;box-shadow:var(--shadow-lg);margin-bottom:18px;
+}
+.triage-hero::after{
+  content:"";position:absolute;width:300px;height:300px;border-radius:50%;
+  right:-140px;top:-140px;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 16%,transparent),transparent 68%);
+  pointer-events:none;
+}
+.hero-copy{max-width:700px;margin-bottom:18px;position:relative;z-index:1}
+.hero-copy h2{font-size:clamp(1.55rem,3vw,2.3rem);letter-spacing:-.04em;line-height:1.05;margin-bottom:8px}
+.hero-copy p{color:var(--text2);font-size:.9rem;max-width:700px}
+.hero-search{position:relative;z-index:1}
+.cockpit-search{margin-bottom:6px}
+.cockpit-search input{
+  min-height:60px;border-radius:17px;padding-left:52px;font-size:1.03rem;
+  border:1px solid var(--glass-border);background:var(--bg2);
+  box-shadow:0 12px 35px rgb(0 0 0 / .07);
+}
+.cockpit-search i{left:19px;font-size:1.15rem}
+.quick-grid{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:18px;position:relative;z-index:1;
+}
+.quick-card{
+  min-height:74px;border:1px solid var(--glass-border);border-radius:14px;background:var(--panel);
+  color:var(--text2);font-family:var(--font);font-weight:700;font-size:.74rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;
+  transition:.18s ease;box-shadow:var(--shadow-sm)
+}
+.quick-card i{font-size:1.15rem;color:var(--accent)}
+.quick-card:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--text);box-shadow:var(--shadow)}
+.results-shell{max-width:100%}
+.results-shell .card{background:var(--panel-strong);backdrop-filter:blur(10px)}
+
+.ov{background:rgb(2 6 23 / .72);backdrop-filter:blur(10px)}
+.oc{
+  max-width:920px;max-height:92vh;border-radius:24px;padding:24px;
+  border:1px solid color-mix(in srgb,var(--card-border) 75%,transparent);
+  box-shadow:0 30px 80px rgb(0 0 0 / .34);
+}
+.triage-banner{
+  position:sticky;top:0;z-index:3;border-radius:18px;padding:18px 20px;margin:18px 0;
+  box-shadow:0 14px 32px rgb(0 0 0 / .15);
+}
+.t-b-1,.t-b-2{position:relative;overflow:hidden}
+.t-b-1::after,.t-b-2::after{
+  content:"";position:absolute;inset:-30%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 38%);
+  animation:triagePulse 2.4s ease-in-out infinite;pointer-events:none;
+}
+@keyframes triagePulse{0%,100%{transform:scale(.7);opacity:.15}50%{transform:scale(1.35);opacity:.55}}
+@media(prefers-reduced-motion:reduce){.t-b-1::after,.t-b-2::after{animation:none}.pnl{animation:none}}
+
+.decision-trace{
+  margin:0 0 20px;border:1px solid var(--glass-border);border-radius:18px;background:var(--panel);
+  padding:16px 16px 12px;box-shadow:var(--shadow-sm)
+}
+.trace-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.trace-head h4{font-size:.9rem;display:flex;align-items:center;gap:7px}
+.trace-badge{font-size:.68rem;font-weight:800;color:var(--text3);padding:4px 8px;border-radius:999px;background:var(--bg3)}
+.trace-list{display:flex;flex-direction:column;gap:8px}
+.trace-item{
+  display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:10px;
+  padding:10px 11px;border-radius:11px;background:var(--bg2);border:1px solid var(--card-border)
+}
+.trace-icon{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--bg3);color:var(--text3);font-size:.75rem}
+.trace-label{font-size:.82rem;color:var(--text2);line-height:1.35}
+.trace-label b{color:var(--text)}
+.trace-level{font-family:var(--mono);font-size:.7rem;font-weight:800}
+.trace-empty{font-size:.8rem;color:var(--text3);padding:8px 2px}
+
+.ind-head{border-radius:10px;margin-top:14px}
+.ind-row{margin-top:5px;border:1px solid var(--card-border);background:var(--panel);border-radius:10px}
+.ind-row:hover{border-color:var(--accent)}
+.ind-row:has(input:checked){box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-bg)}
+.vitals-grid{grid-template-columns:repeat(4,minmax(110px,1fr))}
+.vital-input-box{border-radius:13px;padding:12px;background:var(--panel)}
+.rule-box{border-radius:11px}
+
+@media(max-width:980px){
+  .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cockpit-header{grid-template-columns:1fr}
+  .cockpit-status{justify-content:flex-start}
+}
+@media(max-width:640px){
+  .app{padding:10px}
+  .triage-hero{padding:20px;border-radius:20px}
+  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quick-card:last-child{grid-column:1/-1}
+  .cockpit-status .status-chip:nth-child(2){display:none}
+  .safety-strip{font-size:.7rem}
+  .oc{padding:18px 14px;border-radius:20px}
+  .vitals-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
