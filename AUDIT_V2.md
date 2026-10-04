@@ -678,3 +678,60 @@ Noch bewusst nicht umgesetzt:
 - große Architekturmodernisierung.
 - finales ZNA-Redesign.
 - institutionell freigegebene lokale SOP.
+
+
+## Paket B abgeschlossen – Architekturmodernisierung
+
+Checkpoint: `checkpoint-B1-architecture`
+
+### Neue Struktur
+- `index.html`: nur noch App-Shell und Script-/Style-Einbindung
+- `css/app.css`: gesamte Darstellung
+- `data/mts-data.js`: MTS-Kerndaten, Navigation und Stufen
+- `data/clinical-addons.js`: klinische Zusatzdaten, aktuell Tox
+- `data/training-cases.js`: Trainingsfälle
+- `js/app.js`: Anwendungslogik
+- `service-worker.js`: versionierter Offline-Cache
+- `version.json`: App-/Validierungsmetadaten
+
+### Wichtige Architekturverbesserungen
+- index.html von ca. 106 KB auf ca. 6 KB reduziert.
+- medizinische Daten von Anwendungslogik und CSS getrennt.
+- klinische Zusatzdaten und Trainingsfälle zusätzlich vom MTS-Kern getrennt.
+- dynamischer Blob-Service-Worker entfernt und durch echte versionierte Datei ersetzt.
+- alter Cache wird beim Aktivieren eines neuen Service Workers gelöscht.
+- Daten-/App-Version ist separat maschinenlesbar dokumentiert.
+
+### Doppelte technische Prüfung
+1. Syntaxprüfung erfolgreich für:
+   - data/mts-data.js
+   - data/clinical-addons.js
+   - data/training-cases.js
+   - js/app.js
+   - service-worker.js
+2. Datenintegrität:
+   - 55 Datensätze erhalten
+   - alle IDs eindeutig
+   - 5 MTS-Stufen erhalten
+   - 45 Trainingsfälle erhalten
+   - alle Trainingsdiagramm-Referenzen gültig
+   - alle Bodymap-Referenzen gültig
+3. HTML:
+   - CSS extern geladen
+   - Inline-Styleblock entfernt
+   - Inline-Appscript entfernt
+   - Script-Reihenfolge Daten -> Zusatzdaten -> Training -> App korrekt
+   - kritische DOM-Anker erhalten
+4. Service Worker:
+   - alle App-Shell-Dateien im Cache
+   - Cache-Invalidierung vorhanden
+   - clients.claim vorhanden
+5. Diff gegen backup/pre-architecture-b:
+   - ausschließlich Struktur-/Dateiaufteilung
+   - keine medizinische Regeländerung in Paket B
+
+### Noch offen
+- lokale SOP vollständig aus den MTS-Datensätzen herausmodellieren
+- echte automatisierte Test-Suite/CI
+- finales ZNA-UI-Redesign
+- vollständige fachliche Validierung gegen lizenzierte MTS-Vollreferenz
