@@ -1,0 +1,34 @@
+name: TriageAssist Quality
+
+on:
+  push:
+    branches:
+      - main
+      - dev/mts-checker-v2
+      - 'release/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run triage regression tests
+        run: node tests/run-tests.cjs
+      - name: Check JavaScript syntax
+        run: |
+          node --check data/mts-data.js
+          node --check data/clinical-addons.js
+          node --check data/training-cases.js
+          node --check data/local-sop.js
+          node --check tests/triage-regression.js
+          node --check js/app.js
+          node --check service-worker.js
