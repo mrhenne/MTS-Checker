@@ -134,7 +134,7 @@ function hl(t,ts){let r=t;ts.forEach(x=>{r=r.replace(new RegExp(`(${esc(x)})`,'g
 function cl(c){return{Kardiologisch:2,Neurologisch:2,Respiratorisch:2,Trauma:3,Abdominell:3,Chirurgisch:3,Pädiatrisch:3,Psychiatrisch:3,Toxikologisch:2,Internistisch:3,Gynäkologisch:3,Urologisch:3,Allgemein:4,'HNO / Sinnesorgane':4,Dermatologisch:4,Orthopädisch:4,Spezial:2}[c]||3}
 
 function initBM(){
-  document.getElementById('bmC').innerHTML=`<div class="bm-fig">${svgF()}<div class="bm-fig-lbl">Front</div></div><div class="bm-fig">${svgB()}<div class="bm-fig-lbl">Back</div></div>`;
+  document.getElementById('bmC').innerHTML=`<div class="bm-fig">${svgF()}<div class="bm-fig-lbl">Vorderseite</div></div><div class="bm-fig">${svgB()}<div class="bm-fig-lbl">Rückseite</div></div>`;
   document.getElementById('bmP').innerHTML=BR.filter(r=>r.k==='skin'||r.k==='psych').map(r=>`<button class="bm-pill" data-r="${r.k}"><i class="fa-solid ${r.icon}"></i> ${r.n}</button>`).join('');
   document.getElementById('bmR').innerHTML='<div class="bm-empty"><i class="fa-solid fa-hand-pointer" style="font-size:2rem;margin-bottom:8px;display:block"></i> Region wählen</div>';
   document.querySelectorAll('.bz').forEach(z=>z.addEventListener('click',()=>bmS(z.dataset.r)));
@@ -1107,6 +1107,7 @@ function runSafetySelfTests(){
   test('legacy-rules-outside-core', typeof LOCAL_RULES!=='undefined' && !rov.includes('d.r'));
   test('no-global-vital-autotriage', !rov.includes('vLvl') && !rov.includes('Math.min(lvl, vLvl)'));
   const calcCore=rov.slice(0,rov.indexOf('const lObj'));
+  test('vital-advisories-do-not-triage', !calcCore.includes('getVitalAdvisories') && !calcCore.includes('vitalFieldClass'));
   test('validation-metadata-does-not-triage', !calcCore.includes('validationState') && !calcCore.includes('getValidationRecord') && !calcCore.includes('local-approved'));
   test('training-level-evaluation', trnLvl.toString().includes('chosen===correct'));
   test('qsofa-separated', rGCS.toString().includes('kein MTS'));
