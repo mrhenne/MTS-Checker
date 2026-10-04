@@ -582,3 +582,5 @@ body.focus-mode .oc{max-height:96vh}
   .validation-form-grid{grid-template-columns:1fr}
   .validation-form-grid .full{grid-column:auto}
 }
+
+.validation-exportbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:-4px}
