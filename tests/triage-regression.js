@@ -22,7 +22,8 @@
     t('local rules cannot alter MTS metadata',MTS_DATA_META.localRulesAffectMTS===false);
     t('all bodymap refs resolve',BR.every(r=>r.ids.every(id=>D.some(d=>d.id===id))));
     t('all training refs resolve',CASES.every(c=>D.some(d=>d.id===c.diag)));
-    t('training cases have valid levels',CASES.every(c=>[1,2,3,4,5].includes(c.lvl)));
+    t('diagram-only training cases present',CASES.filter(c=>c.diagramOnly===true).length>=20);
+    t('training cases have valid levels or are diagram-only',CASES.every(c=>c.diagramOnly===true || [1,2,3,4,5].includes(c.lvl)));
     t('MANV outside MTS core',[54,55].every(id=>MTS_DIAGRAM_META[id]?.type==='manv-legacy'));
     t('ID53 special diagram',MTS_DIAGRAM_META[53]?.type==='mts-special');
 
