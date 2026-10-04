@@ -584,3 +584,51 @@ body.focus-mode .oc{max-height:96vh}
 }
 
 .validation-exportbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:-4px}
+
+
+/* ===== SYSTEM HEALTH F1 ===== */
+.health-center{display:flex;flex-direction:column;gap:16px}
+.health-hero{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:22px;border:1px solid var(--glass-border);border-radius:22px;background:var(--panel);
+  box-shadow:var(--shadow)
+}
+.health-hero h2{font-size:1.55rem;letter-spacing:-.03em;margin-bottom:5px}
+.health-hero p{color:var(--text2);font-size:.86rem;max-width:700px}
+.health-overall{
+  min-width:210px;padding:14px 16px;border:1px solid var(--card-border);border-radius:16px;
+  background:var(--bg2);display:flex;align-items:center;gap:10px
+}
+.health-overall i{font-size:1.35rem}
+.health-overall b{display:block;font-size:.86rem}
+.health-overall span{display:block;font-size:.7rem;color:var(--text3);margin-top:2px}
+.health-overall.pass{border-color:var(--green-border);background:var(--green-bg);color:var(--green)}
+.health-overall.fail{border-color:var(--red-border);background:var(--red-bg);color:var(--red)}
+.health-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.health-card{
+  padding:14px;border:1px solid var(--card-border);border-radius:15px;background:var(--panel);
+  display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-sm)
+}
+.health-card i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--accent-bg);color:var(--accent)}
+.health-card b{display:block;font-family:var(--mono);font-size:.9rem}
+.health-card span{display:block;color:var(--text3);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.health-details{
+  border:1px solid var(--card-border);border-radius:18px;background:var(--panel);padding:16px
+}
+.health-details-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.health-details-head h3{font-size:.95rem;display:flex;align-items:center;gap:7px}
+.health-check{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-bottom:1px solid var(--card-border);
+  font-size:.78rem
+}
+.health-check:last-child{border-bottom:none}
+.health-check.ok i{color:var(--green)}
+.health-check.bad i{color:var(--red)}
+.health-check b{display:block;color:var(--text)}
+.health-check span{display:block;color:var(--text3);font-size:.7rem;margin-top:2px}
+@media(max-width:900px){.health-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){
+  .health-hero{flex-direction:column;align-items:flex-start}
+  .health-overall{width:100%}
+  .health-grid{grid-template-columns:1fr}
+}
