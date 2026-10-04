@@ -3,6 +3,15 @@
  * They do not determine urgency.
  */
 const SEARCH_ALIASES = Object.freeze({
+  "körperverletzung":[5,51,30,41,38],
+  "körperverletzung anzeige":[5,51,30],
+  "nach körperverletzung":[5,51,30,41],
+  "geschlagen worden":[5,30,51],
+  "getreten worden":[5,17,51],
+  "schlägerei":[5,30,51,41],
+  "überfall":[5,30,51],
+  "faustschlag":[5,30,20,51],
+  "tritt gegen kopf":[5,30,51],
   "kopfplatzwunde":[30,51,41],
   "platzwunde kopf":[30,51],
   "kopfwunde":[30,51],
