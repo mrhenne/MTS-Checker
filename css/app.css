@@ -771,3 +771,40 @@ button,input,select,textarea,option{font-family:var(--font)}
   .local-rule-action{width:100%;justify-content:flex-end}
   .priority-dot{flex:1;justify-content:center}
 }
+
+
+/* ===== RC4 SAVE / NAVIGATION / RECENTS ===== */
+.recent-diagrams{
+  display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--card-border)
+}
+.recent-diagrams>span{font-size:.7rem;font-weight:800;color:var(--text3);display:flex;align-items:center;gap:6px;padding-top:7px}
+.recent-diagrams>div{display:flex;gap:7px;flex-wrap:wrap}
+.recent-diagrams button{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+  border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);
+  font:700 .72rem var(--font);cursor:pointer;transition:.16s ease
+}
+.recent-diagrams button:hover{border-color:var(--accent);color:var(--text);transform:translateY(-1px)}
+.hist-detail{display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;color:var(--text3);font-size:.7rem}
+.hist-detail span{display:inline-flex;align-items:center;gap:5px}
+.app-toast{
+  position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);
+  z-index:9999;min-width:280px;max-width:min(92vw,620px);padding:12px 15px;
+  border-radius:13px;background:var(--bg2);border:1px solid var(--green-border);
+  color:var(--text);box-shadow:var(--shadow-float);display:flex;align-items:center;gap:9px;
+  opacity:0;pointer-events:none;transition:.2s ease;font-size:.8rem;font-weight:700
+}
+.app-toast i{color:var(--green);font-size:1.05rem}
+.app-toast.error{border-color:var(--red-border)}
+.app-toast.error i{color:var(--red)}
+.app-toast.show{opacity:1;transform:translate(-50%,0)}
+.dark .recent-diagrams button{background:#101827;border-color:#324158;color:#d8e1ee}
+.dark .app-toast{background:#101827;border-color:#2f855a}
+@media(max-width:640px){
+  .recent-diagrams{display:block}
+  .recent-diagrams>span{margin-bottom:7px}
+  .recent-diagrams>div{display:grid;grid-template-columns:1fr}
+  .recent-diagrams button{border-radius:10px;justify-content:flex-start}
+  .app-toast{bottom:12px}
+}
