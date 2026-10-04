@@ -210,28 +210,13 @@ function buildDecisionTrace(d,lvl){
   });
 
   const vit=[];
-  if(curVit.gcs!==''){
-    const g=parseInt(curVit.gcs);
-    if(g<12)vit.push({txt:`GCS ${g}`,l:1});
-    else if(g<15)vit.push({txt:`GCS ${g}`,l:2});
-  }
-  if(curVit.spo2!==''){
-    const v=parseInt(curVit.spo2);
-    if(v<92)vit.push({txt:`SpO₂ ${v}%`,l:2});
-  }
-  if(curVit.temp!==''){
-    const v=parseFloat(String(curVit.temp).replace(',','.'));
-    if(v>41)vit.push({txt:`Temperatur ${v.toFixed(1)} °C`,l:2});
-    else if(v>39)vit.push({txt:`Temperatur ${v.toFixed(1)} °C`,l:3});
-  }
-  if(curVit.nrs!==''){
-    const v=parseInt(curVit.nrs);
-    if(v>=8)vit.push({txt:`NRS ${v}`,l:3});
-    else if(v>=5)vit.push({txt:`NRS ${v}`,l:4});
-  }
-  vit.forEach(v=>rows.push({icon:'fa-wave-square',label:`Aktueller Engine-Trigger: <b>${v.txt}</b>`,level:`Stufe ${v.l}`}));
+  if(curVit.gcs!=='') vit.push(`GCS ${parseInt(curVit.gcs)}`);
+  if(curVit.spo2!=='') vit.push(`SpO₂ ${parseInt(curVit.spo2)}%`);
+  if(curVit.temp!=='') vit.push(`Temperatur ${parseFloat(String(curVit.temp).replace(',','.')).toFixed(1)} °C`);
+  if(curVit.nrs!=='') vit.push(`NRS ${parseInt(curVit.nrs)}`);
+  vit.forEach(v=>rows.push({icon:'fa-wave-square',label:`Dokumentierter Vital-/Schmerzwert: <b>${v}</b> · derzeit ohne automatische MTS-Wertung`,level:''}));
 
-  const active=rows.slice(1);
+  const active=rows.filter(row=>row.level);
   return `
     <div class="decision-trace">
       <div class="trace-head">
@@ -245,43 +230,23 @@ function buildDecisionTrace(d,lvl){
             <div class="trace-label">${row.label}</div>
             <div class="trace-level" style="color:${row.level?['','var(--red)','var(--orange)','var(--yellow)','var(--green)','var(--blue)'][parseInt(row.level.match(/\d/)?.[0]||0)]:'var(--text3)'}">${row.level}</div>
           </div>`).join('')}
-        ${active.length===0?'<div class="trace-empty"><i class="fa-solid fa-circle-info"></i> Noch kein aktiver Diskriminator gewählt. Die angezeigte Stufe basiert aktuell auf der hinterlegten Basiseinstufung des Altbestands.</div>':''}
+        ${active.length===0?'<div class="trace-empty"><i class="fa-solid fa-circle-info"></i> Noch kein aktiver MTS-Diskriminator gewählt. Deshalb wird bewusst noch keine Dringlichkeitsstufe vergeben.</div>':''}
       </div>
     </div>`;
 }
 
 function rOvl(){
   const d=curDiag;
-  let lvl=d.b||5;
-  
-  selI.forEach(k=>{ const l = parseInt(k.split('-')[0]); if(l < lvl) lvl = l; });
+  let lvl=null;
 
-  // V2 Safety: lokale Sonderregeln (d.r) beeinflussen die MTS-Stufe während der Validierung nicht.
-  // Dadurch kann eine bereits höhere Dringlichkeit weder überschrieben noch heruntergestuft werden.
+  // D1: Eine MTS-Stufe entsteht nur durch einen explizit ausgewählten Diskriminator.
+  // Unvalidierte Basisstufen und globale Vital-/NRS-Heuristiken sind deaktiviert.
+  selI.forEach(k=>{
+    const l=parseInt(k.split('-')[0]);
+    if(lvl===null || l<lvl) lvl=l;
+  });
 
-  let vLvl = 5;
-  if(curVit.gcs !== '') {
-    const gcs = parseInt(curVit.gcs);
-    if(gcs < 15) vLvl = Math.min(vLvl, 2);
-    if(gcs < 12) vLvl = Math.min(vLvl, 1);
-  }
-  if(curVit.spo2 !== '') {
-    const spo2 = parseInt(curVit.spo2);
-    if(spo2 < 92) vLvl = Math.min(vLvl, 2);
-  }
-  if(curVit.temp !== '') {
-    const temp = parseFloat(curVit.temp.replace(',','.'));
-    if(temp > 41) vLvl = Math.min(vLvl, 2);
-    else if(temp > 39) vLvl = Math.min(vLvl, 3);
-  }
-  if(curVit.nrs !== '') {
-    const nrs = parseInt(curVit.nrs);
-    if(nrs >= 8) vLvl = Math.min(vLvl, 3); 
-    else if(nrs >= 5) vLvl = Math.min(vLvl, 4); 
-  }
-  lvl = Math.min(lvl, vLvl);
-
-  const lObj = LV.find(x=>x.l===lvl);
+  const lObj = lvl!==null ? LV.find(x=>x.l===lvl) : null;
   const rl = D.filter(x=>x.c===d.c&&x.id!==d.id);
 
   let html = `
@@ -290,13 +255,21 @@ function rOvl(){
     <span class="tb tb-${cl(d.c)}"><span class="td td-${cl(d.c)}"></span>${d.id===53?'MTS Sonderdiagramm':d.c}</span>
     <h2 style="font-size:1.3rem;font-weight:800;margin-top:12px;color:var(--text)">${d.id}. ${d.name}</h2>
     
-    <div class="triage-banner t-b-${lvl}">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.18);display:grid;place-items:center"><i class="fa-solid fa-triangle-exclamation"></i></span>
-        <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">Aktuelle MTS Einstufung</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
-      </div>
-      <div class="t-time">Max: ${lObj.t}</div>
-    </div>
+    ${lvl!==null?`
+      <div class="triage-banner t-b-${lvl}">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.18);display:grid;place-items:center"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82">Aktuelle MTS Einstufung</div><div>Stufe ${lvl} · ${lObj.n}</div></div>
+        </div>
+        <div class="t-time">Max: ${lObj.t}</div>
+      </div>`
+      :`<div class="triage-banner t-b-neutral">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:34px;height:34px;border-radius:11px;background:var(--bg3);display:grid;place-items:center"><i class="fa-solid fa-circle-question"></i></span>
+          <div><div style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)">MTS Einstufung</div><div>Noch nicht eingestuft</div></div>
+        </div>
+        <div class="t-time">Diskriminator wählen</div>
+      </div>`}
     ${buildDecisionTrace(d,lvl)}`;
 
   if(d.c === 'Pädiatrisch'){
@@ -320,7 +293,8 @@ function rOvl(){
     </div>`;
   }
 
-  html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--text)"><i class="fa-solid fa-heart-pulse"></i> Dynamische Vitals (Trigger sofort)</h4>
+  html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;color:var(--text)"><i class="fa-solid fa-heart-pulse"></i> Vital- und Schmerzwerte</h4>
+    <div style="font-size:.76rem;color:var(--text3);margin-bottom:10px;font-weight:600"><i class="fa-solid fa-shield"></i> Dokumentation בלבד: In D1 verändern diese Werte die MTS-Stufe nicht automatisch.</div>
     <div class="vitals-grid">
       <div class="vital-input-box" style="position:relative; display:flex; flex-direction:column;">
         <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -343,17 +317,18 @@ function rOvl(){
       </div>
     </div>`;
 
-  if(d.r && d.r.length > 0){
+  const localRules=(typeof LOCAL_RULES!=='undefined' && LOCAL_RULES[d.id]) ? LOCAL_RULES[d.id] : [];
+  if(localRules.length > 0){
     html += `<div style="margin-bottom:20px;background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:var(--radius-sm);padding:16px;">
-      <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-lock"></i> Lokale Zusatzregeln vorübergehend deaktiviert</h4>
-      <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Für dieses Diagramm existieren ältere lokale oder heuristische Sonderregeln. Sie werden während der V2-Validierung nur angezeigt und beeinflussen die MTS-Stufe bewusst nicht.</div>
+      <h4 style="font-size:0.85rem;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-lock"></i> Lokale Zusatzregeln · getrennte SOP-Ebene</h4>
+      <div style="font-size:.82rem;color:var(--text2);line-height:1.5">Diese Altregeln liegen technisch außerhalb des MTS-Kerns. Sie sind deaktiviert und verändern die MTS-Stufe nicht.</div>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
-        ${d.r.map(r=>`<div style="padding:9px 11px;background:var(--bg2);border:1px solid var(--card-border);border-radius:8px;font-size:.8rem;color:var(--text3)"><i class="fa-solid fa-ban"></i> <b>${r.l}</b> · ${r.t}</div>`).join('')}
+        ${localRules.map(r=>`<div style="padding:9px 11px;background:var(--bg2);border:1px solid var(--card-border);border-radius:8px;font-size:.8rem;color:var(--text3)"><i class="fa-solid fa-ban"></i> <b>${r.l}</b> · ${r.t}</div>`).join('')}
       </div>
     </div>`;
   }
 
-  const act = getActions(lvl, d);
+  const act = lvl!==null ? getActions(lvl, d) : [];
   if(act.length > 0) {
     html += `<div style="margin-bottom:20px;background:var(--bg3);border-radius:var(--radius-sm);padding:16px;border:1px solid var(--card-border)">
       <h4 style="font-size:0.9rem;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:6px"><i class="fa-solid fa-check-double"></i> Klinische Zusatzhinweise</h4>
@@ -403,8 +378,10 @@ function rOvl(){
 
   html += `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
-      <button class="rbtn primary" onclick="addH(${d.id}, ${lvl});clO()"><i class="fa-solid fa-check"></i> Speichern (${lObj.n})</button>
-      <button class="rbtn" onclick="openISBAR(${lvl})" style="background:var(--accent-bg); color:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-clipboard-list"></i> ISBAR Generieren</button>
+      ${lvl!==null
+        ? `<button class="rbtn primary" onclick="addH(${d.id}, ${lvl});clO()"><i class="fa-solid fa-check"></i> Speichern (${lObj.n})</button>
+           <button class="rbtn" onclick="openISBAR(${lvl})" style="background:var(--accent-bg); color:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-clipboard-list"></i> ISBAR Generieren</button>`
+        : `<button class="rbtn" disabled style="opacity:.5;cursor:not-allowed"><i class="fa-solid fa-lock"></i> Erst Diskriminator wählen</button>`}
     </div>`;
     
   document.getElementById('oC').innerHTML=html;
