@@ -5,9 +5,9 @@
  */
 
 const MTS_DATA_META = Object.freeze({
-  referenceBasis: "Deutsche MTS Ausgabe 2025 / Third Edition v3.8 – vollständige lizenzierte Detailprüfung ausstehend",
+  referenceBasis: "Deutsche MTS 6. Auflage 2025 + öffentliches Update 2025; vollständige lizenzierte Detailprüfung aller Diagramme ausstehend",
   status: "validation",
-  reviewedOn: "2026-10-04",
+  reviewedOn: "2026-10-05",
   automaticVitals: false,
   automaticBaseline: false,
   localRulesAffectMTS: false
