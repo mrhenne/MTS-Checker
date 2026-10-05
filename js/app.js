@@ -798,48 +798,64 @@ function rOvl(){
 
   html += `<h4 style="font-size:0.9rem;font-weight:700;margin-bottom:4px;color:var(--text)"><i class="fa-solid fa-heart-pulse"></i> Vital- und Schmerzwerte</h4>
     <div style="font-size:.76rem;color:var(--text3);margin-bottom:10px;font-weight:600"><i class="fa-solid fa-shield"></i> Dokumentation: In D1 verändern diese Werte die MTS-Stufe nicht automatisch.</div>
-    <div class="vitals-grid">
-      <div class="vital-input-box${vitalFieldClass('gcs')}" style="position:relative; display:flex; flex-direction:column;">
-        <label style="display:flex; justify-content:space-between; align-items:center;">
-          GCS (3 bis 15)
-          <button onclick="openGCS()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.1rem;padding:0 4px;" title="GCS Rechner öffnen"><i class="fa-solid fa-calculator"></i></button>
-        </label>
-        <input type="number" min="3" max="15" value="${curVit.gcs}" onchange="updV('gcs', this.value)" style="margin-top:auto;">
-        <div class="vital-reference">
-          <b>MTS Bewusstsein:</b>
-          ${isPediatricMtsContext()
-            ? '<span>Kind nicht ansprechbar → Rot · nur Ansprache/Schmerz → Orange</span>'
-            : '<span>Erwachsene: veränderter Bewusstseinszustand → Orange · anhaltender Krampfanfall → Rot</span>'}
-          <small>GCS ist Dokumentationshilfe; beim Erwachsenen entscheidet der klinische Bewusstseinsindikator, nicht eine pauschale numerische Rot-Grenze.</small>
+    <div class="vitals-grid vital-grid-modern">
+      <div class="vital-input-box vital-card-modern ${vitalFieldClass('gcs')}">
+        <div class="vital-card-head">
+          <label>GCS</label>
+          <button class="vital-calc-btn" onclick="openGCS()" title="GCS Rechner öffnen"><i class="fa-solid fa-calculator"></i></button>
         </div>
+        <div class="vital-value-row">
+          <input type="number" min="3" max="15" value="${curVit.gcs}" onchange="updV('gcs', this.value)" inputmode="numeric" aria-label="GCS Wert">
+          <span>3–15</span>
+        </div>
+        ${gcsClinicalCards()}
+        <div class="vital-card-note">GCS dokumentiert den Summenwert. Für MTS zählt der klinische Bewusstseinsindikator.</div>
       </div>
 
-      <div class="vital-input-box${vitalFieldClass('spo2')}">
-        <label>SpO₂ (%)</label>
-        <div class="spo2-row">
-          <input type="number" min="0" max="100" value="${curVit.spo2}" onchange="updV('spo2', this.value)">
+      <div class="vital-input-box vital-card-modern ${vitalFieldClass('spo2')}">
+        <div class="vital-card-head"><label>SpO₂</label><span>%</span></div>
+        <div class="vital-value-row split">
+          <input type="number" min="0" max="100" value="${curVit.spo2}" onchange="updV('spo2', this.value)" inputmode="decimal" aria-label="SpO2 Wert">
           <select onchange="updSpO2Mode(this.value)" aria-label="SpO2 Messbedingung">
             <option value="air" ${curVit.spo2Mode!=='o2'?'selected':''}>Raumluft</option>
             <option value="o2" ${curVit.spo2Mode==='o2'?'selected':''}>O₂-Gabe</option>
           </select>
         </div>
-        ${curVit.spo2Mode==='o2'
-          ? '<div class="vital-mini-scale cols-2"><span class="scale-neutral">≥95 % kein O₂-Diskriminator</span><span class="scale-orange">&lt;95 % Orange</span></div>'
-          : '<div class="vital-mini-scale"><span class="scale-neutral">≥95 % kein O₂-Diskriminator</span><span class="scale-yellow">92–94 % Gelb</span><span class="scale-orange">&lt;92 % Orange</span></div>'}
+        <div class="vital-segment-bar">
+          ${curVit.spo2Mode==='o2'
+            ? vitalSegmentButton('spo2','neutral','≥95 % · kein Diskr.',null,'') + vitalSegmentButton('spo2','orange','<95 % · Orange',2,'Sehr niedrige O₂-Sättigung unter O₂-Gabe')
+            : vitalSegmentButton('spo2','neutral','≥95 % · kein Diskr.',null,'') + vitalSegmentButton('spo2','yellow','92–94 % · Gelb',3,'Niedrige O₂-Sättigung unter Raumluft') + vitalSegmentButton('spo2','orange','<92 % · Orange',2,'Sehr niedrige O₂-Sättigung unter Raumluft')}
+        </div>
+        <div class="vital-card-note">Farbiges Segment anklicken = bewusste manuelle Priorisierung.</div>
       </div>
 
-      <div class="vital-input-box${vitalFieldClass('temp')}">
-        <label>Temp (°C)</label>
-        <input type="number" step="0.1" value="${curVit.temp}" onchange="updV('temp', this.value)">
+      <div class="vital-input-box vital-card-modern ${vitalFieldClass('temp')}">
+        <div class="vital-card-head"><label>Temperatur</label><span>°C</span></div>
+        <div class="vital-value-row">
+          <input type="number" step="0.1" value="${curVit.temp}" onchange="updV('temp', this.value)" inputmode="decimal" aria-label="Temperatur">
+        </div>
         ${isPediatricMtsContext()
-          ? '<div class="vital-reference"><b>Pädiatrie:</b><span>Temperaturindikatoren sind alters- und diagrammabhängig.</span><small>Keine pauschale Erwachsenen-Farblogik verwenden.</small></div>'
-          : '<div class="vital-temp-scale"><span class="scale-orange">&lt;35 Orange</span><span class="scale-neutral">35–37,4 kein Temp.-Diskr.</span><span class="scale-green">37,5–38,4 Grün</span><span class="scale-yellow">38,5–40,9 Gelb</span><span class="scale-orange">≥41 Orange</span></div>'}
+          ? '<div class="vital-card-note emphasis">Pädiatrie: Temperaturindikatoren sind alters- und diagrammabhängig. Keine Erwachsenen-Segmentlogik.</div>'
+          : '<div class="vital-segment-bar temp">' +
+              vitalSegmentButton('temp','orange-low','<35 · Orange',2,'Kalter Erwachsener') +
+              vitalSegmentButton('temp','neutral','35–37,4 · kein Diskr.',null,'') +
+              vitalSegmentButton('temp','green','37,5–38,4 · Grün',4,'Warmer Erwachsener') +
+              vitalSegmentButton('temp','yellow','38,5–40,9 · Gelb',3,'Heißer Erwachsener') +
+              vitalSegmentButton('temp','orange-high','≥41 · Orange',2,'Sehr heißer Erwachsener') +
+            '</div><div class="vital-card-note">Farbiges Segment anklicken = bewusste manuelle Priorisierung.</div>'}
       </div>
 
-      <div class="vital-input-box${vitalFieldClass('nrs')}">
-        <label>NRS (0-10)</label>
-        <input type="number" min="0" max="10" value="${curVit.nrs}" onchange="updV('nrs', this.value)">
-        <div class="vital-mini-scale"><span class="scale-green">1–3 Grün</span><span class="scale-yellow">4–6 Gelb</span><span class="scale-orange">7–10 Orange</span></div>
+      <div class="vital-input-box vital-card-modern ${vitalFieldClass('nrs')}">
+        <div class="vital-card-head"><label>NRS</label><span>0–10</span></div>
+        <div class="vital-value-row">
+          <input type="number" min="0" max="10" value="${curVit.nrs}" onchange="updV('nrs', this.value)" inputmode="numeric" aria-label="NRS Schmerzscore">
+        </div>
+        <div class="vital-segment-bar">
+          ${vitalSegmentButton('nrs','green','1–3 · Grün',4,'Leichter Schmerz NRS 1–3')}
+          ${vitalSegmentButton('nrs','yellow','4–6 · Gelb',3,'Mäßiger Schmerz NRS 4–6')}
+          ${vitalSegmentButton('nrs','orange','7–10 · Orange',2,'Starker Schmerz NRS 7–10')}
+        </div>
+        <div class="vital-card-note">Messwert markiert automatisch den passenden Bereich. Klick übernimmt die Farbe bewusst.</div>
       </div>
     </div>
     ${renderVitalAdvisories()}`;
