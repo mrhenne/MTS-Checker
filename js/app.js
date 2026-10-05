@@ -560,7 +560,9 @@ function getVitalAdvisories(){
   }
   if(curVit.nrs!==''){
     const v=Number(curVit.nrs);
-    if(v>=7&&v<=10) add('nrs','alert','Hoher Schmerzscore',`NRS ${v}/10: starken Schmerz berücksichtigen und den aktuellen MTS-Schmerz-Diskriminator prüfen.`,3);
+    if(v>=7&&v<=10) add('nrs','critical','Starker Schmerz',`NRS ${v}/10: entspricht nach eurer MTS-NRS-Systematik Stufe 2 (Orange). Passenden Schmerz-Diskriminator prüfen.`,2);
+    else if(v>=4&&v<=6) add('nrs','alert','Mäßiger Schmerz',`NRS ${v}/10: entspricht nach eurer MTS-NRS-Systematik Stufe 3 (Gelb). Passenden Schmerz-Diskriminator prüfen.`,3);
+    else if(v>=1&&v<=3) add('nrs','info','Leichter Schmerz',`NRS ${v}/10: entspricht nach eurer MTS-NRS-Systematik Stufe 4 (Grün). Passenden Schmerz-Diskriminator prüfen.`,4);
   }
   return out;
 }
@@ -584,7 +586,8 @@ function priorityButtons(source,label,suggested){
 function vitalFieldClass(field){
   const a=getVitalAdvisories().filter(x=>x.field===field);
   if(a.some(x=>x.severity==='critical'))return ' vital-critical';
-  if(a.length)return ' vital-alert';
+  if(a.some(x=>x.severity==='alert'))return ' vital-alert';
+  if(a.some(x=>x.severity==='info'))return ' vital-info';
   return '';
 }
 function renderVitalAdvisories(){
