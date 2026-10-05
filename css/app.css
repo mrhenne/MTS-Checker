@@ -1131,3 +1131,34 @@ button,input,select,textarea,option{font-family:var(--font)}
   .update-banner>div{min-width:calc(100% - 40px)}
   .update-banner>button:not(.update-later){flex:1}
 }
+
+
+/* ===== NRS M1 ===== */
+.vital-input-box.vital-level-2{
+  border-color:var(--orange)!important;background:var(--orange-bg)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 12%,transparent)
+}
+.vital-input-box.vital-level-3{
+  border-color:var(--yellow)!important;background:var(--yellow-bg)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--yellow) 12%,transparent)
+}
+.vital-input-box.vital-level-4{
+  border-color:var(--green)!important;background:var(--green-bg)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 12%,transparent)
+}
+.vital-input-box.vital-info{
+  border-color:var(--green-border)!important;background:var(--green-bg)!important
+}
+.nrs-mini-scale{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:7px
+}
+.nrs-mini-scale span{
+  padding:4px 5px;border-radius:7px;text-align:center;font-size:.62rem;font-weight:800;
+  border:1px solid var(--card-border)
+}
+.nrs-green{background:var(--green-bg);color:var(--green);border-color:var(--green-border)!important}
+.nrs-yellow{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border)!important}
+.nrs-orange{background:var(--orange-bg);color:var(--orange);border-color:var(--orange-border)!important}
+@media(max-width:390px){
+  .nrs-mini-scale{grid-template-columns:1fr}
+}
