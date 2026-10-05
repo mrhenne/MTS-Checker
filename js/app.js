@@ -633,7 +633,9 @@ function isVitalSegmentActive(field,key){
   return false;
 }
 function vitalSegmentButton(field,key,label,level,source){
-  const active=isVitalSegmentActive(field,key);
+  const measuredActive=isVitalSegmentActive(field,key);
+  const manualActive=level && manualPriority.source==='vital:'+field && manualPriority.level===Number(level);
+  const active=measuredActive||manualActive;
   const cls=['vital-segment','seg-'+key,active?'active':'',level?'actionable':'neutral'].filter(Boolean).join(' ');
   const action=level?('onclick="setManualPriority('+level+',\'vital:'+field+'\',decodeURIComponent(\''+encodeURIComponent(source||label)+'\'))"'):'';
   const hint=level?('title="'+priorityColorName(level)+' als manuelle Priorisierung wählen"'):'title="Kein direkter MTS-Diskriminator"';
@@ -642,15 +644,15 @@ function vitalSegmentButton(field,key,label,level,source){
 function gcsClinicalCards(){
   const g=curVit.gcs===''?null:Number(curVit.gcs);
   if(isPediatricMtsContext()){
-    return '<div class="gcs-clinical-cards">'+
+    return '<div class="gcs-clinical-cards pediatric">'+
       '<button type="button" class="gcs-clinical-card neutral"><b>Bewusstsein altersentsprechend</b><span>kein Bewusstseins-Diskriminator</span></button>'+
-      '<button type="button" class="gcs-clinical-card orange" onclick="setManualPriority(2,\'gcs-klinisch\',\'Kind reagiert nur auf Ansprache oder Schmerz\')"><b>Nur Ansprache / Schmerz</b><span>Orange</span></button>'+
-      '<button type="button" class="gcs-clinical-card red" onclick="setManualPriority(1,\'gcs-klinisch\',\'Kind nicht ansprechbar\')"><b>Nicht ansprechbar</b><span>Rot</span></button>'+
+      '<button type="button" class="gcs-clinical-card orange '+(manualPriority.source==='gcs-klinisch'&&manualPriority.level===2?'active':'')+'" onclick="setManualPriority(2,\'gcs-klinisch\',\'Kind reagiert nur auf Ansprache oder Schmerz\')"><b>Nur Ansprache / Schmerz</b><span>Orange</span></button>'+
+      '<button type="button" class="gcs-clinical-card red '+(manualPriority.source==='gcs-klinisch'&&manualPriority.level===1?'active':'')+'" onclick="setManualPriority(1,\'gcs-klinisch\',\'Kind nicht ansprechbar\')"><b>Nicht ansprechbar</b><span>Rot</span></button>'+
     '</div>';
   }
   return '<div class="gcs-clinical-cards">'+
     '<button type="button" class="gcs-clinical-card neutral '+(g===15?'active':'')+'"><b>Bewusstsein unverändert</b><span>kein Bewusstseins-Diskriminator</span></button>'+
-    '<button type="button" class="gcs-clinical-card orange '+(g!==null&&g<15?'active':'')+'" onclick="setManualPriority(2,\'gcs-klinisch\',\'Veränderter Bewusstseinszustand\')"><b>Bewusstsein verändert</b><span>Orange</span></button>'+
+    '<button type="button" class="gcs-clinical-card orange '+((g!==null&&g<15)||(manualPriority.source==='gcs-klinisch'&&manualPriority.level===2)?'active':'')+'" onclick="setManualPriority(2,\'gcs-klinisch\',\'Veränderter Bewusstseinszustand\')"><b>Bewusstsein verändert</b><span>Orange</span></button>'+
   '</div>';
 }
 function vitalFieldClass(field){
