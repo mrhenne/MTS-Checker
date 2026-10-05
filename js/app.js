@@ -703,7 +703,7 @@ function rOvl(){
         <span><b>Quelle</b>${restoredAssessment.source==='manual-or-local'?'manuell/lokal':'MTS-Diskriminator'}</span>
         <span><b>Vitalwerte</b>${[
           restoredAssessment.vitals?.gcs?`GCS ${restoredAssessment.vitals.gcs}`:'',
-          restoredAssessment.vitals?.spo2?`SpO₂ ${restoredAssessment.vitals.spo2}%`:'',
+          restoredAssessment.vitals?.spo2?`SpO₂ ${restoredAssessment.vitals.spo2}% (${restoredAssessment.vitals.spo2Mode==='o2'?'O₂-Gabe':'Raumluft'})`:'',
           restoredAssessment.vitals?.temp?`${restoredAssessment.vitals.temp} °C`:'',
           restoredAssessment.vitals?.nrs?`NRS ${restoredAssessment.vitals.nrs}`:''
         ].filter(Boolean).join(' · ')||'nicht gespeichert'}</span>
@@ -1257,7 +1257,7 @@ function rHist(){
     const d=new Date(h.ts);
     const lvlDot = h.l ? `<span class="td td-${h.l}" style="margin-right:6px"></span>Stufe ${h.l}` : '';
     const sourceTxt=h.source==='manual-or-local'?'manuell/lokal':'MTS-Diskriminator';
-    const vit=[h.vitals?.gcs?`GCS ${h.vitals.gcs}`:'',h.vitals?.spo2?`SpO₂ ${h.vitals.spo2}%`:'',h.vitals?.temp?`${h.vitals.temp} °C`:'',h.vitals?.nrs?`NRS ${h.vitals.nrs}`:''].filter(Boolean).join(' · ');
+    const vit=[h.vitals?.gcs?`GCS ${h.vitals.gcs}`:'',h.vitals?.spo2?`SpO₂ ${h.vitals.spo2}% (${h.vitals.spo2Mode==='o2'?'O₂-Gabe':'Raumluft'})`:'',h.vitals?.temp?`${h.vitals.temp} °C`:'',h.vitals?.nrs?`NRS ${h.vitals.nrs}`:''].filter(Boolean).join(' · ');
     return`<div class="hi"><div class="inf"><div class="sym">${h.name}</div><div class="met"><i class="fa-regular fa-calendar"></i> ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit'})} ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} &bull; ${h.c} &bull; Nr.${h.id} <span style="margin-left:auto;font-weight:700;color:var(--text);display:flex;align-items:center">${lvlDot}</span></div><div class="hist-detail"><span><i class="fa-solid fa-route"></i> ${sourceTxt}</span>${vit?`<span><i class="fa-solid fa-wave-square"></i> ${vit}</span>`:''}</div></div><div class="act" style="display:flex;gap:6px;margin-left:12px"><button class="ib view" onclick="openSavedAssessment(${i})" title="Gespeicherte Einschätzung öffnen"><i class="fa-regular fa-eye"></i></button><button class="ib" onclick="rmH(${i})" title="Löschen"><i class="fa-solid fa-trash"></i></button></div></div>`
   }).join('')
 }
