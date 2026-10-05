@@ -585,10 +585,20 @@ function priorityButtons(source,label,suggested){
 }
 function vitalFieldClass(field){
   const a=getVitalAdvisories().filter(x=>x.field===field);
-  if(field==='nrs' && a[0]?.suggestedLevel) return ' vital-level-'+a[0].suggestedLevel;
-  if(a.some(x=>x.severity==='critical'))return ' vital-critical';
-  if(a.some(x=>x.severity==='alert'))return ' vital-alert';
-  if(a.some(x=>x.severity==='info'))return ' vital-info';
+  if(a[0]?.suggestedLevel) return ' vital-level-'+a[0].suggestedLevel;
+
+  if(field==='gcs' && curVit.gcs!==''){
+    const v=Number(curVit.gcs);
+    if(v===15)return ' vital-level-4';
+  }
+  if(field==='spo2' && curVit.spo2!==''){
+    const v=Number(curVit.spo2);
+    if(v>=95&&v<=100)return ' vital-level-4';
+  }
+  if(field==='temp' && curVit.temp!==''){
+    const v=Number(String(curVit.temp).replace(',','.'));
+    if(Number.isFinite(v)&&v>=36&&v<39)return ' vital-level-4';
+  }
   return '';
 }
 function renderVitalAdvisories(){
@@ -737,19 +747,22 @@ function rOvl(){
           <button onclick="openGCS()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.1rem;padding:0 4px;" title="GCS Rechner öffnen"><i class="fa-solid fa-calculator"></i></button>
         </label>
         <input type="number" min="3" max="15" value="${curVit.gcs}" onchange="updV('gcs', this.value)" style="margin-top:auto;">
+        <div class="vital-mini-scale cols-2"><span class="scale-green">15 Grün</span><span class="scale-orange">3–14 Orange</span></div>
       </div>
       <div class="vital-input-box${vitalFieldClass('spo2')}">
         <label>SpO₂ (%)</label>
         <input type="number" min="0" max="100" value="${curVit.spo2}" onchange="updV('spo2', this.value)">
+        <div class="vital-mini-scale"><span class="scale-green">≥95 % Grün</span><span class="scale-yellow">92–94 % Gelb</span><span class="scale-orange">&lt;92 % Orange</span></div>
       </div>
       <div class="vital-input-box${vitalFieldClass('temp')}">
         <label>Temp (°C)</label>
         <input type="number" step="0.1" value="${curVit.temp}" onchange="updV('temp', this.value)">
+        <div class="vital-mini-scale temp-scale"><span class="scale-green">36–38,9 °C Grün</span><span class="scale-yellow">35–35,9 / 39–41 °C Gelb</span><span class="scale-orange">&lt;35 / &gt;41 °C Orange</span></div>
       </div>
       <div class="vital-input-box${vitalFieldClass('nrs')}">
         <label>NRS (0-10)</label>
         <input type="number" min="0" max="10" value="${curVit.nrs}" onchange="updV('nrs', this.value)">
-        <div class="nrs-mini-scale"><span class="nrs-green">1–3 Grün</span><span class="nrs-yellow">4–6 Gelb</span><span class="nrs-orange">7–10 Orange</span></div>
+        <div class="vital-mini-scale"><span class="scale-green">1–3 Grün</span><span class="scale-yellow">4–6 Gelb</span><span class="scale-orange">7–10 Orange</span></div>
       </div>
     </div>
     ${renderVitalAdvisories()}`;
