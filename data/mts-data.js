@@ -24,10 +24,10 @@ const MTS_DIAGRAM_META = Object.freeze(Object.fromEntries(
 
 const GI = {
   1: ["Atemweg verlegt", "Inadäquate Atmung", "Schock / Kreislaufkollaps", "Aktueller Krampfanfall", "Hypoglykämie"],
-  2: ["Gefährdeter Atemweg", "Schwere Blutung", "Veränderter Bewusstseinszustand", "Temperatur > 41°C"],
-  3: ["Unstillbare kleine Blutung", "Starke Schmerzen (NRS 8 bis 10)", "Abnormer Puls"],
-  4: ["Mäßige Schmerzen (NRS 5 bis 7)", "Kürzliches Erbrechen", "Warmer Patient"],
-  5: ["Leichte Schmerzen (NRS 1 bis 4)", "Keine akuten Symptome"]
+  2: ["Gefährdeter Atemweg", "Schwere Blutung", "Veränderter Bewusstseinszustand", "Temperatur > 41°C", "Starke Schmerzen (NRS 7 bis 10)"],
+  3: ["Unstillbare kleine Blutung", "Mäßige Schmerzen (NRS 4 bis 6)", "Abnormer Puls"],
+  4: ["Leichte Schmerzen (NRS 1 bis 3)", "Kürzliches Erbrechen", "Warmer Patient"],
+  5: ["Keine akuten Symptome"]
 };
 
 const pedsV = {
