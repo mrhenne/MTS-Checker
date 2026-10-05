@@ -1507,3 +1507,8 @@ button,input,select,textarea,option{font-family:var(--font)}
   }
   .gcs-clinical-card:last-child{border-bottom:0}
 }
+
+.gcs-clinical-cards.pediatric{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:560px){
+  .gcs-clinical-cards.pediatric{grid-template-columns:1fr}
+}
