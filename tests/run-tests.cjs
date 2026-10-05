@@ -44,3 +44,17 @@ if(!searchResult.ok){
   process.exit(1);
 }
 console.log('\nAll '+searchResult.count+' search quality tests passed.');
+
+const appSource=read('js/app.js');
+const cssSource=read('css/app.css');
+function assertUi(name,ok){
+  console.log((ok?'PASS':'FAIL')+'  ui: '+name);
+  if(!ok)process.exitCode=1;
+}
+assertUi('vital segment helper',appSource.includes('function vitalSegmentButton'));
+assertUi('SpO2 clickable bands',appSource.includes('92–94 % · Gelb')&&appSource.includes('<92 % · Orange'));
+assertUi('temperature clickable bands',appSource.includes('37,5–38,4 · Grün')&&appSource.includes('38,5–40,9 · Gelb'));
+assertUi('NRS clickable bands',appSource.includes('1–3 · Grün')&&appSource.includes('7–10 · Orange'));
+assertUi('clinical GCS cards',appSource.includes('Bewusstsein verändert')&&appSource.includes('Nicht ansprechbar'));
+assertUi('vital grid responsive',cssSource.includes('.vital-grid-modern')&&cssSource.includes('.vital-segment-bar'));
+if(process.exitCode)process.exit(1);
