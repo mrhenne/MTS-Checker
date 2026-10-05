@@ -640,6 +640,7 @@ function vitalSegmentButton(field,key,label,level,source){
   return '<button type="button" class="'+cls+'" '+action+' '+hint+'><span>'+label+'</span>'+(active?'<i class="fa-solid fa-check"></i>':'')+'</button>';
 }
 function gcsClinicalCards(){
+  const g=curVit.gcs===''?null:Number(curVit.gcs);
   if(isPediatricMtsContext()){
     return '<div class="gcs-clinical-cards">'+
       '<button type="button" class="gcs-clinical-card neutral"><b>Bewusstsein altersentsprechend</b><span>kein Bewusstseins-Diskriminator</span></button>'+
@@ -648,8 +649,8 @@ function gcsClinicalCards(){
     '</div>';
   }
   return '<div class="gcs-clinical-cards">'+
-    '<button type="button" class="gcs-clinical-card neutral"><b>Bewusstsein unverändert</b><span>kein Bewusstseins-Diskriminator</span></button>'+
-    '<button type="button" class="gcs-clinical-card orange" onclick="setManualPriority(2,\'gcs-klinisch\',\'Veränderter Bewusstseinszustand\')"><b>Bewusstsein verändert</b><span>Orange</span></button>'+
+    '<button type="button" class="gcs-clinical-card neutral '+(g===15?'active':'')+'"><b>Bewusstsein unverändert</b><span>kein Bewusstseins-Diskriminator</span></button>'+
+    '<button type="button" class="gcs-clinical-card orange '+(g!==null&&g<15?'active':'')+'" onclick="setManualPriority(2,\'gcs-klinisch\',\'Veränderter Bewusstseinszustand\')"><b>Bewusstsein verändert</b><span>Orange</span></button>'+
   '</div>';
 }
 function vitalFieldClass(field){
