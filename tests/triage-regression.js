@@ -30,6 +30,15 @@
     t('NRS 4-6 maps to yellow level 3',(GI[3]||[]).includes('Mäßige Schmerzen (NRS 4 bis 6)'));
     t('NRS 1-3 maps to green level 4',(GI[4]||[]).includes('Leichte Schmerzen (NRS 1 bis 3)'));
     t('no pain discriminator remains in blue level 5',!(GI[5]||[]).some(x=>/Schmerz/i.test(x)));
+    t('adult altered consciousness is orange',(GI[2]||[]).includes('Veränderter Bewusstseinszustand'));
+    t('unresponsive child is red',(GI[1]||[]).includes('Nicht ansprechbares Kind'));
+    t('history of unconsciousness is yellow',(GI[3]||[]).includes('Bericht über Bewusstlosigkeit'));
+    t('adult cold is orange',(GI[2]||[]).some(x=>x.includes('Kalter Erwachsener')&&x.includes('< 35')));
+    t('adult very hot is orange',(GI[2]||[]).some(x=>x.includes('Sehr heißer Erwachsener')&&x.includes('41')));
+    t('adult hot is yellow',(GI[3]||[]).some(x=>x.includes('Heißer Erwachsener')&&x.includes('38,5')));
+    t('adult warm is green',(GI[4]||[]).some(x=>x.includes('Warmer Patient')&&x.includes('37,5')));
+    t('no numeric GCS shortcut in core diagrams',D.filter(d=>d.id<=53).every(d=>!/GCS\\s*[<>≤≥]/i.test(JSON.stringify(d))));
+    t('no numeric SpO2 shortcut in core diagrams',D.filter(d=>d.id<=53).every(d=>!/SpO2\\s*[<>≤≥]/i.test(JSON.stringify(d))));
 
     // Pure classification invariant: smallest numeric selected level always wins.
     const classify=(levels)=>levels.length?Math.min(...levels):null;
