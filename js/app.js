@@ -585,6 +585,7 @@ function priorityButtons(source,label,suggested){
 }
 function vitalFieldClass(field){
   const a=getVitalAdvisories().filter(x=>x.field===field);
+  if(field==='nrs' && a[0]?.suggestedLevel) return ' vital-level-'+a[0].suggestedLevel;
   if(a.some(x=>x.severity==='critical'))return ' vital-critical';
   if(a.some(x=>x.severity==='alert'))return ' vital-alert';
   if(a.some(x=>x.severity==='info'))return ' vital-info';
@@ -748,6 +749,7 @@ function rOvl(){
       <div class="vital-input-box${vitalFieldClass('nrs')}">
         <label>NRS (0-10)</label>
         <input type="number" min="0" max="10" value="${curVit.nrs}" onchange="updV('nrs', this.value)">
+        <div class="nrs-mini-scale"><span class="nrs-green">1–3 Grün</span><span class="nrs-yellow">4–6 Gelb</span><span class="nrs-orange">7–10 Orange</span></div>
       </div>
     </div>
     ${renderVitalAdvisories()}`;
