@@ -1,10 +1,10 @@
 {
   "app": "TriageAssist",
   "architecture": "B1",
-  "version": "2.0.0-rc9",
+  "version": "2.0.0-rc10",
   "date": "2026-10-05",
   "mtsDataStatus": "validation",
-  "branch": "release/v2-rc9",
+  "branch": "release/v2-rc10",
   "ui": "G3",
   "medicalModel": "D1",
   "validationCenter": "E1",
@@ -24,5 +24,6 @@
   "offlineUpdate": "L1",
   "triageView": "L1",
   "nrsModel": "M1",
-  "vitalScales": "M2"
+  "vitalScales": "M2",
+  "mtsCoreReview": "N1"
 }
