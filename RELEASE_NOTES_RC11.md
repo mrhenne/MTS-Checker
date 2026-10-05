@@ -25,3 +25,5 @@ Datum: 2026-10-05
 ## Prüfung
 - Layout-/Responsive- und Funktionsprüfung separat durchgeführt
 - UI-Verträge zusätzlich im CI verankert
+
+Preview branch: `release/v2-rc11`
