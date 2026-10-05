@@ -36,3 +36,5 @@ Datum: 2026-10-05
 
 ## Sicherheit
 Vitalwerte bleiben Entscheidungshilfen. Sie verändern die MTS-Stufe nicht automatisch.
+
+Preview branch: `release/v2-rc10`
