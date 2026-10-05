@@ -26,6 +26,10 @@
     t('training cases have valid levels or are diagram-only',CASES.every(c=>c.diagramOnly===true || [1,2,3,4,5].includes(c.lvl)));
     t('MANV outside MTS core',[54,55].every(id=>MTS_DIAGRAM_META[id]?.type==='manv-legacy'));
     t('ID53 special diagram',MTS_DIAGRAM_META[53]?.type==='mts-special');
+    t('NRS 7-10 maps to orange level 2',(GI[2]||[]).includes('Starke Schmerzen (NRS 7 bis 10)'));
+    t('NRS 4-6 maps to yellow level 3',(GI[3]||[]).includes('Mäßige Schmerzen (NRS 4 bis 6)'));
+    t('NRS 1-3 maps to green level 4',(GI[4]||[]).includes('Leichte Schmerzen (NRS 1 bis 3)'));
+    t('no pain discriminator remains in blue level 5',!(GI[5]||[]).some(x=>/Schmerz/i.test(x)));
 
     // Pure classification invariant: smallest numeric selected level always wins.
     const classify=(levels)=>levels.length?Math.min(...levels):null;
