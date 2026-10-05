@@ -20,3 +20,5 @@ Die vom Nutzer vorgegebene NRS-Systematik ist nun durchgängig umgesetzt:
 
 ## Sicherheitsregel
 Die NRS-Eingabe setzt weiterhin nicht automatisch die MTS-Stufe. Sie zeigt die passende Stufe an und bietet die bewusste manuelle Auswahl an. Eine bereits höhere Priorität kann dadurch nicht herabgestuft werden.
+
+Preview branch: `release/v2-rc8`
