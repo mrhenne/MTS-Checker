@@ -607,6 +607,51 @@ function priorityButtons(source,label,suggested){
     [1,2,3,4,5].map(l=>'<button type="button" class="priority-dot p-'+l+(suggested===l?' suggested':'')+'" onclick="event.stopPropagation();setManualPriority('+l+',decodeURIComponent(\''+src+'\'),decodeURIComponent(\''+lab+'\'))" title="'+priorityColorName(l)+' wählen"><span class="td td-'+l+'"></span>'+priorityColorName(l)+'</button>').join('')+
     '</div></div>';
 }
+function isVitalSegmentActive(field,key){
+  if(field==='spo2' && curVit.spo2!==''){
+    const v=Number(curVit.spo2),onO2=curVit.spo2Mode==='o2';
+    if(onO2) return key===(v<95?'orange':'neutral');
+    if(v<92)return key==='orange';
+    if(v<95)return key==='yellow';
+    return key==='neutral';
+  }
+  if(field==='temp' && curVit.temp!==''){
+    const v=Number(String(curVit.temp).replace(',','.'));
+    if(!Number.isFinite(v))return false;
+    if(v<35)return key==='orange-low';
+    if(v<37.5)return key==='neutral';
+    if(v<38.5)return key==='green';
+    if(v<41)return key==='yellow';
+    return key==='orange-high';
+  }
+  if(field==='nrs' && curVit.nrs!==''){
+    const v=Number(curVit.nrs);
+    if(v>=1&&v<=3)return key==='green';
+    if(v>=4&&v<=6)return key==='yellow';
+    if(v>=7&&v<=10)return key==='orange';
+  }
+  return false;
+}
+function vitalSegmentButton(field,key,label,level,source){
+  const active=isVitalSegmentActive(field,key);
+  const cls=['vital-segment','seg-'+key,active?'active':'',level?'actionable':'neutral'].filter(Boolean).join(' ');
+  const action=level?('onclick="setManualPriority('+level+',\'vital:'+field+'\',decodeURIComponent(\''+encodeURIComponent(source||label)+'\'))"'):'';
+  const hint=level?('title="'+priorityColorName(level)+' als manuelle Priorisierung wählen"'):'title="Kein direkter MTS-Diskriminator"';
+  return '<button type="button" class="'+cls+'" '+action+' '+hint+'><span>'+label+'</span>'+(active?'<i class="fa-solid fa-check"></i>':'')+'</button>';
+}
+function gcsClinicalCards(){
+  if(isPediatricMtsContext()){
+    return '<div class="gcs-clinical-cards">'+
+      '<button type="button" class="gcs-clinical-card neutral"><b>Bewusstsein altersentsprechend</b><span>kein Bewusstseins-Diskriminator</span></button>'+
+      '<button type="button" class="gcs-clinical-card orange" onclick="setManualPriority(2,\'gcs-klinisch\',\'Kind reagiert nur auf Ansprache oder Schmerz\')"><b>Nur Ansprache / Schmerz</b><span>Orange</span></button>'+
+      '<button type="button" class="gcs-clinical-card red" onclick="setManualPriority(1,\'gcs-klinisch\',\'Kind nicht ansprechbar\')"><b>Nicht ansprechbar</b><span>Rot</span></button>'+
+    '</div>';
+  }
+  return '<div class="gcs-clinical-cards">'+
+    '<button type="button" class="gcs-clinical-card neutral"><b>Bewusstsein unverändert</b><span>kein Bewusstseins-Diskriminator</span></button>'+
+    '<button type="button" class="gcs-clinical-card orange" onclick="setManualPriority(2,\'gcs-klinisch\',\'Veränderter Bewusstseinszustand\')"><b>Bewusstsein verändert</b><span>Orange</span></button>'+
+  '</div>';
+}
 function vitalFieldClass(field){
   const a=getVitalAdvisories().filter(x=>x.field===field);
   if(a[0]?.suggestedLevel) return ' vital-level-'+a[0].suggestedLevel;
@@ -619,7 +664,7 @@ function renderVitalAdvisories(){
   return `<div class="vital-flag ${a.some(x=>x.severity==='critical')?'critical':''}">
     <i class="fa-solid fa-triangle-exclamation"></i>
     <div style="flex:1"><b>Priorisierung erneut prüfen</b>
-      ${a.map(x=>`<div class="vital-advisory-item"><div>${escapeHtml(x.text)}</div>${priorityButtons('vital:'+x.field,x.title,x.suggestedLevel)}</div>`).join('')}
+      ${a.map(x=>`<div class="vital-advisory-item"><div>${escapeHtml(x.text)}</div></div>`).join('')}
     </div>
   </div>`;
 }
