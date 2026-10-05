@@ -29,3 +29,5 @@ Direkt unter den Eingabefeldern werden nun die aktuell hinterlegten Warnschwelle
 - Feldfarbe, Legende und vorgeschlagene Farbauswahl wurden aufeinander abgestimmt.
 - GCS 13–14 wird nun auch optisch Orange dargestellt, passend zum bereits hinterlegten Hinweis.
 - Die Werte verändern die MTS-Stufe weiterhin nicht automatisch.
+
+Preview branch: `release/v2-rc9`
