@@ -552,7 +552,7 @@ function getVitalAdvisories(){
       if(isPediatricMtsContext()){
         add('gcs','info','GCS auffällig',`GCS ${v}: bei Kindern darf die MTS-Farbe nicht pauschal aus dem Summenwert abgeleitet werden. Nicht ansprechbar = Rot; Reaktion nur auf Ansprache/Schmerz = Orange. Klinischen Bewusstseinsindikator prüfen.`,null);
       }else{
-        add('gcs','alert','Bewusstseinszustand prüfen',`GCS ${v}: beim Erwachsenen ist im aktuellen MTS der klinisch veränderte Bewusstseinszustand ein Orange-Indikator. Eine pauschale Regel „GCS ≤ 8 = Rot“ gehört nicht zum generellen Erwachsenen-Bewusstseinsindikator.`,2);
+        add('gcs','alert','Bewusstseinszustand prüfen',`GCS ${v}: beim Erwachsenen ist im aktuellen MTS der klinisch veränderte Bewusstseinszustand ein Orange-Indikator. Eine pauschale numerische GCS-Rot-Grenze gehört nicht zum generellen Erwachsenen-Bewusstseinsindikator.`,2);
       }
     }
   }
@@ -765,7 +765,7 @@ function rOvl(){
           ${isPediatricMtsContext()
             ? '<span>Kind nicht ansprechbar → Rot · nur Ansprache/Schmerz → Orange</span>'
             : '<span>Erwachsene: veränderter Bewusstseinszustand → Orange · anhaltender Krampfanfall → Rot</span>'}
-          <small>GCS ist Dokumentationshilfe; keine pauschale Erwachsenen-Regel „≤8 = Rot“.</small>
+          <small>GCS ist Dokumentationshilfe; beim Erwachsenen entscheidet der klinische Bewusstseinsindikator, nicht eine pauschale numerische Rot-Grenze.</small>
         </div>
       </div>
 
@@ -946,7 +946,7 @@ function rGCS(){
     </div>
     <div class="gcs-mts-note">
       <b><i class="fa-solid fa-shield-heart"></i> MTS 2025:</b>
-      Beim Erwachsenen wird der klinisch veränderte Bewusstseinszustand als Orange eingestuft; eine pauschale GCS-Grenze ≤8 macht ihn nicht automatisch Rot. Beim Kind ist Nichtansprechbarkeit Rot, Reaktion nur auf Schmerz/Ansprache Orange.
+      Beim Erwachsenen wird der klinisch veränderte Bewusstseinszustand als Orange eingestuft; eine pauschale numerische GCS-Grenze macht ihn nicht automatisch Rot. Beim Kind ist Nichtansprechbarkeit Rot, Reaktion nur auf Schmerz/Ansprache Orange.
     </div>
     
     <h3 style="font-size:1.1rem;font-weight:800;margin:24px 0 6px;color:var(--text);border-top:1px solid var(--card-border);padding-top:16px"><i class="fa-solid fa-virus"></i> qSOFA Score</h3>
