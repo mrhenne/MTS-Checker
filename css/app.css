@@ -1269,3 +1269,241 @@ button,input,select,textarea,option{font-family:var(--font)}
 @media(max-width:390px){
   .vital-temp-scale{grid-template-columns:1fr}
 }
+
+
+/* ===== VITAL SEGMENTS O1 ===== */
+.vital-grid-modern{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.vital-card-modern{
+  text-align:left;
+  padding:14px;
+  border-radius:16px;
+  overflow:hidden;
+}
+.vital-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.vital-card-head label{
+  margin:0;
+  font-size:.78rem;
+}
+.vital-card-head>span{
+  color:var(--text3);
+  font-size:.72rem;
+  font-weight:800;
+}
+.vital-calc-btn{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--card-border);
+  background:var(--bg3);
+  color:var(--accent);
+  border-radius:10px;
+  cursor:pointer;
+}
+.vital-value-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+}
+.vital-value-row.split{
+  grid-template-columns:minmax(0,1fr) minmax(115px,.55fr);
+}
+.vital-value-row input{
+  min-height:48px;
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  background:var(--bg);
+  padding:8px 10px;
+  font:800 1.12rem var(--font);
+  text-align:left;
+}
+.vital-value-row>span{
+  color:var(--text3);
+  font-size:.7rem;
+  font-weight:800;
+}
+.vital-value-row select{
+  min-height:48px;
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  background:var(--bg);
+  color:var(--text);
+  padding:0 10px;
+  font:750 .76rem var(--font);
+}
+.vital-segment-bar{
+  display:flex;
+  width:100%;
+  min-height:48px;
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--bg3);
+}
+.vital-segment{
+  position:relative;
+  flex:1 1 0;
+  min-width:0;
+  border:0;
+  border-right:1px solid color-mix(in srgb,var(--card-border) 85%,transparent);
+  padding:8px 7px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  text-align:center;
+  font:800 .68rem/1.18 var(--font);
+  transition:.16s ease;
+}
+.vital-segment:last-child{border-right:0}
+.vital-segment.neutral{
+  background:var(--bg3);
+  color:var(--text2);
+  cursor:default;
+}
+.vital-segment.actionable{cursor:pointer}
+.vital-segment.seg-green{
+  background:var(--green-bg);
+  color:var(--green);
+}
+.vital-segment.seg-yellow{
+  background:var(--yellow-bg);
+  color:var(--yellow);
+}
+.vital-segment.seg-orange,
+.vital-segment.seg-orange-low,
+.vital-segment.seg-orange-high{
+  background:var(--orange-bg);
+  color:var(--orange);
+}
+.vital-segment.actionable:hover{
+  filter:brightness(.98);
+  box-shadow:inset 0 0 0 2px currentColor;
+}
+.vital-segment.active{
+  z-index:1;
+  box-shadow:
+    inset 0 0 0 2px currentColor,
+    0 0 0 2px color-mix(in srgb,currentColor 16%,transparent);
+}
+.vital-segment.active i{
+  font-size:.68rem;
+}
+.vital-segment-bar.temp .vital-segment{
+  font-size:.61rem;
+  padding-left:4px;
+  padding-right:4px;
+}
+.vital-card-note{
+  margin-top:8px;
+  color:var(--text3);
+  font-size:.64rem;
+  line-height:1.35;
+}
+.vital-card-note.emphasis{
+  padding:9px 10px;
+  border:1px solid var(--yellow-border);
+  border-radius:10px;
+  background:var(--yellow-bg);
+  color:var(--text2);
+}
+.gcs-clinical-cards{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  overflow:hidden;
+}
+.gcs-clinical-card{
+  min-height:58px;
+  padding:8px 9px;
+  border:0;
+  border-right:1px solid var(--card-border);
+  background:var(--bg3);
+  color:var(--text2);
+  font-family:var(--font);
+  text-align:left;
+  cursor:default;
+  transition:.16s ease;
+}
+.gcs-clinical-card:last-child{border-right:0}
+.gcs-clinical-card b{
+  display:block;
+  font-size:.7rem;
+  color:var(--text);
+  margin-bottom:2px;
+}
+.gcs-clinical-card span{
+  display:block;
+  font-size:.62rem;
+  color:var(--text3);
+}
+.gcs-clinical-card.orange{
+  cursor:pointer;
+  background:var(--orange-bg);
+}
+.gcs-clinical-card.orange span{color:var(--orange)}
+.gcs-clinical-card.red{
+  cursor:pointer;
+  background:var(--red-bg);
+}
+.gcs-clinical-card.red span{color:var(--red)}
+.gcs-clinical-card.orange:hover,
+.gcs-clinical-card.red:hover{
+  box-shadow:inset 0 0 0 2px currentColor;
+}
+.gcs-clinical-card.active{
+  box-shadow:inset 0 0 0 2px currentColor;
+}
+.dark .vital-value-row input,
+.dark .vital-value-row select,
+.dark .vital-segment.neutral,
+.dark .gcs-clinical-card.neutral{
+  background:#0b1220;
+}
+@media(max-width:900px){
+  .vital-grid-modern{grid-template-columns:1fr}
+  .vital-segment-bar.temp .vital-segment{font-size:.66rem}
+}
+@media(max-width:560px){
+  .vital-card-modern{padding:12px}
+  .vital-value-row.split{grid-template-columns:1fr}
+  .vital-segment-bar{
+    min-height:50px;
+  }
+  .vital-segment{
+    padding:8px 5px;
+    font-size:.64rem;
+  }
+  .vital-segment-bar.temp{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    border-radius:12px;
+  }
+  .vital-segment-bar.temp .vital-segment{
+    min-height:46px;
+    border-right:1px solid var(--card-border);
+    border-bottom:1px solid var(--card-border);
+  }
+  .vital-segment-bar.temp .vital-segment:last-child{
+    grid-column:1/-1;
+    border-bottom:0;
+  }
+  .gcs-clinical-cards{grid-template-columns:1fr}
+  .gcs-clinical-card{
+    border-right:0;
+    border-bottom:1px solid var(--card-border);
+  }
+  .gcs-clinical-card:last-child{border-bottom:0}
+}
