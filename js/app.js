@@ -45,7 +45,7 @@ let hist=JSON.parse(localStorage.getItem('mts_h')||'[]'),aCat='';
 let curDiag=null,selR=[],selI=[];
 let manualPriority={level:null,source:'',label:''};
 let restoredAssessment=null;
-let curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
+let curVit = { gcs: '', spo2: '', spo2Mode: 'air', temp: '', nrs: '' };
 let curPed = '2'; 
 let gcsS = { e: 4, v: 5, m: 6 };
 let qsfS = { af: false, rr: false };
@@ -513,7 +513,7 @@ function shD(id){
   selR=[]; selI=[];
   manualPriority={level:null,source:'',label:''};
   restoredAssessment=null;
-  curVit = { gcs: '', spo2: '', temp: '', nrs: '' };
+  curVit = { gcs: '', spo2: '', spo2Mode: 'air', temp: '', nrs: '' };
   if(!curDiag)return;
   rOvl();
   const overlay=document.getElementById('detO');
@@ -539,30 +539,54 @@ function tgI(lvl, idx, isGen){
   rOvl();
 }
 
+function isPediatricMtsContext(){
+  return curDiag?.c==='Pädiatrisch';
+}
 function getVitalAdvisories(){
   const out=[];
   const add=(field,severity,title,text,suggestedLevel=null)=>out.push({field,severity,title,text,suggestedLevel});
+
   if(curVit.gcs!==''){
     const v=Number(curVit.gcs);
-    if(v>=3&&v<15) add('gcs',v<=12?'critical':'alert','GCS auffällig',`GCS ${v}: Bewusstseinslage ist nicht normal. Höhere Priorisierung und passenden MTS-Diskriminator prüfen.`,2);
+    if(v>=3&&v<15){
+      if(isPediatricMtsContext()){
+        add('gcs','info','GCS auffällig',`GCS ${v}: bei Kindern darf die MTS-Farbe nicht pauschal aus dem Summenwert abgeleitet werden. Nicht ansprechbar = Rot; Reaktion nur auf Ansprache/Schmerz = Orange. Klinischen Bewusstseinsindikator prüfen.`,null);
+      }else{
+        add('gcs','alert','Bewusstseinszustand prüfen',`GCS ${v}: beim Erwachsenen ist im aktuellen MTS der klinisch veränderte Bewusstseinszustand ein Orange-Indikator. Eine pauschale Regel „GCS ≤ 8 = Rot“ gehört nicht zum generellen Erwachsenen-Bewusstseinsindikator.`,2);
+      }
+    }
   }
+
   if(curVit.spo2!==''){
     const v=Number(curVit.spo2);
-    if(v>=0&&v<92) add('spo2','critical','SpO₂ deutlich erniedrigt',`SpO₂ ${v} % unter Raumluft liegt unter dem in der aktuellen MTS-Referenz genannten Grenzwert. Höhere Priorisierung prüfen.`,2);
-    else if(v>=92&&v<95) add('spo2','alert','SpO₂ erniedrigt',`SpO₂ ${v} % ist auffällig. Klinischen Kontext und passenden MTS-Diskriminator prüfen.`,3);
+    const onO2=curVit.spo2Mode==='o2';
+    if(onO2){
+      if(v>=0&&v<95) add('spo2','critical','Sehr niedrige O₂-Sättigung',`SpO₂ ${v} % unter laufender O₂-Gabe erfüllt die Definition „sehr niedrige O₂-Sättigung“ und ist Orange.`,2);
+    }else{
+      if(v>=0&&v<92) add('spo2','critical','Sehr niedrige O₂-Sättigung',`SpO₂ ${v} % unter Raumluft erfüllt die aktuelle Definition „sehr niedrige O₂-Sättigung“ und ist Orange.`,2);
+      else if(v>=92&&v<95) add('spo2','alert','Niedrige O₂-Sättigung',`SpO₂ ${v} % unter Raumluft ist niedrig und entspricht Gelb.`,3);
+    }
   }
+
   if(curVit.temp!==''){
     const v=Number(String(curVit.temp).replace(',','.'));
     if(Number.isFinite(v)){
-      if(v>41||v<35) add('temp','critical','Temperatur stark auffällig',`${v.toFixed(1)} °C: deutliche Temperaturabweichung. Höhere Priorisierung und passenden MTS-/Sepsis-Kontext prüfen.`,2);
-      else if(v>=39||v<36) add('temp','alert','Temperatur auffällig',`${v.toFixed(1)} °C: außerhalb des üblichen Normbereichs. Höhere Priorisierung im klinischen Kontext prüfen.`,3);
+      if(isPediatricMtsContext()){
+        if(v<35||v>=37.5) add('temp','info','Pädiatrische Temperatur',`${v.toFixed(1)} °C: pädiatrische Temperaturindikatoren sind im MTS alters- und diagrammabhängig. Keine pauschale Erwachsenen-Farbe übernehmen.`,null);
+      }else{
+        if(v<35) add('temp','critical','Kalter Erwachsener',`${v.toFixed(1)} °C: „Kalt“ (<35 °C) entspricht Orange.`,2);
+        else if(v>=41) add('temp','critical','Sehr heißer Erwachsener',`${v.toFixed(1)} °C: „Sehr heiß“ (≥41 °C) entspricht Orange.`,2);
+        else if(v>=38.5) add('temp','alert','Heißer Erwachsener',`${v.toFixed(1)} °C: „Heiß“ (38,5–40,9 °C) entspricht Gelb.`,3);
+        else if(v>=37.5) add('temp','info','Warmer Erwachsener',`${v.toFixed(1)} °C: „Warm“ (37,5–38,4 °C) entspricht Grün.`,4);
+      }
     }
   }
+
   if(curVit.nrs!==''){
     const v=Number(curVit.nrs);
-    if(v>=7&&v<=10) add('nrs','critical','Starker Schmerz',`NRS ${v}/10: entspricht nach eurer MTS-NRS-Systematik Stufe 2 (Orange). Passenden Schmerz-Diskriminator prüfen.`,2);
-    else if(v>=4&&v<=6) add('nrs','alert','Mäßiger Schmerz',`NRS ${v}/10: entspricht nach eurer MTS-NRS-Systematik Stufe 3 (Gelb). Passenden Schmerz-Diskriminator prüfen.`,3);
-    else if(v>=1&&v<=3) add('nrs','info','Leichter Schmerz',`NRS ${v}/10: entspricht nach eurer MTS-NRS-Systematik Stufe 4 (Grün). Passenden Schmerz-Diskriminator prüfen.`,4);
+    if(v>=7&&v<=10) add('nrs','critical','Starker Schmerz',`NRS ${v}/10: entspricht nach eurer NRS-Systematik Stufe 2 (Orange). Passenden Schmerz-Diskriminator prüfen.`,2);
+    else if(v>=4&&v<=6) add('nrs','alert','Mäßiger Schmerz',`NRS ${v}/10: entspricht nach eurer NRS-Systematik Stufe 3 (Gelb). Passenden Schmerz-Diskriminator prüfen.`,3);
+    else if(v>=1&&v<=3) add('nrs','info','Leichter Schmerz',`NRS ${v}/10: entspricht nach eurer NRS-Systematik Stufe 4 (Grün). Passenden Schmerz-Diskriminator prüfen.`,4);
   }
   return out;
 }
@@ -586,19 +610,7 @@ function priorityButtons(source,label,suggested){
 function vitalFieldClass(field){
   const a=getVitalAdvisories().filter(x=>x.field===field);
   if(a[0]?.suggestedLevel) return ' vital-level-'+a[0].suggestedLevel;
-
-  if(field==='gcs' && curVit.gcs!==''){
-    const v=Number(curVit.gcs);
-    if(v===15)return ' vital-level-4';
-  }
-  if(field==='spo2' && curVit.spo2!==''){
-    const v=Number(curVit.spo2);
-    if(v>=95&&v<=100)return ' vital-level-4';
-  }
-  if(field==='temp' && curVit.temp!==''){
-    const v=Number(String(curVit.temp).replace(',','.'));
-    if(Number.isFinite(v)&&v>=36&&v<39)return ' vital-level-4';
-  }
+  if(a.some(x=>x.severity==='info'))return ' vital-info';
   return '';
 }
 function renderVitalAdvisories(){
@@ -612,6 +624,7 @@ function renderVitalAdvisories(){
   </div>`;
 }
 function updV(key, val) { curVit[key] = val; rOvl(); }
+function updSpO2Mode(val){curVit.spo2Mode=val==='o2'?'o2':'air';rOvl();}
 function updPed(val) { curPed = val; rOvl(); }
 
 function buildDecisionTrace(d,lvl){
@@ -628,7 +641,7 @@ function buildDecisionTrace(d,lvl){
 
   const vit=[];
   if(curVit.gcs!=='') vit.push(`GCS ${parseInt(curVit.gcs)}`);
-  if(curVit.spo2!=='') vit.push(`SpO₂ ${parseInt(curVit.spo2)}%`);
+  if(curVit.spo2!=='') vit.push(`SpO₂ ${parseInt(curVit.spo2)}% (${curVit.spo2Mode==='o2'?'O₂-Gabe':'Raumluft'})`);
   if(curVit.temp!=='') vit.push(`Temperatur ${parseFloat(String(curVit.temp).replace(',','.')).toFixed(1)} °C`);
   if(curVit.nrs!=='') vit.push(`NRS ${parseInt(curVit.nrs)}`);
   vit.forEach(v=>rows.push({icon:'fa-wave-square',label:`Dokumentierter Vital-/Schmerzwert: <b>${v}</b> · derzeit ohne automatische MTS-Wertung`,level:''}));
@@ -747,18 +760,37 @@ function rOvl(){
           <button onclick="openGCS()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.1rem;padding:0 4px;" title="GCS Rechner öffnen"><i class="fa-solid fa-calculator"></i></button>
         </label>
         <input type="number" min="3" max="15" value="${curVit.gcs}" onchange="updV('gcs', this.value)" style="margin-top:auto;">
-        <div class="vital-mini-scale cols-2"><span class="scale-green">15 Grün</span><span class="scale-orange">3–14 Orange</span></div>
+        <div class="vital-reference">
+          <b>MTS Bewusstsein:</b>
+          ${isPediatricMtsContext()
+            ? '<span>Kind nicht ansprechbar → Rot · nur Ansprache/Schmerz → Orange</span>'
+            : '<span>Erwachsene: veränderter Bewusstseinszustand → Orange · anhaltender Krampfanfall → Rot</span>'}
+          <small>GCS ist Dokumentationshilfe; keine pauschale Erwachsenen-Regel „≤8 = Rot“.</small>
+        </div>
       </div>
+
       <div class="vital-input-box${vitalFieldClass('spo2')}">
         <label>SpO₂ (%)</label>
-        <input type="number" min="0" max="100" value="${curVit.spo2}" onchange="updV('spo2', this.value)">
-        <div class="vital-mini-scale"><span class="scale-green">≥95 % Grün</span><span class="scale-yellow">92–94 % Gelb</span><span class="scale-orange">&lt;92 % Orange</span></div>
+        <div class="spo2-row">
+          <input type="number" min="0" max="100" value="${curVit.spo2}" onchange="updV('spo2', this.value)">
+          <select onchange="updSpO2Mode(this.value)" aria-label="SpO2 Messbedingung">
+            <option value="air" ${curVit.spo2Mode!=='o2'?'selected':''}>Raumluft</option>
+            <option value="o2" ${curVit.spo2Mode==='o2'?'selected':''}>O₂-Gabe</option>
+          </select>
+        </div>
+        ${curVit.spo2Mode==='o2'
+          ? '<div class="vital-mini-scale cols-2"><span class="scale-neutral">≥95 % kein O₂-Diskriminator</span><span class="scale-orange">&lt;95 % Orange</span></div>'
+          : '<div class="vital-mini-scale"><span class="scale-neutral">≥95 % kein O₂-Diskriminator</span><span class="scale-yellow">92–94 % Gelb</span><span class="scale-orange">&lt;92 % Orange</span></div>'}
       </div>
+
       <div class="vital-input-box${vitalFieldClass('temp')}">
         <label>Temp (°C)</label>
         <input type="number" step="0.1" value="${curVit.temp}" onchange="updV('temp', this.value)">
-        <div class="vital-mini-scale temp-scale"><span class="scale-green">36–38,9 °C Grün</span><span class="scale-yellow">35–35,9 / 39–41 °C Gelb</span><span class="scale-orange">&lt;35 / &gt;41 °C Orange</span></div>
+        ${isPediatricMtsContext()
+          ? '<div class="vital-reference"><b>Pädiatrie:</b><span>Temperaturindikatoren sind alters- und diagrammabhängig.</span><small>Keine pauschale Erwachsenen-Farblogik verwenden.</small></div>'
+          : '<div class="vital-temp-scale"><span class="scale-orange">&lt;35 Orange</span><span class="scale-neutral">35–37,4 kein Temp.-Diskr.</span><span class="scale-green">37,5–38,4 Grün</span><span class="scale-yellow">38,5–40,9 Gelb</span><span class="scale-orange">≥41 Orange</span></div>'}
       </div>
+
       <div class="vital-input-box${vitalFieldClass('nrs')}">
         <label>NRS (0-10)</label>
         <input type="number" min="0" max="10" value="${curVit.nrs}" onchange="updV('nrs', this.value)">
@@ -909,8 +941,12 @@ function rGCS(){
       </div>
     </div>
 
-    <div class="qsf-score" style="color:${tot<=8?'var(--red)':tot<15?'var(--orange)':'var(--green)'}">
+    <div class="qsf-score" style="color:${tot<15?'var(--orange)':'var(--text)'}">
       Gesamt GCS: ${tot}
+    </div>
+    <div class="gcs-mts-note">
+      <b><i class="fa-solid fa-shield-heart"></i> MTS 2025:</b>
+      Beim Erwachsenen wird der klinisch veränderte Bewusstseinszustand als Orange eingestuft; eine pauschale GCS-Grenze ≤8 macht ihn nicht automatisch Rot. Beim Kind ist Nichtansprechbarkeit Rot, Reaktion nur auf Schmerz/Ansprache Orange.
     </div>
     
     <h3 style="font-size:1.1rem;font-weight:800;margin:24px 0 6px;color:var(--text);border-top:1px solid var(--card-border);padding-top:16px"><i class="fa-solid fa-virus"></i> qSOFA Score</h3>
@@ -962,7 +998,7 @@ function genISBARText() {
   txt += `S: ${d?d.name:'Ohne Zuordnung'}, MTS Stufe ${curMTSLvl} \n`;
   if(sInput) txt += `   OPQRST: ${sInput}\n`;
   txt += `B: SAMPLER: ${bInput ? bInput : 'Keine Besonderheiten erfasst'}\n`;
-  txt += `A: GCS ${v.gcs||'/'}, SpO2 ${v.spo2||'/'}%, Temp ${v.temp||'/'}°C, NRS ${v.nrs||'/'}\n`;
+  txt += `A: GCS ${v.gcs||'/'}, SpO2 ${v.spo2||'/'}% ${v.spo2?`(${v.spo2Mode==='o2'?'O2-Gabe':'Raumluft'})`:''}, Temp ${v.temp||'/'}°C, NRS ${v.nrs||'/'}\n`;
   txt += `R: Bitte um zügige ärztliche Sichtung gemäß MTS Vorgabe.`;
 
   document.getElementById('isbarC').innerHTML = `
@@ -1174,7 +1210,7 @@ function openSavedAssessment(index){
   const d=D.find(x=>x.id===h.id);
   if(!d)return;
   curDiag=d;
-  curVit={gcs:'',spo2:'',temp:'',nrs:'',...(h.vitals||{})};
+  curVit={gcs:'',spo2:'',spo2Mode:'air',temp:'',nrs:'',...(h.vitals||{})};
   manualPriority=h.manual?{...h.manual}:{level:null,source:'',label:''};
   restoredAssessment={...h};
 
